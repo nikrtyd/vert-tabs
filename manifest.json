@@ -1,0 +1,34 @@
+{
+  "manifest_version": 2,
+  "name": "Vert Tabs",
+  "description": "A list of methods you can perform on a tab.",
+  "version": "0.0.1",
+  "homepage_url": "https://github.com/mdn/webextensions-examples/tree/master/tabs-tabs-tabs",
+  "icons": {
+    "48": "icons/48.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "strict_min_version": "80.0a1"
+    }
+  },
+  "sidebar_action": {
+    "default_icon": "icons/48.png",
+    "default_title": "Vert Tabs",
+    "default_panel": "sidebar/panel.html"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "browser_action": {
+    "browser_style": true,
+    "default_title": "Show Vert Tabs panel in a sidebar",
+    "default_icon": "icons/48.png"
+  },
+  "permissions": [
+    "<all_urls>",
+    "tabs"
+  ]
+}

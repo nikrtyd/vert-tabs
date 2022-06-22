@@ -1,0 +1,35 @@
+html,
+body {
+  width: 350px;
+}
+
+a {
+  display: inline-block;
+}
+
+.switch-tabs a {
+  display: flex;
+}
+
+a:hover {
+  background-color: #ddd;
+}
+
+#tabs-create::before {
+  content: '';
+  background-color: #666;
+}
+
+.highlighted {
+  border: 1px solid black;
+}
+
+.tab__icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+}
+
+.tab__title {
+  display: inline-block;
+}
