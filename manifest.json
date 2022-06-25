@@ -1,34 +1,33 @@
 {
   "manifest_version": 2,
-  "name": "Vert Tabs",
-  "description": "A list of methods you can perform on a tab.",
+  "name": "Verts: Edge-like vertical tabs",
+  "description": "Fast, simple and ready to use. Or you can customize it just how you want!\n\nContributions welcome: https://github.com/nikrtyd/verts 😊",
   "version": "0.0.1",
-  "homepage_url": "https://github.com/mdn/webextensions-examples/tree/master/tabs-tabs-tabs",
+  "homepage_url": "https://github.com/nikrtyd/verts",
   "icons": {
     "48": "icons/48.png"
   },
   "browser_specific_settings": {
     "gecko": {
-      "strict_min_version": "80.0a1"
+      "strict_min_version": "73.0a1"
     }
   },
   "sidebar_action": {
     "default_icon": "icons/48.png",
-    "default_title": "Vert Tabs",
-    "default_panel": "sidebar/panel.html"
+    "default_title": "Verts",
+    "default_panel": "panel.html"
   },
   "background": {
     "scripts": [
-      "background.js"
+      "js/background.js"
     ]
   },
   "browser_action": {
     "browser_style": true,
-    "default_title": "Show Vert Tabs panel in a sidebar",
+    "default_title": "Show Verts panel in a sidebar",
     "default_icon": "icons/48.png"
   },
   "permissions": [
-    "<all_urls>",
     "tabs"
   ]
 }

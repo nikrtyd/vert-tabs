@@ -1,11 +1,12 @@
-# tabs, tabs, tabs
+# Verts: Edge-like vertical tabs (for Firefox)
 
-## What it does
+Fast, simple and ready to use. Or you can customize it just how you want!
 
-This extension includes a browser action with a popup specified as "tabs.html".
+# TODOS:
 
-The popup lets the user perform various simple operations using the tabs API.
-
-# What it shows
-
-Demonstration of various tabs API functions.
+- Preferences page
+- Scroll tab title on hover
+- Do proper proton & photon CSS styling
+- Implement custom CSS styling
+- Show sharing state and reader mode
+- More..

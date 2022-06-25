@@ -1,0 +1,14 @@
+.tab__item {
+  display: flex;
+}
+
+.tab__icon {
+  width: 16px;
+  height: 16px;
+}
+
+.tab__title {
+  white-space: nowrap;
+  overflow: hidden;
+  flex-grow: 1;
+}
