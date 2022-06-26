@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Verts: Edge-like vertical tabs",
   "description": "Fast, simple and ready to use. Or you can customize it just how you want!\n\nContributions welcome: https://github.com/nikrtyd/verts 😊",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "homepage_url": "https://github.com/nikrtyd/verts",
   "icons": {
     "48": "icons/48.png"

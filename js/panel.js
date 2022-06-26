@@ -13,35 +13,7 @@ let listAsync = new Promise(function (resolve, reject) {
     pinnedTabsList.innerText = '';
 
     for (let tab of tabs) {
-      let tabLink = document.createElement('a');
-      
-      let favIconUrl = tab.favIconUrl;
-      switch (favIconUrl) {
-        case "":
-          favIconUrl = "chrome://global/skin/icons/defaultFavicon.svg"
-          break;
-        case "chrome://mozapps/skin/extensions/extension.svg":
-          favIconUrl = "/icons/firefox/extension.svg"
-          break;
-        default:
-          break;
-      }
-
-      tabLink.innerHTML =
-        '<img class="tab__icon" src="' + favIconUrl + '" alt="🌐" aria-hidden="true">' +
-        '<span class="tab__title">' + tab.title + '</span>';
-      if (tab.sharingState.camera) { tabLink.innerHTML += '<div class="tab__camera-sharing"></div>' }
-      if (tab.sharingState.microphone) { tabLink.innerHTML += '<div class="tab__microphone-sharing></div>' }
-      if (tab.sharingState.screen) { tabLink.innerHTML += '<div class="tab__screen-sharing></div>' }
-      if (tab.isInReaderMode) { tabLink.innerHTML += '<div class="tab__reader-mode></div>' }
-      tabLink.setAttribute('data-id', tab.id);
-      tabLink.classList.add('tab__item');
-      if (tab.active) { tabLink.classList.add('active'); }
-      if (tab.audible) { tabLink.classList.add('audible'); }
-      if (tab.mutedInfo.muted) { tabLink.classList.add('muted'); }
-
-      tabLink.innerHTML += '<span class="tab__close" title="Close this tab (Ctrl+W)" data-id="' + tab.id + '" aria-label="Close this tab" role="button">⨉</span>';
-
+      let tabLink = render(tab);
       if (tab.pinned) { currentPinnedTabs.appendChild(tabLink); }
       else { currentTabs.appendChild(tabLink); }
     }
@@ -68,52 +40,63 @@ let listSync = function () {
     pinnedTabsList.innerText = '';
 
     for (let tab of tabs) {
-      let tabLink = document.createElement('a');
-      let favIconUrl = tab.favIconUrl;
-      switch (favIconUrl) {
-        case "":
-          favIconUrl = "chrome://global/skin/icons/defaultFavicon.svg"
-          break;
-        case "chrome://mozapps/skin/extensions/extension.svg":
-          favIconUrl = "/icons/firefox/extension.svg"
-          break;
-        default:
-          break;
-      }
-      tabLink.innerHTML =
-        '<img class="tab__icon" src="' + favIconUrl + '" alt="🌐">' +
-        '<span class="tab__title">' + tab.title + '</span>';
-      if (tab.sharingState.camera) { tabLink.innerHTML += '<div class="tab__camera-sharing"></div>' }
-      if (tab.sharingState.microphone) { tabLink.innerHTML += '<div class="tab__microphone-sharing></div>' }
-      if (tab.sharingState.screen) { tabLink.innerHTML += '<div class="tab__screen-sharing></div>' }
-      if (tab.isInReaderMode) { tabLink.innerHTML += '<div class="tab__reader-mode></div>' }
-      tabLink.setAttribute('data-id', tab.id);
-      tabLink.classList.add('tab__item');
-      if (tab.discarded && !tabLink.classList.contains('discarded')) { tabLink.classList.add('discarded') }
-      if (tab.active && !tabLink.classList.contains('active')) { tabLink.classList.add('active'); }
-      if (tab.audible && !tabLink.classList.contains('audible')) { tabLink.classList.add('audible'); }
-      if (tab.mutedInfo.muted && !tabLink.classList.contains('muted')) { tabLink.classList.add('muted'); }
-
-      tabLink.innerHTML += '<span class="tab__close" data-id="' + tab.id + '">⨉</span>';
+      let tabLink = render(tab);
       if (tab.pinned) { currentPinnedTabs.appendChild(tabLink); }
       else { currentTabs.appendChild(tabLink); }
     }
-
-    pinnedTabsList.appendChild(currentPinnedTabs);
-    tabsList.appendChild(currentTabs);
   });
+}
+
+function render(tab) {
+  let tabLink = document.createElement('a');
+  let favIconUrl = tab.favIconUrl;
+  switch (favIconUrl) {
+    case "":
+    case undefined:
+    case null:
+    case []:
+    case {}:
+      favIconUrl = "chrome://global/skin/icons/defaultFavicon.svg";
+      break;
+    case "chrome://mozapps/skin/extensions/extension.svg":
+      favIconUrl = window.location.origin + "/icons/firefox/extension.svg";
+      break;
+    default:
+      break;
+  }
+  tabLink.innerHTML =
+    '<img class="tab__icon" src="' + favIconUrl + '" aria-hidden="true">' +
+    '<span class="tab__title">' + tab.title + '</span>';
+  if (tab.active && !tabLink.classList.contains('active')) { tabLink.classList.add('active'); }
+  if (tab.audible && !tabLink.classList.contains('audible')) { tabLink.classList.add('audible'); }
+  if (tab.mutedInfo.muted && !tabLink.classList.contains('muted')) { tabLink.classList.add('muted'); }
+  if (tab.sharingState.camera) { tabLink.innerHTML += '<div class="tab__camera-sharing"  aria-label="Currently using camera"></div>' }
+  if (tab.sharingState.microphone) { tabLink.innerHTML += '<div class="tab__microphone-sharing" aria-label="Currently using microphone"></div>' }
+  if (tab.sharingState.screen) { tabLink.innerHTML += '<div class="tab__screen-sharing" aria-label="Currently sharing your screen"></div>' }
+  if (tab.isInReaderMode) { tabLink.innerHTML += '<div class="tab__reader-mode" aria-label="Opened in Reader mode"></div>' }
+  if (tab.discarded && !tabLink.classList.contains('discarded')) { tabLink.classList.add('discarded') }
+  if (tab.attention && !tabLink.classList.contains('attention')) { tabLink.classList.add('attention') }
+  tabLink.setAttribute('data-id', tab.id);
+  tabLink.setAttribute('data-id', tab.id);
+  tabLink.classList.add('tab__item');
+
+  tabLink.innerHTML += '<span class="tab__close" data-id="' + tab.id + '" aria-label="Close tab" role="button">⨉</span>';
+  return tabLink;
 }
 
 let discard = (id) => { browser.tabs.discard(id).then(onDiscarded, onError) };
 
-let activate = (id) => { browser.tabs.update(id, { active: true }).then(onActivated, onError) };
+let activate = (id) => { browser.tabs.update(id, { active: true }).then(onActivated(id), onError) };
+
+let remove = (id) => { browser.tabs.remove(id).then(onRemoved(id), onError) };
 
 function onDiscarded(id) {
   console.log(`Discarded tab: ${id}`);
 }
 
 function onActivated(id) {
-  console.log(`Activated tab: ${id}`)
+  document.querySelectorAll(`.active:not([data-id="${id}"])`).forEach((el) => { el.classList.remove('active') });
+  console.log(`Activated tab: ${id}`);
 }
 
 function onError(error) {
@@ -187,16 +170,17 @@ document.addEventListener("click", (e) => {
 
   if (target.classList.contains('tab__item')) {
     let tabId = +target.getAttribute('data-id');
-    document.querySelectorAll('.active').forEach((el) => { el.classList.remove('active') });
+    document.querySelector(`.tab__item[data-id="${tabId}"]`).classList.add('active');
     browser.tabs.query({
       currentWindow: true
     }).then((tabs) => {
       for (let tab of tabs) {
         if (tab.id === tabId) {
-          browser.tabs.update(tabId, {
-            active: true
-          }).then(
-            document.querySelector(`.tab__item[data-id="${tabId}"]`).classList.add('active'));
+          // browser.tabs.update(tabId, {
+          //   active: true
+          // }).then(
+          //   document.querySelectorAll(`.active:not([data-id="${tabId}"])`).forEach((el) => { el.classList.remove('active') }));
+          activate(tabId);
         }
       }
     });
@@ -252,12 +236,14 @@ browser.tabs.onRemoved.addListener((tabId) => {
   console.log(`removed a tab: ${tabId}`);
 });
 
-browser.tabs.onCreated.addListener((tabId) => {
-  listAsync.then(() => {
-    let newTab = document.querySelector(`.tab__item[data-id="${tabId.id}"]`);
-    console.log(`created a tab: ${tabId.id}`);
-    if (!isElementInViewport(newTab)) {
-      scrollTo(newTab);
-    }
-  }, onError);
+browser.tabs.onCreated.addListener((tab) => {
+  document.querySelector(`.tab__item[data-index="${tab.index - 1}"]`).after(render(tab));
+});
+
+browser.tabs.onUpdated.addListener((tabId) => {
+  browser.tabs.get(tabId).then((tab) => {
+    let elem = document.querySelector(`.tab__item[data-id="${tabId}"]`);
+    if (elem) { elem.remove() }
+    document.querySelector(`.tab__item[data-index="${tab.index - 1}"]`).after(render(tab));
+  });
 });

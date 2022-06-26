@@ -13,6 +13,8 @@
   <div class="container">
     <h1>Config</h1>
 
+    <h3>Theme settings</h3>
+
     <span>Set / inherit theme:</span>
     <select name="theme" id="theme">
       <option value="Proton">Proton (default)</option>
@@ -24,7 +26,7 @@
 
     <p>Your custom CSS:</p>
     <textarea name="" id="" cols="80" rows="30" spellcheck="false"></textarea>
-    <b>Can't set theme. Found 6 errors and 1 warning: </b>
+    <b>Can't use custom CSS. Found 6 errors and 1 warning: </b>
     <a href="#">Dismiss</a>
 
     <div class="setting">
@@ -36,14 +38,16 @@
       </select>
     </div>
 
+    <h3>Pinned tabs</h3>
+
     <div class="setting">
       <input type="checkbox" name="inlinePinnedTabs" id="inlinePinnedTabs">
       <label for="inlinePinnedTabs">Small & Inline pinned tabs</label>
       <div class="grid compare">
         <p>Disabled:</p>
         <p>Enabled:</p>
-        <img src="" alt="There should be a Verts sidebar with this setting disabled.">
-        <img src="" alt="There should be a Verts sidebar with this setting enabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting disabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting enabled.">
       </div>
     </div>
 
@@ -53,42 +57,21 @@
       <div class="grid compare">
         <p>Disabled:</p>
         <p>Enabled:</p>
-        <img src="" alt="There should be a Verts sidebar with this setting disabled.">
-        <img src="" alt="There should be a Verts sidebar with this setting enabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting disabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting enabled.">
       </div>
     </div>
 
-    <div class="setting">
-      <input type="checkbox" name="compactMode" id="compactMode">
-      <label for="compactMode">Compact mode (26px height)</label>
-      <div class="grid compare">
-        <p>Disabled:</p>
-        <p>Enabled:</p>
-        <img src="" alt="There should be a Verts sidebar with this setting disabled.">
-        <img src="" alt="There should be a Verts sidebar with this setting enabled.">
-      </div>
-    </div>
+    <h3>Tab styling & behavior</h3>
 
     <div class="setting">
-      <input type="checkbox" name="showCloseBtn" id="showCloseBtn">
-      <label for="showCloseBtn">Show tab close button</label>
-      <div class="grid compare">
-        <p>Disabled:</p>
-        <p>Enabled:</p>
-        <img src="" alt="There should be a Verts sidebar with this setting disabled.">
-        <img src="" alt="There should be a Verts sidebar with this setting enabled.">
-      </div>
-    </div>
-
-    <div class="setting">
-      <input type="checkbox" name="compactSoundToggle" id="compactSoundToggle">
-      <label for="compactSoundToggle">Switch to compact sound toggle</label>
-      <div class="grid compare">
-        <p>Disabled:</p>
-        <p>Enabled:</p>
-        <img src="" alt="There should be a Verts sidebar with this setting disabled.">
-        <img src="" alt="There should be a Verts sidebar with this setting enabled.">
-      </div>
+      <span>Tab height:</span>
+      <select name="tabHeight" id="tabHeight">
+        <option value="compact">Compact (26px height)</option>
+        <option value="default">Default (todo: add height)</option>
+        <option value="touch">Touch (todo: add height)</option>
+      </select>
+      <img src="" alt="There should be a Verts sidebar image with current setting.">
     </div>
 
     <div class="setting">
@@ -97,19 +80,43 @@
       <div class="grid compare">
         <p>Disabled:</p>
         <p>Enabled:</p>
-        <img src="" alt="There should be a Verts sidebar with this setting disabled.">
-        <img src="" alt="There should be a Verts sidebar with this setting enabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting disabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting enabled.">
+      </div>
+    </div>
+
+    <h3>Tab actions</h3>
+
+    <div class="setting">
+      <input type="checkbox" name="showCloseBtn" id="showCloseBtn">
+      <label for="showCloseBtn">Show tab close button</label>
+      <div class="grid compare">
+        <p>Disabled:</p>
+        <p>Enabled:</p>
+        <img src="" alt="There should be a Verts sidebar image with this setting disabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting enabled.">
+      </div>
+    </div>
+
+    <div class="setting">
+      <input type="checkbox" name="compactSoundToggle" id="compactSoundToggle">
+      <label for="compactSoundToggle">Use compact sound toggle</label>
+      <div class="grid compare">
+        <p>Disabled:</p>
+        <p>Enabled:</p>
+        <img src="" alt="There should be a Verts sidebar image with this setting disabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting enabled.">
       </div>
     </div>
 
     <div class="setting">
       <input type="checkbox" name="stickNewTabBtn" id="stickNewTabBtn">
-      <label for="stickNewTabBtn">Stick New tab button to the bottom</label>
+      <label for="stickNewTabBtn">Always stick New tab button to the bottom</label>
       <div class="grid compare">
         <p>Disabled:</p>
         <p>Enabled:</p>
-        <img src="" alt="There should be a Verts sidebar with this setting disabled.">
-        <img src="" alt="There should be a Verts sidebar with this setting enabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting disabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting enabled.">
       </div>
     </div>
 
@@ -125,8 +132,8 @@
       <div class="grid compare">
         <p>Disabled:</p>
         <p>Enabled:</p>
-        <img src="" alt="There should be a Verts sidebar with this setting disabled.">
-        <img src="" alt="There should be a Verts sidebar with this setting enabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting disabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting enabled.">
       </div>
     </div>
 
@@ -136,8 +143,19 @@
       <div class="grid compare">
         <p>Disabled:</p>
         <p>Enabled:</p>
-        <img src="" alt="There should be a Verts sidebar with this setting disabled.">
-        <img src="" alt="There should be a Verts sidebar with this setting enabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting disabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting enabled.">
+      </div>
+    </div>
+
+    <div class="setting">
+      <input type="checkbox" name="switchTabsOnCtrlWheel" id="switchTabsOnCtrlWheel">
+      <label for="switchTabsOnCtrlWheel">Switch tabs on Ctrl+&lt;mousewheel&gt;</label>
+      <div class="grid compare">
+        <p>Disabled:</p>
+        <p>Enabled:</p>
+        <img src="" alt="There should be a Verts sidebar image with this setting disabled.">
+        <img src="" alt="There should be a Verts sidebar image with this setting enabled.">
       </div>
     </div>
 
@@ -149,8 +167,29 @@
         <option value="none">None</option>
       </select>
     </div>
-  </div>
 
+    <div class="setting">
+      <span>Text overflow mode:</span>
+      <select name="textOverflow" id="textOverflow">
+        <option value="fade">Fade (default)</option>
+        <option value="ellipsis">Ellipsis</option>
+        <option value="clip">Clip</option>
+      </select>
+    </div>
+
+    <button id="switchToDefaults">Switch to default settings</button>
+    <dialog id="switchToDefaultsDlg">
+      <form method="dialog">
+        <p>Are you sure you want to switch to default settings? You will lose all your changes.</p>
+        <div>
+          <button id="confirmBtn" value="yes">Yes</button>
+          <button value="no">No</button>
+        </div>
+      </form>
+    </dialog>
+    <output></output>
+  </div>
+  <script src="/js/config.js"></script>
 </body>
 
 </html>

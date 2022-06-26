@@ -9,7 +9,6 @@
   }
 }
 
-
 body {
   background-color: var(--back);
   color: var(--text);
@@ -18,6 +17,10 @@ body {
 
 img {
   display: block;
+}
+
+select+img {
+  margin-top: .6rem;
 }
 
 .container {
