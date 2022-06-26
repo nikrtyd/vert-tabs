@@ -3,14 +3,27 @@
     --text: #ddd;
     --back: #111;
     --hover-tint: #5552;
-    --highlighted-tint: #5553;
-    --highlighted-hover-tint: #5554;
+    --active-tint: #5553;
+    --active-hover-tint: #5554;
   }
+}
+
+:root {
+  --text: #111;
+  --back: #eee;
+  --hover-tint: #5552;
+  --active-tint: #fff;
+  --active-hover-tint: #fff5;
 }
 
 body {
   background-color: var(--back);
   color: var(--text);
+}
+
+#tabs,
+#tabs--pinned,
+#tabs--actions {
   padding: 4px;
 }
 
@@ -19,6 +32,7 @@ body {
   border-radius: 4px;
   align-items: center;
   gap: 10px;
+  min-height: 24px;
 }
 
 .tab__close {
@@ -31,13 +45,13 @@ body {
   background-color: var(--hover-tint);
 }
 
-.highlighted {
-  background-color: var(--highlighted-tint);
-  box-shadow: 0 4px 4px #0005;
+.active {
+  background-color: var(--active-tint);
+  box-shadow: 0 2px 4px #0005;
 }
 
-.highlighted:hover {
-  background-color: var(--highlighted-hover-tint);
+.active:hover {
+  background-color: var(--active-hover-tint);
 }
 
 /* TODO: Make pinned tabs sticky */
@@ -45,6 +59,6 @@ body {
 #tabs--pinned {
   position: sticky;
   top: 0;
-  box-shadow: 0 4px 4px #0005;
+  box-shadow: 0 2px 4px #0005;
   background: var(--back);
 }

@@ -15,7 +15,7 @@
 
     <span>Set / inherit theme:</span>
     <select name="theme" id="theme">
-      <option value="Proton">Proton</option>
+      <option value="Proton">Proton (default)</option>
       <option value="Photon">Photon</option>
       <option value="basic">Basic CSS only</option>
       <option value="none">No CSS</option>
@@ -27,7 +27,6 @@
     <b>Can't set theme. Found 6 errors and 1 warning: </b>
     <a href="#">Dismiss</a>
 
-
     <div class="setting">
       <span>Force color scheme:</span>
       <select name="forceScheme" id="forceScheme">
@@ -36,7 +35,6 @@
         <option value="dark">Dark</option>
       </select>
     </div>
-
 
     <div class="setting">
       <input type="checkbox" name="inlinePinnedTabs" id="inlinePinnedTabs">
@@ -103,7 +101,56 @@
         <img src="" alt="There should be a Verts sidebar with this setting enabled.">
       </div>
     </div>
+
+    <div class="setting">
+      <input type="checkbox" name="stickNewTabBtn" id="stickNewTabBtn">
+      <label for="stickNewTabBtn">Stick New tab button to the bottom</label>
+      <div class="grid compare">
+        <p>Disabled:</p>
+        <p>Enabled:</p>
+        <img src="" alt="There should be a Verts sidebar with this setting disabled.">
+        <img src="" alt="There should be a Verts sidebar with this setting enabled.">
+      </div>
+    </div>
+
+    <h3>Tooltips</h3>
+
+    <div class="setting">
+      <span>Show tooltip when hovered on a tab:</span>
+      <select name="showTabTooltip" id="showTabTooltip">
+        <option value="always">Always</option>
+        <option value="overflow">Only on overflow (default)</option>
+        <option value="never">Never</option>
+      </select>
+      <div class="grid compare">
+        <p>Disabled:</p>
+        <p>Enabled:</p>
+        <img src="" alt="There should be a Verts sidebar with this setting disabled.">
+        <img src="" alt="There should be a Verts sidebar with this setting enabled.">
+      </div>
+    </div>
+
+    <div class="setting">
+      <input type="checkbox" name="showCloseBtnTooltip" id="showCloseBtnTooltip">
+      <label for="showCloseBtnTooltip">Show tooltip when hovered on Close tab (⨉) button</label>
+      <div class="grid compare">
+        <p>Disabled:</p>
+        <p>Enabled:</p>
+        <img src="" alt="There should be a Verts sidebar with this setting disabled.">
+        <img src="" alt="There should be a Verts sidebar with this setting enabled.">
+      </div>
+    </div>
+
+    <div class="setting">
+      <span>Style of scrollbar:</span>
+      <select name="scrollbar" id="scrollbar">
+        <option value="fullWidth">Full-width</option>
+        <option value="compact">Compact (default)</option>
+        <option value="none">None</option>
+      </select>
+    </div>
   </div>
+
 </body>
 
 </html>
