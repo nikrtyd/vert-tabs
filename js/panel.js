@@ -77,7 +77,8 @@ function render(tab) {
   if (tab.discarded && !tabLink.classList.contains('discarded')) { tabLink.classList.add('discarded') }
   if (tab.attention && !tabLink.classList.contains('attention')) { tabLink.classList.add('attention') }
   tabLink.setAttribute('data-id', tab.id);
-  tabLink.setAttribute('data-id', tab.id);
+  tabLink.setAttribute('data-index', tab.index);
+  tabLink.setAttribute('aria-label', `Tab ${tab.index}${(tab.pinned) ? ", pinned" : ""}:`);
   tabLink.classList.add('tab__item');
 
   tabLink.innerHTML += '<span class="tab__close" data-id="' + tab.id + '" aria-label="Close tab" role="button">⨉</span>';
@@ -86,17 +87,10 @@ function render(tab) {
 
 let discard = (id) => { browser.tabs.discard(id).then(onDiscarded, onError) };
 
-let activate = (id) => { browser.tabs.update(id, { active: true }).then(onActivated(id), onError) };
-
 let remove = (id) => { browser.tabs.remove(id).then(onRemoved(id), onError) };
 
 function onDiscarded(id) {
   console.log(`Discarded tab: ${id}`);
-}
-
-function onActivated(id) {
-  document.querySelectorAll(`.active:not([data-id="${id}"])`).forEach((el) => { el.classList.remove('active') });
-  console.log(`Activated tab: ${id}`);
 }
 
 function onError(error) {
@@ -122,6 +116,7 @@ document.addEventListener("click", (e) => {
 
   e.preventDefault();
 
+  // TODO: REMOVE
   function callOnActiveTab(callback) {
     browser.tabs.query({ currentWindow: true }).then((tabs) => {
       for (let tab of tabs) {
@@ -133,7 +128,7 @@ document.addEventListener("click", (e) => {
   }
 
   if (target.classList.contains('tab__close')) {
-    browser.tabs.remove(+target.getAttribute('data-id')).finally(listAsync);
+    browser.tabs.remove(+target.getAttribute('data-id'));
   }
 
   if (target.id === "tabs-move-beginning") {
@@ -180,7 +175,7 @@ document.addEventListener("click", (e) => {
           //   active: true
           // }).then(
           //   document.querySelectorAll(`.active:not([data-id="${tabId}"])`).forEach((el) => { el.classList.remove('active') }));
-          activate(tabId);
+          browser.tabs.update(tabId, { active: true });
         }
       }
     });
@@ -232,18 +227,36 @@ function isElementInViewport(el) {
 }
 
 browser.tabs.onRemoved.addListener((tabId) => {
-  document.querySelector(`.tab__item[data-id="${tabId}"]`).remove().then(listAsync, onError);
-  console.log(`removed a tab: ${tabId}`);
+  if (document.querySelector(`.tab__item[data-id="${tabId}"]`)) {
+    let xs = document.querySelector(`.tab__item[data-id="${tabId}"]`);
+    xs.remove().then(listAsync, onError);
+    console.log(`removed a tab: ${tabId}`);
+  }
 });
 
 browser.tabs.onCreated.addListener((tab) => {
-  document.querySelector(`.tab__item[data-index="${tab.index - 1}"]`).after(render(tab));
+  place(tab);
 });
 
 browser.tabs.onUpdated.addListener((tabId) => {
   browser.tabs.get(tabId).then((tab) => {
     let elem = document.querySelector(`.tab__item[data-id="${tabId}"]`);
     if (elem) { elem.remove() }
-    document.querySelector(`.tab__item[data-index="${tab.index - 1}"]`).after(render(tab));
+    place(tab);
   });
 });
+
+browser.tabs.onActivated.addListener((tab) => {
+  document.querySelector(`.tab__item[data-id="${tab.tabId}"]`).classList.add('active');
+  document.querySelector(`.tab__item[data-id="${tab.previousTabId}"]`).classList.remove('active');
+})
+
+function place(tab) {
+  console.log((new Date()) + ': Trying to place a tab, tab info:');
+  console.log(tab);
+  if (tab.index == 0) {
+    document.querySelector(`.tab__item[data-index="${tab.index + 1}"]`).before(render(tab));
+    return;
+  }
+  document.querySelector(`.tab__item[data-index="${tab.index - 1}"]`).after(render(tab));
+}
