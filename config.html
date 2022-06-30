@@ -26,7 +26,7 @@
 
     <p>Your custom CSS:</p>
     <textarea name="" id="" cols="80" rows="30" spellcheck="false"></textarea>
-    <b>Can't use custom CSS. Found 6 errors and 1 warning: </b>
+    <b>Can't load custom CSS. Found 6 errors and 1 warning: </b>
     <a href="#">Dismiss</a>
 
     <div class="setting">
@@ -178,16 +178,23 @@
     </div>
 
     <button id="switchToDefaults">Switch to default settings</button>
-    <dialog id="switchToDefaultsDlg">
-      <form method="dialog">
-        <p>Are you sure you want to switch to default settings? You will lose all your changes.</p>
-        <div>
-          <button id="confirmBtn" value="yes">Yes</button>
-          <button value="no">No</button>
+
+    <div id="overlay">
+      <div class="flex" id="modal">
+        <div id="modal__contents">
+          <h1 id="modal__title">Switch to default settings?</h1>
+          <p id="modal__message">Are you sure you want to switch to default settings? This can't be undone.</p>
+          <button id="modal__ok">Yes</button>
+          <button id="modal__cancel">Cancel</button>
         </div>
-      </form>
-    </dialog>
-    <output></output>
+        <div id="modal__exit">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z" />
+          </svg>
+        </div>
+      </div>
+    </div>
   </div>
   <script src="/js/config.js"></script>
 </body>

@@ -36,6 +36,10 @@ textarea {
   border: 2px solid var(--highlighted-hover-tint);
 }
 
+.flex {
+  display: flex;
+}
+
 .grid {
   display: grid;
 }
@@ -50,4 +54,56 @@ textarea {
 
 .setting p {
   margin: .6rem 0 0;
+}
+
+/* MODAL */
+
+#overlay {
+  display: none;
+  background: #0008;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+#overlay.active {
+  display: flex;
+}
+
+#modal {
+  max-width: fit-content;
+  background: #111;
+  padding: 3rem;
+  border-radius: 7px;
+  box-shadow: 0 0 8px #0005;
+}
+
+#modal.active {
+  display: flex;
+}
+
+path {
+  fill: #fff5;
+}
+
+#modal__exit:hover path {
+  fill: var(--text);
+}
+
+#modal__message {
+  margin-bottom: 3rem;
+  
+}
+
+#modal__exit svg {
+  max-width: 1.5rem;
+  max-height: 1.5rem;
+}
+
+#modal button {
+  padding: 1rem 2rem;
 }

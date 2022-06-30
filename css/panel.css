@@ -1,4 +1,5 @@
-.tab__item {
+.tab__item,
+.tab__action {
   display: flex;
 }
 

@@ -4,6 +4,10 @@
   --hover-tint: #5552;
   --active-tint: #fff;
   --active-hover-tint: #fff5;
+  --text-annotation: #666;
+
+  --container-padding: 4px;
+  --tab-padding: 5px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,12 +28,18 @@ body {
 #tabs,
 #tabs--pinned,
 #tabs--actions {
-  padding: 4px;
+  padding: var(--container-padding);
 }
 
-.tab__item {
+#tabs--pinned:empty {
+  box-shadow: none;
+  padding: 0;
+}
+
+.tab__item,
+.tab__action {
   padding: 0 0 0 5px;
-  border-radius: 4px;
+  border-radius: var(--tab-padding);
   align-items: center;
   gap: 10px;
   min-height: 24px;
@@ -41,8 +51,14 @@ body {
 }
 
 .tab__item:hover,
-.tab__close:hover {
+.tab__close:hover,
+.tab__action:hover {
   background-color: var(--hover-tint);
+}
+
+.tab__annotation {
+  color: var(--text-annotation);
+  padding-right: 5px;
 }
 
 .active {

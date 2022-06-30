@@ -1,26 +1,34 @@
-const openDlgBtn = document.getElementById('switchToDefaults');
-const dlg = document.getElementById('switchToDefaultsDlg');
-const outputBox = document.querySelector('output');
-const confirmBtn = dlg.querySelector('#confirmBtn');
+const trigger = document.querySelector('#switchToDefaults');
 
-// If a browser doesn't support the dialog, then hide the
-// dialog contents by default.
-if (typeof dlg.showModal !== 'function') {
-  dlg.hidden = true;
-  /* a fallback script to allow this dialog/form to function
-     for legacy browsers that do not support <dialog>
-     could be provided here.
-  */
+const overlay = document.querySelector('#overlay');
+const okBtn = document.querySelector('#modal__ok');
+const cancelBtn = document.querySelector('#modal__cancel');
+const exitBtn = document.querySelector('#modal__exit');
+
+function showModal() {
+  overlay.style.top = `${window.scrollY}px`;
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
-// "Update details" button opens the <dialog> modally
-openDlgBtn.addEventListener('click', function onOpen() {
-  if (typeof dlg.showModal === "function") {
-    dlg.showModal();
-  } else {
-    outputBox.value = "Sorry, the <dialog> API is not supported by this browser.";
-  }
+
+function hideModal() {
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+trigger.addEventListener('click', showModal);
+
+okBtn.addEventListener('click', () => {
+  // JSON.stringify
+  hideModal();
 });
-// "Confirm" button of form triggers "close" on dialog because of [method="dialog"]
-dlg.addEventListener('close', function onClose() {
-  outputBox.value = dlg.returnValue + " button clicked - " + (new Date()).toString();
-});
+
+cancelBtn.addEventListener('click', hideModal);
+
+exitBtn.addEventListener('click', hideModal);
+
+document.addEventListener('keydown', (e) => {
+  if (e.key == "Escape")
+    hideModal();
+})
+
