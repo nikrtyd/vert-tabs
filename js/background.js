@@ -1,19 +1,3 @@
-// class Tabs {
-//   constructor(windowId) {
-//     this.windowId = windowId;
-//     this.list = await browser.tabs.query({ windowId: windowId });
-//   }
-//   get list() {
-//     return this.list;
-//   }
-//   update(tab) {
-//     // If an ID is passed, get a tab object with given ID.
-//     if (typeof tab === "number")
-//       tab = browser.tabs.get(tab);
-//     this.list[tab.index] = tab;
-//   }
-// }
-
 // If clicked on 'Show Vert Tabs panel on a sidebar', show it
 browser.browserAction.onClicked.addListener(() => {
   browser.sidebarAction.toggle();
