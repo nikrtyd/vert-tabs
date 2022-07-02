@@ -18,6 +18,13 @@
     --active-tint: #5553;
     --active-hover-tint: #5554;
   }
+
+  img[src^='chrome://global/skin/'],
+  img[src^='chrome://browser/skin/'],
+  img[src^='moz-extension://'],
+  img[src^='/icons/firefox'] {
+    filter: invert(1);
+  }
 }
 
 body {
@@ -41,8 +48,29 @@ body {
   padding: 0 0 0 5px;
   border-radius: var(--tab-padding);
   align-items: center;
-  gap: 10px;
-  min-height: 24px;
+  min-height: 26px;
+}
+
+.discarded>.tab__title-container {
+  color: #aaa;
+}
+
+.discard__indicator {
+  max-width: 8px;
+  max-height: 8px;
+  font-size: 8px;
+  margin-top: -14px;
+  margin-left: 10px;
+  position: absolute;
+}
+
+.audio__indicator {
+  max-width: 8px;
+  max-height: 8px;
+  font-size: 8px;
+  margin-top: 8px;
+  margin-left: 10px;
+  position: absolute;
 }
 
 .tab__close {
@@ -54,6 +82,23 @@ body {
 .tab__close:hover,
 .tab__action:hover {
   background-color: var(--hover-tint);
+}
+
+.tab__title {
+  padding-left: 10px;
+}
+
+.tab__audio {
+  font-size: 10px;
+  font-weight: 600;
+  color: #aaa;
+}
+
+.audio__annotation {
+  white-space: nowrap;
+  color: var(--text-annotation);
+  font-size: 10px;
+  font-weight: 600;
 }
 
 .tab__annotation {

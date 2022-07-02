@@ -3,10 +3,10 @@ browser.browserAction.onClicked.addListener(() => {
   browser.sidebarAction.toggle();
 });
 
-class Config {
-  static theme = "Proton";
-  static 
-}
+// class Config {
+//   static theme = "Proton";
+//   static TODO = "TODO";
+// }
 
 // browser.windows.onCreated.addListener((window) => {
 //   console.log('created a window!');

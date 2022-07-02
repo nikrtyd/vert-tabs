@@ -1,3 +1,7 @@
+body {
+  overflow-x: hidden;
+}
+
 .tab__elem,
 .tab__action {
   display: flex;
@@ -8,8 +12,11 @@
   height: 16px;
 }
 
+.tab__title-container {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
 .tab__title {
   white-space: nowrap;
-  overflow: hidden;
-  flex-grow: 1;
 }

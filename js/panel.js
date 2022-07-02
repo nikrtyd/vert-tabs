@@ -22,14 +22,12 @@ let listAsync = new Promise(function (resolve) {
 
     pinnedTabsElem.appendChild(currentPinnedTabs);
     tabsElem.appendChild(currentTabs);
-    resolve('result');
+    resolve('Tabs are listed');
   });
 });
 
-let tabs;
 browser.windows.getCurrent().then((window) => {
   this.currentWindowId = window.id;
-  tabs = new Tabs(this.currentWindowId);
 });
 
 // document.addEventListener("DOMContentLoaded", listAsync);
@@ -45,6 +43,9 @@ function render(tab) {
   let favIconUrl = tab.favIconUrl;
   switch (favIconUrl) {
     case "":
+    // case "'":
+    // case "`":
+    // case "\"":
     case undefined:
     case null:
     case []:
@@ -57,25 +58,43 @@ function render(tab) {
     default:
       break;
   }
-  tabLink.innerHTML =
-    '<img class="tab__icon" src="' + favIconUrl + '">' +
-    '<span class="tab__title">' + tab.title + '</span>';
-  if (tab.active) { tabLink.classList.add('active'); }
-  if (tab.audible) { tabLink.classList.add('audible'); }
-  if (tab.mutedInfo.muted) { tabLink.classList.add('muted'); }
-  if (tab.sharingState.camera) { tabLink.innerHTML += '<div class="tab__camera-sharing" aria-label="Currently using camera"></div>' }
-  if (tab.sharingState.microphone) { tabLink.innerHTML += '<div class="tab__microphone-sharing" aria-label="Currently using microphone"></div>' }
-  if (tab.sharingState.screen) { tabLink.innerHTML += '<div class="tab__screen-sharing" aria-label="Currently sharing your screen"></div>' }
-  if (tab.isInReaderMode) { tabLink.innerHTML += '<div class="tab__reader-mode" aria-label="Opened in Reader mode"></div>' }
-  if (tab.discarded) { tabLink.classList.add('discarded') }
-  if (tab.attention) { tabLink.classList.add('attention') }
+  let tabIcon = tabTitle = discardIndic = audioIndic = audioAnnotation = cameraSharingIndic = microphoneSharingIndic = screenSharingIndic = readerModeIndic = closeBtn = '';
+  tabIcon = '<img class="tab__icon" src="' + favIconUrl + '">';
+  tabTitle = '<div class="tab__title-container"><div class="tab__title">' + tab.title + '</div></div>';
+  if (tab.audible) {
+    audioIndic = '<img class="audio__indicator" src="TODO" alt="🔊">';
+    audioAnnotation = '<div class="audio__annotation">PLAYING AUDIO</div>';
+  }
+  if (tab.mutedInfo.muted) {
+    audioIndic = '<img class="audio__indicator" src="TODO" alt="🔇">';
+    audioAnnotation = '<div class="audio__annotation">MUTED</div>';
+  }
+  if (tab.discarded) {
+    discardIndic = '<img class="discard__indicator" src="TODO" alt="⏸️" title="Currently idle">';
+    tabLink.classList.add('discarded');
+  }
+  if (tab.sharingState.camera)
+    cameraSharingIndic = '<img class="tab__camera-sharing" aria-label="Currently using camera" src="TODO" alt="📸" title="Currently using camera">';
+  if (tab.sharingState.microphone)
+    microphoneSharingIndic = '<div class="tab__microphone-sharing" aria-label="Currently using microphone" src="TODO" alt="🎤" title="Currently using microphone">';
+  if (tab.sharingState.screen)
+    screenSharingIndic = '<img class="tab__screen-sharing" aria-label="Currently sharing your screen" src="TODO" alt="🔴" title="Currently sharing your screen">';
+  if (tab.isInReaderMode)
+    readerModeIndic = '<img class="tab__reader-mode" aria-label="Opened in Reader mode" src="TODO" alt="📖" title="Opened in Reader mode">';
+  closeBtn = '<div class="tab__close" data-id="' + tab.id + '" aria-label="Close tab" role="button" title="Close tab">⨉</div>';
+
+  tabLink.innerHTML = tabIcon + tabTitle + discardIndic + audioIndic + audioAnnotation + cameraSharingIndic + readerModeIndic + closeBtn;
+
+  if (tab.active)
+    tabLink.classList.add('active');
+  if (tab.attention)
+    tabLink.classList.add('attention');
+
   tabLink.setAttribute('data-id', tab.id);
   tabLink.setAttribute('data-index', tab.index);
   tabLink.setAttribute('data-window-id', tab.windowId);
   tabLink.setAttribute('aria-label', `Tab ${tab.index}${(tab.pinned) ? ", pinned" : ""}:`);
   tabLink.classList.add('tab__elem');
-
-  tabLink.innerHTML += '<span class="tab__close" data-id="' + tab.id + '" aria-label="Close tab" role="button">⨉</span>';
   return tabLink;
 }
 
@@ -83,29 +102,45 @@ function render(tab) {
 document.addEventListener("click", (e) => {
   let target = e.target;
 
-  // If we click on .tab__icon or .tab__title, then make .tab-item parent the target. Otherwise, you can't switch to another tab. 
-  if (target.classList.contains('tab__icon') || target.classList.contains('tab__title')) {
-    target = target.parentNode; // should be .tab-item
-  }
+  // If we click on .tab__icon or .tab__title, then make .tab__elem parent the target. Otherwise, you can't switch to another tab. 
+  if (target.classList.contains('tab__icon'))
+    target = target.parentNode; // should be .tab__elem
+
+  if (target.classList.contains('tab__title'))
+    target = target.parentNode.parentNode;
 
   e.preventDefault();
 
-  if (target.classList.contains('tab__close')) {
+  if (target.classList.contains('tab__close'))
     browser.tabs.remove(+target.getAttribute('data-id'));
-  }
 
-  if (target.id === "tabs-create") {
+  if (target.id === "tabs-create")
     browser.tabs.create({});
-  }
 });
 
-// On middle mouse click:
+// On mousedown:
 document.addEventListener('mousedown', (e) => {
   let target = e.target;
 
-  // If we click on .tab__icon or .tab__title, then make .tab-item parent the target. Otherwise, you can't switch to another tab. 
-  if (target.classList.contains('tab__icon') || target.classList.contains('tab__title')) {
-    target = target.parentNode; // should be .tab-item
+  // If we click on .tab__icon or .tab__title, then make .tab__elem parent the target. Otherwise, you can't switch to another tab. 
+  if (target.classList.contains('tab__icon'))
+    target = target.parentNode; // should be .tab__elem
+
+  if (target.classList.contains('tab__title'))
+    target = target.parentNode.parentNode;
+
+  if (target.classList.contains('discard__indicator')) {
+    let tabId = +target.parentNode.getAttribute('data-id');
+    // Unfortunately, we cannot directly update 'discarded' property at the moment. So to undiscard the tab, we're setting URL anew.
+    browser.tabs.get(tabId).then((tab) => browser.tabs.update(tabId, { url: tab.url }));
+  }
+
+  if (target.classList.contains('audio__indicator')) {
+    let tabId = +target.parentNode.getAttribute('data-id');
+    browser.tabs.get(tabId).then((tab) => {
+      browser.tabs.update(tabId, { muted: (tab.mutedInfo.muted) ? false : true });
+    });
+
   }
 
   if (e.button === 1) {
@@ -171,7 +206,6 @@ function isElementInViewport(el) {
 }
 
 browser.tabs.onRemoved.addListener((tabId) => {
-  console.log(`removing tab: ${tabId}`);
   let tabElem = document.querySelector(`.tab__elem[data-id="${tabId}"]`);
   if (tabElem) {
     tabElem.remove();
@@ -181,17 +215,15 @@ browser.tabs.onRemoved.addListener((tabId) => {
 });
 
 browser.tabs.onCreated.addListener((tab) => {
+  console.log('created a tab:');
+  console.log(tab);
   place(tab);
   resetIndexes();
 });
 
 browser.tabs.onUpdated.addListener((tabId) => {
-  console.log(`updating tab: ${tabId}`);
   browser.tabs.get(tabId).then((tab) => {
-    let tabElem = document.querySelector(`.tab__elem[data-id="${tabId}"]`);
-    tabElem.replaceWith(render(tab));
-    if (tabElem.getAttribute('data-index') == tab.index) return;
-
+    document.querySelector(`.tab__elem[data-id="${tabId}"]`).replaceWith(render(tab));
   });
 });
 
@@ -208,12 +240,14 @@ browser.tabs.onActivated.addListener((tab) => {
 
 /**
  * Places a tab in a tab list.
- * @param {object} tab - tab to place in tab list
+ * @param {object} tab - tab to render & place in tab list
  */
 function place(tab) {
   callIfTabIsOnCurrentWindow(tab, () => {
-    console.log((new Date()) + ': Trying to place a tab, tab info:');
-    console.log(tab);
+    if (tab.openerTabId) {
+      document.querySelector(`.tab__elem[data-id="${tab.openerTabId}"]`).after(render(tab));
+      return;
+    }
     if (tab.index === 0) {
       document.querySelector(`.tab__elem[data-index="${tab.index + 1}"]`).before(render(tab));
       return;
@@ -230,8 +264,6 @@ function place(tab) {
 function callIfTabIsOnCurrentWindow(tab, callback) {
   if (tab.windowId === this.currentWindowId)
     callback(tab);
-  // TODO: REMOVE, FOR DEBUGGING PURPOSES
-  else console.log(`${(new Date())}: Tried to place tab of window ID: ${tab.windowId} in a window of ID: ${this.currentWindowId}. Aborted.`);
 }
 
 /** Blindly reset indexes and a11y labels */
@@ -240,14 +272,15 @@ function resetIndexes() {
   let tabsCount = tabsElem.childElementCount;
   let allTabsCount = pinnedTabsCount + tabsCount;
   for (let i = 0; i < pinnedTabsCount; i++) {
-    currentEl.setAttribute('data-index', i);
-    currentEl.setAttribute('aria-label', `Tab ${i}, pinned:`);
+    pinnedTabsElem.childNodes[i].setAttribute('data-index', i);
+    pinnedTabsElem.childNodes[i].setAttribute('aria-label', `Tab ${i}, pinned:`);
   }
   for (let i = pinnedTabsCount, j = 0; i < allTabsCount, j < tabsCount; i++, j++) {
     tabsElem.childNodes[j].setAttribute('data-index', i);
     tabsElem.childNodes[j].setAttribute('aria-label', `Tab ${i}:`);
   }
 }
+
 /**
  * Moves tab1 to place of tab2.
  * If trying to swap pinned and unpinned tab, does nothing.
@@ -260,13 +293,13 @@ function move(tab1, tab2) {
 }
 
 /**
- * Moves tab1 to place of tab2.
- * If trying to swap pinned and unpinned tab, does nothing.
- * @param {object} tab1 - tab to swap
- * @param {object} tab2 - tab it will be swapped with
+ * Swaps tabEl1 and tabEl2 in tabs list.
+ * @param {HTMLElement} tabEl1 - tabEl to swap
+ * @param {HTMLElement} tabEl2 - tabEl it will be swapped with
  */
 function swapEl(tabEl1, tabEl2) {
-  // Make sure to not swap pinned and unpinned tab
-  if ((tab1.pinned && !tab2.pinned) || (!tab1.pinned && tab2.pinned)) return;
+  let temp = tabEl1;
+  tabEl1.replaceWith(tabEl2);
+  tabEl2.replaceWith(temp);
 }
 
