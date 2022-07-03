@@ -1,11 +1,18 @@
 # Unstable
 
+### 0.0.8
+
+- 
+- 
+- Updated Proton theme.
+- 
+
 ### 0.0.7
 
-- Updated Proton theme;
-- Improved usability;
-- Updated extension icon;
-- Small fixes.
+- Updated Proton theme.
+- Improved usability.
+- Updated extension icon.
+- Made small fixes.
 
 ### 0.0.6
 

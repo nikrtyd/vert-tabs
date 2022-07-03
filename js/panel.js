@@ -26,9 +26,7 @@ let listAsync = new Promise(function (resolve) {
   });
 });
 
-browser.windows.getCurrent().then((window) => {
-  this.currentWindowId = window.id;
-});
+browser.windows.getCurrent().then((window) => this.currentWindowId = window.id);
 
 // document.addEventListener("DOMContentLoaded", listAsync);
 
@@ -55,12 +53,18 @@ function render(tab) {
     case "chrome://mozapps/skin/extensions/extension.svg":
       favIconUrl = window.location.origin + "/icons/firefox/proton/extension.svg";
       break;
+    case "chrome://devtools/skin/images/profiler-stopwatch.svg":
+      favIconUrl = window.location.origin + '/icons/firefox/proton/profiler-stopwatch.svg';
+      break;
     default:
       break;
   }
-  let tabIcon = tabTitle = discardIndic = audioIndic = audioAnnotation = cameraSharingIndic = microphoneSharingIndic = screenSharingIndic = readerModeIndic = closeBtn = '';
-  tabIcon = '<img class="tab__icon" src="' + favIconUrl + '">';
-  tabTitle = '<div class="tab__title-container"><div class="tab__title">' + tab.title + '</div></div>';
+  let tabIcon = tabTitle = discardIndic = audioIndic = audioAnnotation = attentionTooltip = cameraSharingIndic = microphoneSharingIndic = screenSharingIndic = readerModeIndic = closeBtn = '';
+
+  if (tab.attention) {
+    tabLink.classList.add('attention');
+    attentionTooltip = 'title="This tab requires your attention."';
+  }
   if (tab.audible) {
     audioIndic = '<img class="audio__indicator" src="TODO" alt="🔊">';
     audioAnnotation = '<div class="audio__annotation">PLAYING AUDIO</div>';
@@ -73,22 +77,26 @@ function render(tab) {
     discardIndic = '<img class="discard__indicator" src="TODO" alt="⏸️" title="Currently idle">';
     tabLink.classList.add('discarded');
   }
-  if (tab.sharingState.camera)
+  if (tab.sharingState.camera) {
     cameraSharingIndic = '<img class="tab__camera-sharing" aria-label="Currently using camera" src="TODO" alt="📸" title="Currently using camera">';
-  if (tab.sharingState.microphone)
+  }
+  if (tab.sharingState.microphone) {
     microphoneSharingIndic = '<div class="tab__microphone-sharing" aria-label="Currently using microphone" src="TODO" alt="🎤" title="Currently using microphone">';
-  if (tab.sharingState.screen)
+  }
+  if (tab.sharingState.screen) {
     screenSharingIndic = '<img class="tab__screen-sharing" aria-label="Currently sharing your screen" src="TODO" alt="🔴" title="Currently sharing your screen">';
-  if (tab.isInReaderMode)
+  }
+  if (tab.isInReaderMode) {
     readerModeIndic = '<img class="tab__reader-mode" aria-label="Opened in Reader mode" src="TODO" alt="📖" title="Opened in Reader mode">';
-  closeBtn = '<div class="tab__close" data-id="' + tab.id + '" aria-label="Close tab" role="button" title="Close tab">⨉</div>';
-
-  tabLink.innerHTML = tabIcon + tabTitle + discardIndic + audioIndic + audioAnnotation + cameraSharingIndic + readerModeIndic + closeBtn;
-
-  if (tab.active)
+  }
+  if (tab.active) {
     tabLink.classList.add('active');
-  if (tab.attention)
-    tabLink.classList.add('attention');
+  }
+
+  closeBtn = '<div class="tab__close" data-id="' + tab.id + '" aria-label="Close tab" role="button" title="Close 1 tab">⨉</div>';
+  tabIcon = '<img class="tab__icon" src="' + favIconUrl + '">';
+  tabTitle = '<div class="tab__title-container"><div class="tab__title" ' + attentionTooltip + '>' + tab.title + '</div></div>';
+  tabLink.innerHTML = tabIcon + tabTitle + discardIndic + audioIndic + audioAnnotation + cameraSharingIndic + readerModeIndic + closeBtn;
 
   tabLink.setAttribute('data-id', tab.id);
   tabLink.setAttribute('data-index', tab.index);

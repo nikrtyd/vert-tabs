@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Verts: Edge-like vertical tabs",
-  "description": "Fast, simple and ready to use. Or you can customize it just how you want!\n\nContributions welcome: https://github.com/nikrtyd/verts 😊",
-  "version": "0.0.7",
+  "description": "Fast, simple and ready to use. Or you can customize it just how you want! Contributions are welcome: https://github.com/nikrtyd/verts 😊",
+  "version": "0.0.8",
   "homepage_url": "https://github.com/nikrtyd/verts",
   "icons": {
     "16": "icons/gray16.png",
@@ -31,7 +31,17 @@
     "default_title": "Show Verts panel in a sidebar",
     "default_icon": "icons/icon.svg"
   },
+  "options_ui": {
+    "browser_style": true,
+    "open_in_tab": true,
+    "page": "config.html"
+  },
   "permissions": [
     "tabs"
+  ],
+  "optional_permissions": [
+    "tabHide",
+    "bookmarks",
+    "downloads"
   ]
 }
