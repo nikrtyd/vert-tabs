@@ -59,6 +59,51 @@ body {
   color: #aaa;
 }
 
+.tab__icon {
+  margin-right: 5.5px;
+}
+
+.tab__title-container {
+  mask-image: linear-gradient(to right, #000 90%, transparent);
+  transition: mask-image .2s step-end .5s;
+}
+
+.tab__title-container:hover {
+  mask-image: linear-gradient(to right, transparent, #000 10% 90%, transparent);
+}
+
+.tab__title:hover {
+  animation: scroll 10s linear .5s;
+}
+
+.tab__title.ellipsis:hover {
+  animation: scrollEllipsis 10s linear .5s;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0%);
+  }
+
+  99% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes scrollEllipsis {
+  0% {
+    text-indent: 0%;
+  }
+
+  100% {
+    text-indent: 300%;
+  }
+}
+
 .discard__indicator {
   max-width: 8px;
   max-height: 8px;
@@ -86,11 +131,6 @@ body {
 .tab__close:hover,
 .tab__action:hover {
   background-color: var(--hover-tint);
-}
-
-.tab__title {
-  padding-left: 10px;
-  mask-image: linear-gradient(to left, transparent, #000 2em);
 }
 
 .tab__audio {

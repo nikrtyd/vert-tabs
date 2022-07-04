@@ -16,14 +16,12 @@
 
     <h3>Theme settings</h3>
 
-    <span>Set / inherit theme:</span>
+    <span>Set theme:</span>
     <select name="theme" id="theme">
       <option value="Proton">Proton (default)</option>
       <option value="Photon">Photon</option>
-      <option value="basic">Basic CSS only</option>
-      <option value="none">No CSS</option>
-    </select>
-    <img src="https://picsum.photos/320/50" alt="There should be a preview.">
+      <option value="none">None</option>
+    </select>    
 
     <p>Your custom CSS:</p>
     <textarea name="" id="" cols="80" rows="30" spellcheck="false"></textarea>
@@ -31,9 +29,9 @@
     <a href="#">Dismiss</a>
 
     <div class="setting">
-      <span>Force color scheme:</span>
+      <span>Force mode:</span>
       <select name="forceScheme" id="forceScheme">
-        <option value="auto">Automatic (default)</option>
+        <option value="auto">Auto (default)</option>
         <option value="light">Light</option>
         <option value="dark">Dark</option>
       </select>
@@ -56,10 +54,13 @@
     <div class="setting">
       <span>Tab height:</span>
       <select name="tabHeight" id="tabHeight">
-        <option value="compact">Compact (26px height)</option>
+        <option value="compact">Ultra-compact (26px height)</option>
+        <option value="compact">Compact (32px height)</option>
         <option value="default">Default (36px height)</option>
         <option value="touch">Touch (todo: add height)</option>
+        <input type="range" name="asda" id="asd">
       </select>
+      <div></div>
     </div>
 
     <div class="setting">

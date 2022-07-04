@@ -19,4 +19,5 @@ body {
 
 .tab__title {
   white-space: nowrap;
+  width: fit-content;
 }
