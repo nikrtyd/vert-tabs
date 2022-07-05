@@ -4,6 +4,8 @@ class Config {
   static inlinePinnedTabs = false;
   static stickPinnedTabs = false;
   static tabHeight = 'ultraCompact';
+  static titleScrollDelay = 500;
+  static titleScrollTime = 10000;
   static tabHeightAmt = 26;
   static tabHeightUnit = 'px';
   static textOverflow = 'fade';

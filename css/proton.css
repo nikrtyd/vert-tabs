@@ -63,22 +63,21 @@ body {
   margin-right: 5.5px;
 }
 
-.tab__title-container {
+.overflow {
   mask-image: linear-gradient(to right, #000 90%, transparent);
-  transition: mask-image .2s step-end .5s;
 }
 
-.tab__title-container:hover {
-  mask-image: linear-gradient(to right, transparent, #000 10% 90%, transparent);
+.overflow:hover {
+  animation: fade-left 10s linear .5s;
 }
 
-.tab__title:hover {
+.overflow .tab__title:hover {
   animation: scroll 10s linear .5s;
 }
 
-.tab__title.ellipsis:hover {
+/* .tab__title.ellipsis:hover {
   animation: scrollEllipsis 10s linear .5s;
-}
+} */
 
 @keyframes scroll {
   0% {
@@ -94,7 +93,21 @@ body {
   }
 }
 
-@keyframes scrollEllipsis {
+@keyframes fade-left {
+  0% {
+    mask-image: linear-gradient(to right, transparent, #000 10% 90%, transparent);
+  }
+
+  99% {
+    mask-image: linear-gradient(to right, transparent, #000 10% 90%, transparent);
+  }
+
+  100% {
+    mask-image: linear-gradient(to right, #000 90%, transparent);
+  }
+}
+
+/* @keyframes scrollEllipsis {
   0% {
     text-indent: 0%;
   }
@@ -102,7 +115,7 @@ body {
   100% {
     text-indent: 300%;
   }
-}
+} */
 
 .discard__indicator {
   max-width: 8px;

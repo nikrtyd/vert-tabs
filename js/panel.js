@@ -18,6 +18,13 @@ let listAsync = new Promise(function (resolve) {
       let tabLink = render(tab);
       if (tab.pinned) { currentPinnedTabs.appendChild(tabLink); }
       else { currentTabs.appendChild(tabLink); }
+      console.log('listed tab:');
+      console.log(tabLink);
+      // console.log(currentPinnedTabs.childNodes[currentPinnedTabs.childElementCount - 1] == tabLink);
+      // console.log(currentPinnedTabs.childNodes[currentPinnedTabs.childElementCount - 1] === tabLink);
+      // let test = currentPinnedTabs.childNodes[currentPinnedTabs.childElementCount - 1];
+      // console.log(test == tabLink);
+      // addOverflowFade(test);
     }
 
     pinnedTabsElem.appendChild(currentPinnedTabs);
@@ -40,20 +47,20 @@ function render(tab) {
   let tabLink = document.createElement('a');
   let favIconUrl = tab.favIconUrl;
   switch (favIconUrl) {
-    case "":
-    // case "'":
-    // case "`":
-    // case "\"":
+    case '':
+    // case '\'':
+    // case '`':
+    // case '"':
     case undefined:
     case null:
     case []:
     case {}:
-      favIconUrl = "chrome://global/skin/icons/defaultFavicon.svg";
+      favIconUrl = 'chrome://global/skin/icons/defaultFavicon.svg';
       break;
-    case "chrome://mozapps/skin/extensions/extension.svg":
-      favIconUrl = window.location.origin + "/icons/firefox/proton/extension.svg";
+    case 'chrome://mozapps/skin/extensions/extension.svg':
+      favIconUrl = window.location.origin + '/icons/firefox/proton/extension.svg';
       break;
-    case "chrome://devtools/skin/images/profiler-stopwatch.svg":
+    case 'chrome://devtools/skin/images/profiler-stopwatch.svg':
       favIconUrl = window.location.origin + '/icons/firefox/proton/profiler-stopwatch.svg';
       break;
     default:
@@ -116,12 +123,12 @@ function render(tab) {
     tabLink.classList.add('muted');
   }
   if (tab.discarded) {
-    // discardIndic = '<img class="discard__indicator" src="TODO" alt="⏸️" title="Currently idle">';
+    // discardIndic = '<img class="discard__indicator" src="TODO" alt="⏸️" title="This tab is currently discarded. Click to refresh.">';
     discardIndic = document.createElement('img');
     discardIndic.className = 'discard__indicator';
     discardIndic.setAttribute('src', 'TODO');
     discardIndic.setAttribute('alt', '⏸️');
-    discardIndic.setAttribute('title', 'Currently idle');
+    discardIndic.setAttribute('title', 'This tab is currently discarded. Click to refresh.');
 
     tabLink.classList.add('discarded');
   }
@@ -138,34 +145,34 @@ function render(tab) {
   }
   if (tab.sharingState.microphone) {
     // microphoneSharingIndic = '<img class="tab__microphone-sharing" aria-label="Currently using microphone" src="TODO" alt="🎤" title="Currently using microphone">';
-    cameraSharingIndic = document.createElement('img');
-    cameraSharingIndic.className = 'tab__microphone-sharing';
-    cameraSharingIndic.setAttribute('aria-label', 'Currently using microphone');
-    cameraSharingIndic.setAttribute('src', 'TODO');
-    cameraSharingIndic.setAttribute('alt', '🎤');
-    cameraSharingIndic.setAttribute('title', 'Currently using microphone');
+    microphoneSharingIndic = document.createElement('img');
+    microphoneSharingIndic.className = 'tab__microphone-sharing';
+    microphoneSharingIndic.setAttribute('aria-label', 'Currently using microphone');
+    microphoneSharingIndic.setAttribute('src', 'TODO');
+    microphoneSharingIndic.setAttribute('alt', '🎤');
+    microphoneSharingIndic.setAttribute('title', 'Currently using microphone');
 
     tabLink.classList.add('sharing-microphone');
   }
   if (tab.sharingState.screen) {
     // screenSharingIndic = '<img class="tab__screen-sharing" aria-label="Currently sharing your screen" src="TODO" alt="🔴" title="Currently sharing your screen">';
-    cameraSharingIndic = document.createElement('img');
-    cameraSharingIndic.className = 'tab__screen-sharing';
-    cameraSharingIndic.setAttribute('aria-label', 'Currently sharing your screen');
-    cameraSharingIndic.setAttribute('src', 'TODO');
-    cameraSharingIndic.setAttribute('alt', '🔴');
-    cameraSharingIndic.setAttribute('title', 'Currently sharing your screen');
+    screenSharingIndic = document.createElement('img');
+    screenSharingIndic.className = 'tab__screen-sharing';
+    screenSharingIndic.setAttribute('aria-label', 'Currently sharing your screen');
+    screenSharingIndic.setAttribute('src', 'TODO');
+    screenSharingIndic.setAttribute('alt', '🔴');
+    screenSharingIndic.setAttribute('title', 'Currently sharing your screen');
 
     tabLink.classList.add('sharing-screen');
   }
   if (tab.isInReaderMode) {
     // readerModeIndic = '<img class="tab__reader-mode" aria-label="Opened in Reader mode" src="TODO" alt="📖" title="Opened in Reader mode">';    
-    cameraSharingIndic = document.createElement('img');
-    cameraSharingIndic.className = 'tab__reader-mode';
-    cameraSharingIndic.setAttribute('aria-label', 'Opened in Reader mode');
-    cameraSharingIndic.setAttribute('src', 'TODO');
-    cameraSharingIndic.setAttribute('alt', '📖');
-    cameraSharingIndic.setAttribute('title', 'Opened in Reader mode');
+    readerModeIndic = document.createElement('img');
+    readerModeIndic.className = 'tab__reader-mode';
+    readerModeIndic.setAttribute('aria-label', 'Opened in Reader mode');
+    readerModeIndic.setAttribute('src', 'TODO');
+    readerModeIndic.setAttribute('alt', '📖');
+    readerModeIndic.setAttribute('title', 'Opened in Reader mode');
 
     tabLink.classList.add('reader-mode');
   }
@@ -186,14 +193,15 @@ function render(tab) {
   tabLink.setAttribute('data-id', tab.id);
   tabLink.setAttribute('data-index', tab.index);
   tabLink.setAttribute('data-window-id', tab.windowId);
-  tabLink.setAttribute('aria-label', `Tab ${tab.index}${(tab.pinned) ? ", pinned" : ""}:`);
+  tabLink.setAttribute('aria-label', `Tab ${tab.index}${(tab.pinned) ? ', pinned' : ''}:`);
   tabLink.classList.add('tab__elem');
   console.log(tabLink);
+  addOverflowFade(tabLink);
   return tabLink;
 }
 
 // On left mouse click:
-document.addEventListener("click", (e) => {
+document.addEventListener('click', (e) => {
   let target = e.target;
 
   // If we click on .tab__icon or .tab__title, then make .tab__elem parent the target. Otherwise, you can't switch to another tab. 
@@ -208,7 +216,7 @@ document.addEventListener("click", (e) => {
   if (target.classList.contains('tab__close'))
     browser.tabs.remove(+target.getAttribute('data-id'));
 
-  if (target.id === "tabs-create")
+  if (target.id === 'tabs-create')
     browser.tabs.create({});
 });
 
@@ -259,14 +267,65 @@ document.addEventListener('mousedown', (e) => {
   }
 });
 
+document.addEventListener('mouseover', (e) => {
+  if (e.target.classList.contains('tab__title')) {
+    let tabTitle = e.target;
+    let tabTitleContainer = e.target.parentNode;
+    if (tabTitle.getBoundingClientRect().width > tabTitleContainer.getBoundingClientRect().width)
+      tabTitleContainer.classList.add('overflow');
+    else tabTitleContainer.classList.remove('overflow');
+  }
+});
+
+function addOverflowFade(tabLink) {
+  let tabTitleContainer = tabLink.children[1];
+  let tabTitle = tabTitleContainer.firstChild;
+  if (tabTitle.getBoundingClientRect().width > tabTitleContainer.getBoundingClientRect().width)
+    tabTitleContainer.classList.add('overflow');
+  else tabTitleContainer.classList.remove('overflow');
+}
+
+function addOverflowFadeForEveryTab() {
+  pinnedTabsElem.childNodes.forEach((tabLink) => addOverflowFade(tabLink));
+  tabsElem.childNodes.forEach((tabLink) => addOverflowFade(tabLink));
+}
+
+document.addEventListener('DOMContentLoaded', () => addOverflowFadeForEveryTab());
+
+document.addEventListener('resize', () => addOverflowFadeForEveryTab());
+
+// function forTabTitle(e, callback) {
+//   if (e.target.classList.contains('tab__title')) {
+//     let tabTitle = e.target;
+//     let tabTitleContainer = e.target.parentNode;
+//     callback(tabTitle, tabTitleContainer);
+//   }
+// }
+
+document.addEventListener('mouseout', (e) => {
+  if (e.target.classList.contains('tab__title')) {
+    let tabTitle = e.target;
+    let tabTitleContainer = e.target.parentNode;
+
+    // remove later
+    // console.log(e);
+    // console.log(tabTitle);
+    // console.log(tabTitleContainer);
+
+    // setTimeout(() => {
+    // tabTitle.classList.remove('scrolling');
+    // tabTitleContainer.classList.remove('shaded-left');
+    // }, Config.titleScrollDelay);
+  }
+});
+
 // Prevent context menu showing
-document.addEventListener("contextmenu", e => e.preventDefault())
+document.addEventListener('contextmenu', e => e.preventDefault())
 
 // Prevent zooming
 document.addEventListener('wheel', (e) => {
-  if (e.ctrlKey) {
+  if (e.ctrlKey)
     e.preventDefault();
-  }
 }, { passive: false });
 
 /**
@@ -317,7 +376,12 @@ browser.tabs.onCreated.addListener((tab) => {
 
 browser.tabs.onUpdated.addListener((tabId) => {
   browser.tabs.get(tabId).then((tab) => {
-    document.querySelector(`.tab__elem[data-id="${tabId}"]`).replaceWith(render(tab));
+    callIfTabIsOnCurrentWindow(tab, () => {
+      if (tab.pinned) {
+
+      }
+      document.querySelector(`.tab__elem[data-id="${tabId}"]`).replaceWith(render(tab));
+    });
   });
 });
 
@@ -338,15 +402,21 @@ browser.tabs.onActivated.addListener((tab) => {
  */
 function place(tab) {
   callIfTabIsOnCurrentWindow(tab, () => {
+    let scope;
+    if (tab.pinned) {
+      scope = pinnedTabsElem;
+    } else {
+      scope = tabsElem;
+    }
     if (tab.openerTabId) {
-      document.querySelector(`.tab__elem[data-id="${tab.openerTabId}"]`).after(render(tab));
+      scope.querySelector(`.tab__elem[data-id="${tab.openerTabId}"]`).after(render(tab));
       return;
     }
     if (tab.index === 0) {
-      document.querySelector(`.tab__elem[data-index="${tab.index + 1}"]`).before(render(tab));
+      scope.querySelector(`.tab__elem[data-index="${tab.index + 1}"]`).before(render(tab));
       return;
     }
-    document.querySelector(`.tab__elem[data-index="${tab.index - 1}"]`).after(render(tab));
+    scope.querySelector(`.tab__elem[data-index="${tab.index - 1}"]`).after(render(tab));
   });
 }
 
