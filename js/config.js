@@ -2,6 +2,7 @@ class Config {
   static theme = 'Proton';
   static forceMode = 'auto';
   static inlinePinnedTabs = false;
+  static smallPinnedTabs = false;
   static stickPinnedTabs = false;
   static tabHeight = 'ultraCompact';
   static titleScrollDelay = 500;
@@ -16,7 +17,7 @@ class Config {
   static stickNewTabBtn = false;
   static showTabTooltip = false;
   static showCloseBtnTooltip = true;
-  static scrollbar = 'compact';
+  static scrollBar = 'compact';
   static hideScrollBar = true;
   static scrollBarHideTimeout = 300;
 }

@@ -13,7 +13,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "strict_min_version": "73.0a1"
+      "strict_min_version": "60.0"
     }
   },
   "sidebar_action": {
@@ -28,13 +28,13 @@
   },
   "browser_action": {
     "browser_style": true,
-    "default_title": "Show Verts panel in a sidebar",
+    "default_title": "Show/hide Verts panel in a sidebar",
     "default_icon": "icons/icon.svg"
   },
   "options_ui": {
     "browser_style": true,
     "open_in_tab": true,
-    "page": "config.html"
+    "page": "options.html"
   },
   "permissions": [
     "tabs"
@@ -43,5 +43,13 @@
     "tabHide",
     "bookmarks",
     "downloads"
-  ]
+  ],
+  "commands": {
+    "_execute_sidebar_action": {
+      "suggested_key": {
+        "default": "F1"
+      },
+      "description": "Show/hide Verts panel in a sidebar"
+    }
+  }
 }

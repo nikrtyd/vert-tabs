@@ -18,17 +18,10 @@ let listAsync = new Promise(function (resolve) {
       let tabLink = render(tab);
       if (tab.pinned) { currentPinnedTabs.appendChild(tabLink); }
       else { currentTabs.appendChild(tabLink); }
-      console.log('listed tab:');
-      console.log(tabLink);
-      // console.log(currentPinnedTabs.childNodes[currentPinnedTabs.childElementCount - 1] == tabLink);
-      // console.log(currentPinnedTabs.childNodes[currentPinnedTabs.childElementCount - 1] === tabLink);
-      // let test = currentPinnedTabs.childNodes[currentPinnedTabs.childElementCount - 1];
-      // console.log(test == tabLink);
-      // addOverflowFade(test);
     }
-
     pinnedTabsElem.appendChild(currentPinnedTabs);
     tabsElem.appendChild(currentTabs);
+    addOverflowFadeForEveryTab();
     resolve('Tabs are listed');
   });
 });
@@ -195,7 +188,6 @@ function render(tab) {
   tabLink.setAttribute('data-window-id', tab.windowId);
   tabLink.setAttribute('aria-label', `Tab ${tab.index}${(tab.pinned) ? ', pinned' : ''}:`);
   tabLink.classList.add('tab__elem');
-  console.log(tabLink);
   addOverflowFade(tabLink);
   return tabLink;
 }
@@ -205,7 +197,7 @@ document.addEventListener('click', (e) => {
   let target = e.target;
 
   // If we click on .tab__icon or .tab__title, then make .tab__elem parent the target. Otherwise, you can't switch to another tab. 
-  if (target.classList.contains('tab__icon'))
+  if (target.classList.contains('tab__icon') || target.classList.contains('tab__title-container'))
     target = target.parentNode; // should be .tab__elem
 
   if (target.classList.contains('tab__title'))
@@ -225,7 +217,7 @@ document.addEventListener('mousedown', (e) => {
   let target = e.target;
 
   // If we click on .tab__icon or .tab__title, then make .tab__elem parent the target. Otherwise, you can't switch to another tab. 
-  if (target.classList.contains('tab__icon'))
+  if (target.classList.contains('tab__icon') || target.classList.contains('tab__title-container'))
     target = target.parentNode; // should be .tab__elem
 
   if (target.classList.contains('tab__title'))
@@ -242,7 +234,6 @@ document.addEventListener('mousedown', (e) => {
     browser.tabs.get(tabId).then((tab) => {
       browser.tabs.update(tabId, { muted: (tab.mutedInfo.muted) ? false : true });
     });
-
   }
 
   if (e.button === 1) {
@@ -251,9 +242,11 @@ document.addEventListener('mousedown', (e) => {
     return false;
   }
 
-  console.log(target);
   if (target.classList.contains('tab__elem')) {
     let tabId = +target.getAttribute('data-id');
+    // target.style.zIndex = '1';
+    // target.onmousedown = dragMouseDown;
+    target.onmousedown = tabOnMouseDown;
     document.querySelector(`.tab__elem[data-id="${tabId}"]`).classList.add('active');
     browser.tabs.query({
       currentWindow: true
@@ -267,15 +260,55 @@ document.addEventListener('mousedown', (e) => {
   }
 });
 
-document.addEventListener('mouseover', (e) => {
-  if (e.target.classList.contains('tab__title')) {
-    let tabTitle = e.target;
-    let tabTitleContainer = e.target.parentNode;
-    if (tabTitle.getBoundingClientRect().width > tabTitleContainer.getBoundingClientRect().width)
-      tabTitleContainer.classList.add('overflow');
-    else tabTitleContainer.classList.remove('overflow');
-  }
-});
+function tabOnMouseDown(e) {
+  e.target.onmousemove = tabDrag;
+}
+
+function tabDrag(e) {
+  console.log(e);
+}
+
+// function dragMouseDown(e) {
+//   e.target.onmousemove = mouseMoveOnTab;
+// }
+
+// function mouseMoveOnTab(e) {
+//   let target = e.target;
+
+//   // If we click on .tab__icon or .tab__title, then make .tab__elem parent the target. Otherwise, you can't switch to another tab. 
+//   if (target.classList.contains('tab__icon') || target.classList.contains('tab__title-container') || target.classList.contains('tab__close'))
+//     target = target.parentNode; // should be .tab__elem
+
+//   if (target.classList.contains('tab__title'))
+//     target = target.parentNode.parentNode;
+
+//   target.style.zIndex = '1';
+//   target.style.position = 'relative';
+//   target.style.top = (e.clientY - (26 * countToActive()) - 26) + 'px';
+//   console.log(e.clientY);
+//   console.log((26 * countToActive()));
+
+// }
+
+// function countToActive() {
+//   let count = 0;
+//   for (let i = 0; i < pinnedTabsElem.childElementCount; i++, count++)
+//     if (pinnedTabsElem.childNodes[i].classList.contains('active')) return count;
+
+//   for (let i = 0; i < tabsElem.childElementCount; i++, count++)
+//     if (tabsElem.childNodes[i].classList.contains('active')) return count;
+
+// }
+
+// document.addEventListener('mouseover', (e) => {
+//   if (e.target.classList.contains('tab__title')) {
+//     let tabTitle = e.target;
+//     let tabTitleContainer = e.target.parentNode;
+//     if (tabTitle.getBoundingClientRect().width > tabTitleContainer.getBoundingClientRect().width)
+//       tabTitleContainer.classList.add('overflow');
+//     else tabTitleContainer.classList.remove('overflow');
+//   }
+// });
 
 function addOverflowFade(tabLink) {
   let tabTitleContainer = tabLink.children[1];
@@ -290,34 +323,7 @@ function addOverflowFadeForEveryTab() {
   tabsElem.childNodes.forEach((tabLink) => addOverflowFade(tabLink));
 }
 
-document.addEventListener('DOMContentLoaded', () => addOverflowFadeForEveryTab());
-
 document.addEventListener('resize', () => addOverflowFadeForEveryTab());
-
-// function forTabTitle(e, callback) {
-//   if (e.target.classList.contains('tab__title')) {
-//     let tabTitle = e.target;
-//     let tabTitleContainer = e.target.parentNode;
-//     callback(tabTitle, tabTitleContainer);
-//   }
-// }
-
-document.addEventListener('mouseout', (e) => {
-  if (e.target.classList.contains('tab__title')) {
-    let tabTitle = e.target;
-    let tabTitleContainer = e.target.parentNode;
-
-    // remove later
-    // console.log(e);
-    // console.log(tabTitle);
-    // console.log(tabTitleContainer);
-
-    // setTimeout(() => {
-    // tabTitle.classList.remove('scrolling');
-    // tabTitleContainer.classList.remove('shaded-left');
-    // }, Config.titleScrollDelay);
-  }
-});
 
 // Prevent context menu showing
 document.addEventListener('contextmenu', e => e.preventDefault())
@@ -362,14 +368,11 @@ browser.tabs.onRemoved.addListener((tabId) => {
   let tabElem = document.querySelector(`.tab__elem[data-id="${tabId}"]`);
   if (tabElem) {
     tabElem.remove();
-    console.log(`removed a tab: ${tabId}`);
     resetIndexes();
   }
 });
 
 browser.tabs.onCreated.addListener((tab) => {
-  console.log('created a tab:');
-  console.log(tab);
   place(tab);
   resetIndexes();
 });
@@ -381,6 +384,7 @@ browser.tabs.onUpdated.addListener((tabId) => {
 
       }
       document.querySelector(`.tab__elem[data-id="${tabId}"]`).replaceWith(render(tab));
+      addOverflowFade(document.querySelector(`.tab__elem[data-id="${tabId}"]`));
     });
   });
 });
