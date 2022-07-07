@@ -246,19 +246,57 @@ document.addEventListener('mousedown', (e) => {
     let tabId = +target.getAttribute('data-id');
     // target.style.zIndex = '1';
     // target.onmousedown = dragMouseDown;
-    target.onmousedown = tabOnMouseDown;
-    document.querySelector(`.tab__elem[data-id="${tabId}"]`).classList.add('active');
-    browser.tabs.query({
-      currentWindow: true
-    }).then((tabs) => {
-      for (let tab of tabs) {
-        if (tab.id === tabId) {
-          browser.tabs.update(tabId, { active: true });
-        }
-      }
-    });
+
+    // Multi-select
+    if (e.shiftKey) {
+      console.log(`e.shiftKey: ${e.shiftKey}`);
+      let currentActiveTabIndex, targetTabIndex, tabIndexesToHighlight;
+
+      browser.tabs.query({ currentWindow: true, active: true }).then((tabs) => currentActiveTabIndex = tabs[0].index);
+      browser.tabs.get(tabId).then((tab) => targetTabIndex = tab.index);
+
+      // for (let i = currentActiveTabIndex; i < targetTabIndex;) {
+
+      // }
+      browser.tabs.highlight();
+      return;
+    }
+
+    if (e.ctrlKey) {
+      let currentlyHighlightedTabIndexes = [];
+      browser.tabs.query({ currentWindow: true, highlighted: true }).then(tabs => tabs.forEach((tab) => currentlyHighlightedTabIndexes.push(tab.index)));
+      // browser.tabs.get(tabId).then(tab => {
+      //   if (tab.highlighted)
+      //     currentlyHighlightedTabIndexes.push(tab.index);
+      //   else {
+      //     let index = currentlyHighlightedTabIndexes.indexOf(tab.index);
+      //     if (index > -1)
+      //       currentlyHighlightedTabIndexes.splice(index, 1);
+      //   }
+      // }).then(() => browser.tabs.highlight({ tabs: currentlyHighlightedTabIndexes }));
+      browser.tabs.get(tabId).then(tab => tab.highlighted ? currentlyHighlightedTabIndexes.delete(tab.index) : currentlyHighlightedTabIndexes.push(tab.index)).then(() => browser.tabs.highlight({ tabs: currentlyHighlightedTabIndexes }));
+    }
+    else {
+      target.onmousedown = tabOnMouseDown;
+      document.querySelector(`.tab__elem[data-id="${tabId}"]`).classList.add('active');
+      // browser.tabs.query({ currentWindow: true }).then((tabs) => {
+      //   for (let tab of tabs) {
+      //     browser.tabs.update
+      //     if (tab.id === tabId)
+      // Remove multi-select highlighting if clicked on active tab
+      browser.tabs.query({ currentWindow: true, highlighted: true, active: false }).then((tabs) => tabs.forEach((tab) => browser.tabs.update(tab.id, { highlighted: false })));
+      browser.tabs.update(tabId, { active: true });
+      //   }
+      // });
+    }
   }
 });
+
+Array.prototype.delete = function (object) {
+  let index = this.indexOf(object);
+  if (index > -1)
+    this.splice(index, 1);
+}
 
 function tabOnMouseDown(e) {
   e.target.onmousemove = tabDrag;
@@ -379,6 +417,7 @@ browser.tabs.onCreated.addListener((tab) => {
 
 browser.tabs.onUpdated.addListener((tabId) => {
   browser.tabs.get(tabId).then((tab) => {
+    console.log(tab);
     callIfTabIsOnCurrentWindow(tab, () => {
       if (tab.pinned) {
 
@@ -387,6 +426,11 @@ browser.tabs.onUpdated.addListener((tabId) => {
       addOverflowFade(document.querySelector(`.tab__elem[data-id="${tabId}"]`));
     });
   });
+});
+
+browser.tabs.onMoved.addListener((tab) => {
+  console.log(tab);
+  // TODO: check if tab is pinned and act accordingly. Same goes for onUpdated.
 });
 
 browser.tabs.onActivated.addListener((tab) => {
@@ -398,6 +442,13 @@ browser.tabs.onActivated.addListener((tab) => {
   if (prevTabElem)
     prevTabElem.classList.remove('active');
   // });
+});
+
+browser.tabs.onHighlighted.addListener((highlightInfo) => {
+  document.querySelectorAll('.tab__elem').forEach(tabElem => tabElem.classList.remove('highlighted'));
+  highlightInfo.tabIds.forEach(tabId => {
+    document.querySelector(`.tab__elem[data-id="${tabId}"]`).classList.add('highlighted');
+  });
 });
 
 /**
