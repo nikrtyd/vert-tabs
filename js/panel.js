@@ -174,21 +174,14 @@ function render(tab) {
   }
 
   // tabLink.innerHTML = tabIcon + tabTitleContainer + discardIndic + audioIndic + audioAnnotation + cameraSharingIndic + readerModeIndic + closeBtn;
-  tabLink.appendChild(tabIcon);
-  tabLink.appendChild(tabTitleContainer);
-  tabLink.appendChild(discardIndic);
-  tabLink.appendChild(audioIndic);
-  tabLink.appendChild(audioAnnotation);
-  tabLink.appendChild(cameraSharingIndic);
-  tabLink.appendChild(readerModeIndic);
-  tabLink.appendChild(closeBtn);
+  tabLink.append(tabIcon, tabTitleContainer, discardIndic, audioIndic, audioAnnotation, cameraSharingIndic, readerModeIndic, closeBtn)
 
   tabLink.setAttribute('data-id', tab.id);
   tabLink.setAttribute('data-index', tab.index);
   tabLink.setAttribute('data-window-id', tab.windowId);
   tabLink.setAttribute('aria-label', `Tab ${tab.index}${(tab.pinned) ? ', pinned' : ''}:`);
   tabLink.classList.add('tab__elem');
-  addOverflowFade(tabLink);
+
   return tabLink;
 }
 
@@ -238,7 +231,10 @@ document.addEventListener('mousedown', (e) => {
 
   if (e.button === 1) {
     e.preventDefault();
-    browser.tabs.remove(+target.getAttribute('data-id'));
+    if (target.classList.contains('body'))
+      browser.tabs.create({});
+    else
+      browser.tabs.remove(+target.getAttribute('data-id'));
     return false;
   }
 
@@ -349,8 +345,8 @@ function tabDrag(e) {
 // });
 
 function addOverflowFade(tabLink) {
-  let tabTitleContainer = tabLink.children[1];
-  let tabTitle = tabTitleContainer.firstChild;
+  const tabTitleContainer = tabLink.children[1];
+  const tabTitle = tabTitleContainer.firstChild;
   if (tabTitle.getBoundingClientRect().width > tabTitleContainer.getBoundingClientRect().width)
     tabTitleContainer.classList.add('overflow');
   else tabTitleContainer.classList.remove('overflow');
@@ -386,7 +382,7 @@ function scrollToEl(el) {
  * @returns true if element is in viewport, else returns false
  */
 function isElementInViewport(el) {
-  let rect = el.getBoundingClientRect();
+  const rect = el.getBoundingClientRect();
 
   console.log('el is in viewport: ' +
     rect.top >= 0 &&
@@ -428,10 +424,30 @@ browser.tabs.onUpdated.addListener((tabId) => {
   });
 });
 
-browser.tabs.onMoved.addListener((tab) => {
-  console.log(tab);
+browser.tabs.onMoved.addListener((tabId) => {
+  console.log('tab is moved:');
+  console.log(tabId);
   // TODO: check if tab is pinned and act accordingly. Same goes for onUpdated.
+  getNewTabIndexAndMove(tabId);
+  resetIndexes();
 });
+
+function getNewTabIndexAndMove(tabId) {
+  let tabEl = document.querySelector(`.tab__elem[data-id="${tabId}"]`);
+  tabEl.remove();
+
+  browser.tabs.get(tabId).then((tab) => {
+    const scope = (tab.pinned) ? pinnedTabsElem : tabsElem;
+    tab.checkIfIsFirstUnpinnedTab();
+    // let tabEl = render(tab);
+    if (tab.index == 0 || tab.isFirstUnpinnedTab)
+      // scope.prepend(render(tab));
+      scope.prepend(tabEl);
+    else
+      // scope.childNodes[tab.index - pinnedTabsElem.childElementCount].before(render(tab));
+      scope.children[tab.index - pinnedTabsElem.childElementCount].before(tabEl);
+  });
+}
 
 browser.tabs.onActivated.addListener((tab) => {
   // callIfTabIsOnCurrentWindow(tab, () => {
@@ -457,22 +473,27 @@ browser.tabs.onHighlighted.addListener((highlightInfo) => {
  */
 function place(tab) {
   callIfTabIsOnCurrentWindow(tab, () => {
-    let scope;
-    if (tab.pinned) {
-      scope = pinnedTabsElem;
-    } else {
-      scope = tabsElem;
-    }
-    if (tab.openerTabId) {
-      scope.querySelector(`.tab__elem[data-id="${tab.openerTabId}"]`).after(render(tab));
-      return;
-    }
-    if (tab.index === 0) {
-      scope.querySelector(`.tab__elem[data-index="${tab.index + 1}"]`).before(render(tab));
+    const scope = (tab.pinned) ? pinnedTabsElem : tabsElem;
+    // if (tab.openerTabId) {
+    //   scope.querySelector(`.tab__elem[data-id="${tab.openerTabId}"]`).after(render(tab));
+    //   return;
+    // }
+    // let x = await tab.isFirstUnpinnedTab();
+    // tab.checkIfIsFirstUnpinnedTab();
+    // if (tab.index === 0 || tab.isFirstUnpinnedTab) {
+    if (tab.index === 0 || tab.index === pinnedTabsElem.childElementCount) {
+      // if (tab.index === 0) {
+      // if (scope.querySelector(`.tab__elem[data-index=${tab.index}]`))
+      scope.prepend(render(tab));
+      // scope.querySelector(`.tab__elem[data-index="${tab.index + 1}"]`).before(render(tab));
       return;
     }
     scope.querySelector(`.tab__elem[data-index="${tab.index - 1}"]`).after(render(tab));
   });
+}
+
+Object.prototype.checkIfIsFirstUnpinnedTab = function () {
+  browser.tabs.query({ pinned: false }).then(tabs => { this.isFirstUnpinnedTab = (tabs[0].id === this.id) ? true : false; });
 }
 
 /**
@@ -487,14 +508,14 @@ function callIfTabIsOnCurrentWindow(tab, callback) {
 
 /** Blindly reset indexes and a11y labels */
 function resetIndexes() {
-  let pinnedTabsCount = pinnedTabsElem.childElementCount;
-  let tabsCount = tabsElem.childElementCount;
-  let allTabsCount = pinnedTabsCount + tabsCount;
+  const pinnedTabsCount = pinnedTabsElem.childElementCount;
+  const unpinnedTabsCount = tabsElem.childElementCount;
+  const tabsCount = pinnedTabsCount + unpinnedTabsCount;
   for (let i = 0; i < pinnedTabsCount; i++) {
     pinnedTabsElem.childNodes[i].setAttribute('data-index', i);
     pinnedTabsElem.childNodes[i].setAttribute('aria-label', `Tab ${i}, pinned:`);
   }
-  for (let i = pinnedTabsCount, j = 0; i < allTabsCount, j < tabsCount; i++, j++) {
+  for (let i = pinnedTabsCount, j = 0; i < tabsCount, j < unpinnedTabsCount; i++, j++) {
     tabsElem.childNodes[j].setAttribute('data-index', i);
     tabsElem.childNodes[j].setAttribute('aria-label', `Tab ${i}:`);
   }
