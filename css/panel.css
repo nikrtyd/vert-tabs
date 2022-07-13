@@ -26,6 +26,6 @@ body {
   width: fit-content;
 }
 
-#tabs--pinned {
+#pinned-tabs {
   z-index: 1;
 }

@@ -37,12 +37,12 @@ body {
 }
 
 #tabs,
-#tabs--pinned,
-#tabs--actions {
+#pinned-tabs,
+#tab-actions {
   padding: var(--container-padding);
 }
 
-#tabs--pinned:empty {
+#pinned-tabs:empty {
   box-shadow: none;
   padding: 0;
 }
@@ -184,9 +184,35 @@ body {
 
 /* TODO: Make pinned tabs sticky */
 
-#tabs--pinned {
+#pinned-tabs {
   position: sticky;
   top: 0;
   box-shadow: 0 2px 4px #0005;
   background: var(--back);
+}
+
+/*  */
+#pinned-tabs,
+#tabs,
+#tab-actions {
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
+
+#tabs {
+  position: fixed;
+  /* for 1 pinned tab on the top and 1 new tab button on the bottom */
+  margin-top: 34px;
+  margin-bottom: 34px;
+  max-width: 100%;
+  max-height: calc(100vh - 34px - 34px);
+}
+
+#tab-actions {
+  z-index: 1;
+  bottom: 0;
+  position: absolute;
+  background: var(--back);
+  width: 100%;
+  box-shadow: 0 -2px 4px #0005;
 }
