@@ -64,7 +64,7 @@ body {
 }
 
 .overflow {
-  mask-image: linear-gradient(to right, #000 90%, transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 2em), transparent);
 }
 
 .overflow:hover {
@@ -95,15 +95,16 @@ body {
 
 @keyframes fade-left {
   0% {
-    mask-image: linear-gradient(to right, transparent, #000 10% 90%, transparent);
+    /* mask-image: linear-gradient(to right, transparent, #000 10% 90%, transparent); */
+    mask-image: linear-gradient(to right, transparent, #000 2em calc(100% - 2em), transparent);
   }
 
   99% {
-    mask-image: linear-gradient(to right, transparent, #000 10% 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 2em calc(100% - 2em), transparent);
   }
 
   100% {
-    mask-image: linear-gradient(to right, #000 90%, transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 2em), transparent);
   }
 }
 

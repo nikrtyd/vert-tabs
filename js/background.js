@@ -2,3 +2,6 @@
 browser.browserAction.onClicked.addListener(() => {
   browser.sidebarAction.toggle();
 });
+
+// Custom context menu
+browser.menus.remove()
