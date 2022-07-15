@@ -1,0 +1,9 @@
+.dragged {
+  position: relative;
+  z-index: 1;
+}
+
+#tabs::before {
+  width: calc(100vw - 8px);
+  height: calc(100vh - 34px);
+}

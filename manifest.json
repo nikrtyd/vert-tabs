@@ -37,7 +37,8 @@
     "page": "options.html"
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "theme"
   ],
   "optional_permissions": [
     "tabHide",

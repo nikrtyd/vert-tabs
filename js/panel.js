@@ -4,31 +4,40 @@
 const tabsElem = document.getElementById('tabs');
 const pinnedTabsElem = document.getElementById('pinned-tabs');
 
+// Add 'unpinned' event listener for all pinned tabs
+const unpinnedEvent = new Event('unpinned');
+
+pinnedTabsElem.childNodes.forEach((childEl) => {
+  childEl.addEventListener('unpinned', () => {
+    
+  })
+})
+
 /** List all tabs to #tabs and #pinned-tabs HTML elements asynchronously */
 let listAsync = new Promise((resolve) => {
   // Get tabs in current window
-    browser.tabs.query({ currentWindow: true }).then((tabs) => {
-      let currentTabs = document.createDocumentFragment();
-      let currentPinnedTabs = document.createDocumentFragment();
+  browser.tabs.query({ currentWindow: true }).then((tabs) => {
+    let currentTabs = document.createDocumentFragment();
+    let currentPinnedTabs = document.createDocumentFragment();
 
-      tabsElem.innerText = '';
-      pinnedTabsElem.innerText = '';
+    tabsElem.innerText = '';
+    pinnedTabsElem.innerText = '';
 
-      for (let tab of tabs) {
-        let tabLink = render(tab);
-        if (tab.pinned) { currentPinnedTabs.appendChild(tabLink); }
-        else { currentTabs.appendChild(tabLink); }
-      }
-      pinnedTabsElem.appendChild(currentPinnedTabs);
-      tabsElem.appendChild(currentTabs);
-      addOverflowFadeForEveryTab();
-      resolve('Tabs are listed');
-    });
+    for (let tab of tabs) {
+      let tabLink = render(tab);
+      if (tab.pinned) { currentPinnedTabs.appendChild(tabLink); }
+      else { currentTabs.appendChild(tabLink); }
+    }
+    pinnedTabsElem.appendChild(currentPinnedTabs);
+    tabsElem.appendChild(currentTabs);
+    addOverflowFadeForEveryTab();
+    resolve('Tabs are listed');
+  });
 });
 
 browser.windows.getCurrent().then((window) => this.currentWindowId = window.id);
 
-// document.addEventListener("DOMContentLoaded", listAsync);
+// document.addEventListener("DOMContentLoaded", listAsync);  
 
 /**
  * Renders a tab with its info into HTML tab element.
@@ -182,17 +191,25 @@ const render = (tab) => {
 
   return tabLink;
 };
+/**
+ * Finds relative .tab__elem parent container if target is .tab__icon / .tab__title-container / .tab__title or returns oldTarget if it isn't.
+ * @param {HTMLElement} oldTarget - Original clicked target
+ * @returns parent / oldTarget
+ */
+const makeParentTheTarget = function getRelativeParentContainersOfSelectedTarget(oldTarget) {
+  let newTarget = oldTarget;
+  // If we click on .tab__icon or .tab__title, then make .tab__elem parent the target. Otherwise, you can't switch to another tab. 
+  if (newTarget.classList.contains('tab__icon') || newTarget.classList.contains('tab__title-container'))
+    newTarget = newTarget.parentNode; // should be .tab__elem
+
+  if (newTarget.classList.contains('tab__title'))
+    newTarget = newTarget.parentNode.parentNode;
+  return newTarget;
+}
 
 // On left mouse click:
 document.addEventListener('click', (e) => {
-  let target = e.target;
-
-  // If we click on .tab__icon or .tab__title, then make .tab__elem parent the target. Otherwise, you can't switch to another tab. 
-  if (target.classList.contains('tab__icon') || target.classList.contains('tab__title-container'))
-    target = target.parentNode; // should be .tab__elem
-
-  if (target.classList.contains('tab__title'))
-    target = target.parentNode.parentNode;
+  let target = makeParentTheTarget(e.target);
 
   e.preventDefault();
 
@@ -205,26 +222,19 @@ document.addEventListener('click', (e) => {
 
 // On mousedown:
 document.addEventListener('mousedown', (e) => {
-  let target = e.target;
-
-  // If we click on .tab__icon or .tab__title, then make .tab__elem parent the target. Otherwise, you can't switch to another tab. 
-  if (target.classList.contains('tab__icon') || target.classList.contains('tab__title-container'))
-    target = target.parentNode; // should be .tab__elem
-
-  if (target.classList.contains('tab__title'))
-    target = target.parentNode.parentNode;
+  let target = makeParentTheTarget(e.target);
 
   if (target.classList.contains('discard__indicator')) {
     let tabId = +target.parentNode.getAttribute('data-id');
     // Unfortunately, we cannot directly update 'discarded' property at the moment. So to undiscard the tab, we're setting URL anew.
-        browser.tabs.get(tabId).then((tab) => browser.tabs.update(tabId, { url: tab.url }));
+    browser.tabs.get(tabId).then((tab) => browser.tabs.update(tabId, { url: tab.url }));
   }
 
   if (target.classList.contains('audio__indicator')) {
     let tabId = +target.parentNode.getAttribute('data-id');
-        browser.tabs.get(tabId).then((tab) => {
-        browser.tabs.update(tabId, { muted: (tab.mutedInfo.muted) ? false : true });
-      });
+    browser.tabs.get(tabId).then((tab) => {
+      browser.tabs.update(tabId, { muted: (tab.mutedInfo.muted) ? false : true });
+    });
   }
 
   if (e.button === 1) {
@@ -285,11 +295,26 @@ Array.prototype.delete = (object) => {
 };
 
 const tabOnMouseDown = (e) => {
+  e.preventDefault();
+  // var tabElTopOffset=
+  e.tabElTopOffset = e.clientY;
   e.target.onmousemove = tabDrag;
 };
 
 const tabDrag = (e) => {
-  console.log(e);
+  e.preventDefault();
+  let target = makeParentTheTarget(e.target);
+
+  if (e.buttons) {
+    console.log(e);
+    console.log(e.tabElTopOffset);
+    target.classList.add('dragged');
+    target.style.top = `${e.clientY}px`;
+  }
+  else {
+    target.classList.remove('dragged');
+    target.style.top = '0px';
+  };
 };
 
 // const dragMouseDown=(e)=> {
@@ -402,16 +427,16 @@ browser.tabs.onCreated.addListener((tab) => {
 });
 
 browser.tabs.onUpdated.addListener((tabId) => {
-    browser.tabs.get(tabId).then((tab) => {
-      console.log(tab);
-      callIfTabIsOnCurrentWindow(tab, () => {
-        if (tab.pinned) {
+  browser.tabs.get(tabId).then((tab) => {
+    console.log(tab);
+    callIfTabIsOnCurrentWindow(tab, () => {
+      if (tab.pinned) {
 
-        }
-        document.querySelector(`.tab__elem[data-id="${tabId}"]`).replaceWith(render(tab));
-        addOverflowFade(document.querySelector(`.tab__elem[data-id="${tabId}"]`));
-      });
+      }
+      document.querySelector(`.tab__elem[data-id="${tabId}"]`).replaceWith(render(tab));
+      addOverflowFade(document.querySelector(`.tab__elem[data-id="${tabId}"]`));
     });
+  });
 });
 
 browser.tabs.onMoved.addListener((tabId) => {
@@ -423,25 +448,25 @@ browser.tabs.onMoved.addListener((tabId) => {
 });
 
 const getNewTabIndexAndMove = (tabId) => {
-    browser.tabs.get(tabId).then((tab) => {
-      let tabEl = document.querySelector(`.tab__elem[data-id="${tab.id}"]`);
-      tabEl.remove();
-      const scope = (tab.pinned) ? pinnedTabsElem : tabsElem;
-      tab.checkIfIsFirstUnpinnedTab();
-      // let tabEl = render(tab);
+  browser.tabs.get(tabId).then((tab) => {
+    let tabEl = document.querySelector(`.tab__elem[data-id="${tab.id}"]`);
+    tabEl.remove();
+    const scope = (tab.pinned) ? pinnedTabsElem : tabsElem;
+    tab.checkIfIsFirstUnpinnedTab();
+    // let tabEl = render(tab);
 
-      switch (true) {
-        case tab.index === 0 || tab.isFirstUnpinnedTab:
-          scope.prepend(tabEl);
-          break;
-        case (tab.index === pinnedTabsElem.childElementCount + tabsElem.childElementCount):
-          scope.append(tabEl);
-          break;
-        default:
-          scope.children[tab.index - pinnedTabsElem.childElementCount].before(tabEl);
-          break;
-      }
-    });
+    switch (true) {
+      case tab.index === 0 || tab.isFirstUnpinnedTab:
+        scope.prepend(tabEl);
+        break;
+      case (tab.index === pinnedTabsElem.childElementCount + tabsElem.childElementCount):
+        scope.append(tabEl);
+        break;
+      default:
+        scope.children[tab.index - pinnedTabsElem.childElementCount].before(tabEl);
+        break;
+    }
+  });
 };
 
 
@@ -476,7 +501,7 @@ const place = function getScopeToPlaceTabToAndDetermineWhetherTabIsFirstOrNot(ta
     if (tab.index === 0 || tab.index === pinnedTabsElem.childElementCount)
       scope.prepend(render(tab));
     else
-      scope.querySelector(`.tab__elem[data-index="${tab.index}"]`).before(render(tab));
+      scope.querySelector(`.tab__elem[data-index="${tab.index - 1}"]`).after(render(tab));
   });
 };
 

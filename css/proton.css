@@ -1,22 +1,28 @@
 :root {
-  --text: #111;
-  --back: #eee;
+  --tab-foreground-text: #0f0f0f;
+  --tab-text: #111;
+  --frame: #eee;
   --hover-tint: #5552;
-  --active-tint: #fff;
-  --active-hover-tint: #fff5;
-  --text-annotation: #666;
+  --tab-selected: #fff;
+  --active-hover-tint: #bbb;
+  --tab-text-annotation: #666;
 
   --container-padding: 4px;
   --tab-padding: 5px;
+
+  --additional-background-0: #000;
+  --additional-background-1: #000;
+  --additional-background-2: #000;
+  --additional-background-3: #000;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #ddd;
-    --back: #111;
+    --tab-text: #ddd;
+    --frame: #111;
     --hover-tint: #5552;
-    --active-tint: #5553;
-    --active-hover-tint: #5554;
+    --tab-selected: #333;
+    --active-hover-tint: #444;  
   }
 
   img[src^='chrome://global/skin/'],
@@ -32,8 +38,8 @@
 }
 
 body {
-  background-color: var(--back);
-  color: var(--text);
+  background-color: var(--frame);
+  color: var(--tab-text);
 }
 
 #tabs,
@@ -95,7 +101,6 @@ body {
 
 @keyframes fade-left {
   0% {
-    /* mask-image: linear-gradient(to right, transparent, #000 10% 90%, transparent); */
     mask-image: linear-gradient(to right, transparent, #000 2em calc(100% - 2em), transparent);
   }
 
@@ -155,18 +160,20 @@ body {
 
 .audio__annotation {
   white-space: nowrap;
-  color: var(--text-annotation);
+  color: var(--tab-text-annotation);
   font-size: 10px;
   font-weight: 600;
+  margin-left: 5.5px;
+  margin-right: 5.5px;
 }
 
 .tab__annotation {
-  color: var(--text-annotation);
+  color: var(--tab-text-annotation);
   padding-right: 5px;
 }
 
 .highlighted {
-  background-color: var(--active-tint);
+  background-color: var(--tab-selected);
   box-shadow: inset 0 0 8px #000a;
 }
 
@@ -175,7 +182,7 @@ body {
 }
 
 .active {
-  background-color: var(--active-tint);
+  background-color: var(--tab-selected);
   box-shadow: 0 2px 4px #0005;
 }
 
@@ -189,7 +196,7 @@ body {
   position: sticky;
   top: 0;
   box-shadow: 0 2px 4px #0005;
-  background: var(--back);
+  background: var(--frame);
 }
 
 /*  */
@@ -209,11 +216,22 @@ body {
   max-height: calc(100vh - 34px - 34px);
 }
 
+#tabs::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: var(--additional-background-0) no-repeat center bottom;
+  /* transform: rotate(90deg); */
+  top: 0;
+  left: 0;
+}
+
 #tab-actions {
   z-index: 1;
   bottom: 0;
   position: absolute;
-  background: var(--back);
+  background: var(--frame);
   width: 100%;
   box-shadow: 0 -2px 4px #0005;
 }
