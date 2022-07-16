@@ -4,7 +4,7 @@
 
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="css/panel.css" />
+  <link rel="stylesheet" href="css/common.css" />
   <link rel="stylesheet" href="css/proton.css" />
   <link rel="stylesheet" href="css/custom.css" />
 </head>
@@ -16,18 +16,22 @@
     <div class="tab__action" id="tabs-create">
       <img class="tab__icon" src="/icons/firefox/proton/plus.svg" alt="+">
       <div class="tab__title-container">
-        <span class="tab__title">New tab</span>
+        <span data-i18n="newTab" class="tab__title">New tab</span>
       </div>
-      <div class="tab__annotation">Ctrl+T</div>
+      <div data-i18n="ctrlT" class="tab__annotation">Ctrl+T</div>
     </div>
   </div>
   <div id="context-menu">
 
   </div>
+  <div id="background-image-container">
+    <img id="background-image" src=""></img>
+  </div>
+  <script src="/js/options/i18n.js"></script>
   <script src="js/config.js"></script>
   <script src="js/panel.js"></script>
-  <script src="js/browsertheme.js"></script>
-  <script src="js/autolink.js"></script>
+  <script src="js/browser_theme.js"></script>
+  <script src="js/autostyling.js"></script>
 </body>
 
 </html>

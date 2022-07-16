@@ -1,9 +1,10 @@
 {
   "manifest_version": 2,
-  "name": "Verts: Edge-like vertical tabs",
-  "description": "Fast, simple and ready to use. Or you can customize it just how you want! Contributions are welcome: https://github.com/nikrtyd/verts 😊",
+  "name": "__MSG_extensionName__",
+  "description": "__MSG_extensionDescription__",
   "version": "0.0.9",
   "homepage_url": "https://github.com/nikrtyd/verts",
+  "default_locale": "en",
   "icons": {
     "16": "icons/gray16.png",
     "32": "icons/gray32.png",
@@ -18,7 +19,7 @@
   },
   "sidebar_action": {
     "default_icon": "icons/icon.svg",
-    "default_title": "Verts",
+    "default_title": "__MSG_extensionShortName__",
     "default_panel": "panel.html"
   },
   "background": {
@@ -28,7 +29,7 @@
   },
   "browser_action": {
     "browser_style": true,
-    "default_title": "Show/hide Verts panel in a sidebar",
+    "default_title": "__MSG_toggleSidebarVisibility__",
     "default_icon": "icons/icon.svg"
   },
   "options_ui": {
@@ -50,7 +51,7 @@
       "suggested_key": {
         "default": "F1"
       },
-      "description": "Show/hide Verts panel in a sidebar"
+      "description": "__MSG_toggleSidebarVisibility__"
     }
   }
 }

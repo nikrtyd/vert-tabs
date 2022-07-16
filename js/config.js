@@ -15,7 +15,7 @@ class Config {
   static showCloseBtn = true;
   static compactSoundToggle = true;
   static stickNewTabBtn = false;
-  static showTabTooltip = false;
+  static showTabTooltip = 'always';
   static showCloseBtnTooltip = true;
   static scrollBar = 'compact';
   static hideScrollBar = true;

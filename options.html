@@ -5,163 +5,169 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verts: Options</title>
+  <title data-i18n="optionsPageTitle">Verts: Options</title>
   <link rel="stylesheet" href="/css/options.css">
   <link rel="shortcut icon" href="/icons/gray48.png" type="image/x-icon">
 </head>
 
 <body>
   <div class="container">
-    <h1>Options</h1>
+    <h1 data-i18n="options">Options</h1>
 
-    <h3>Theme settings</h3>
+    <h3 data-i18n="themeSettings">Theme settings</h3>
 
-    <span>Set theme:</span>
+    <span data-i18n="setTheme">Set theme:</span>
     <select name="theme" id="theme">
-      <option value="Proton">Proton (default)</option>
-      <option value="Photon">Photon</option>
-      <option value="none">None</option>
-    </select>    
+      <option data-i18n="proton" value="Proton">Proton (default)</option>
+      <option data-i18n="photon" value="Photon">Photon</option>
+      <option data-i18n="themeNone" value="none">None</option>
+    </select>
 
-    <p>Your custom CSS:</p>
+    <p data-i18n="yourCustomCSS">Your custom CSS:</p>
     <textarea name="" id="" cols="80" rows="30" spellcheck="false"></textarea>
-    <b>Can't load custom CSS. Found 6 errors and 1 warning: </b>
-    <a href="#">Dismiss</a>
+    <b data-i18n="customCSSloadError">Can't load custom CSS. Found 6 errors and 1 warning: </b>
+    <a data-i18n="dismiss" href="#">Dismiss</a>
 
     <div class="setting">
-      <span>Force mode:</span>
+      <span data-i18n="forceColorMode">Force mode:</span>
       <select name="forceMode" id="forceMode">
-        <option value="auto">Auto (default)</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
+        <option data-i18n="autoMode" value="auto">Auto (default)</option>
+        <option data-i18n="lightMode" value="light">Light</option>
+        <option data-i18n="darkMode" value="dark">Dark</option>
       </select>
     </div>
 
-    <h3>Pinned tabs</h3>
+    <h3 data-i18n="pinnedTabs">Pinned tabs</h3>
 
     <div class="setting">
       <input type="checkbox" name="inlinePinnedTabs" id="inlinePinnedTabs">
-      <label for="inlinePinnedTabs">Inline pinned tabs</label>
+      <label data-i18n="inlinePinnedTabs" for="inlinePinnedTabs">Inline pinned tabs</label>
     </div>
 
     <div class="setting">
       <input type="checkbox" name="smallPinnedTabs" id="smallPinnedTabs">
-      <label for="smallPinnedTabs">Small pinned tabs</label>
+      <label data-i18n="smallPinnedTabs" for="smallPinnedTabs">Small pinned tabs</label>
     </div>
 
     <div class="setting">
       <input type="checkbox" name="stickPinnedTabs" id="stickPinnedTabs">
-      <label for="stickPinnedTabs">Stick pinned tabs to the top</label>
+      <label data-i18n="stickPinnedTabs" for="stickPinnedTabs">Stick pinned tabs to the top</label>
     </div>
 
-    <h3>Tab styling & behavior</h3>
+    <h3 data-i18n="tabStylingBehavior">Tab styling & behavior</h3>
 
     <div class="setting">
-      <span>Tab height:</span>
+      <span data-i18n="tabHeight">Tab height:</span>
       <select name="tabHeight" id="tabHeight">
-        <option value="ultraCompact">Ultra-compact (26px height)</option>
-        <option value="compact">Compact (32px height)</option>
-        <option value="default">Default (36px height)</option>
-        <option value="touch">Touch (todo: add height)</option>
-        <input type="range" name="asda" id="asd">
+        <option data-i18n="tabHeightUltraCompact" value="ultraCompact">Ultra-compact (26px height)</option>
+        <option data-i18n="tabHeightCompact" value="compact">Compact (32px height)</option>
+        <option data-i18n="tabHeightDefault" value="default">Default (36px height)</option>
+        <option data-i18n="tabHeightTouch" value="touch">Touch (todo: add height)</option>
       </select>
-      <div></div>
     </div>
 
     <div class="setting">
-      <span>Text overflow mode:</span>
+      <span data-i18n="textOverflowMode">Text overflow mode:</span>
       <select name="textOverflow" id="textOverflow">
-        <option value="fade">Fade (default)</option>
-        <option value="ellipsis">Ellipsis</option>
-        <option value="clip">Clip</option>
+        <option data-i18n="textOverflowFade" value="fade">Fade (default)</option>
+        <option data-i18n="textOverflowEllipsis" value="ellipsis">Ellipsis</option>
+        <option data-i18n="textOverflowClip" value="clip">Clip</option>
       </select>
     </div>
 
     <div class="setting">
       <input type="checkbox" name="scrollOnHover" id="scrollOnHover">
-      <label for="scrollOnHover">Scroll tab title when hovered</label>
+      <label data-i18n="scrollTabTitleOnHover" for="scrollOnHover">Scroll tab title when hovered</label>
     </div>
 
     <div class="setting">
       <input type="checkbox" name="switchTabsOnCtrlWheel" id="switchTabsOnCtrlWheel">
-      <label for="switchTabsOnCtrlWheel">Switch tabs on Ctrl+&lt;mousewheel&gt;</label>
+      <label data-i18n="switchTabsOnCtrlWheel" for="switchTabsOnCtrlWheel">Switch tabs on
+        Ctrl+&lt;mousewheel&gt;</label>
     </div>
 
-    <h3>Tab buttons/actions</h3>
+    <h3 data-i18n="tabButtonsActions">Tab buttons/actions</h3>
 
     <div class="setting">
-      <label for="showCloseBtn">Show tab close button:</label>      
+      <label data-i18n="showTabCloseBtn" for="showCloseBtn">Show tab close button:</label>
       <select name="showCloseBtn" id="showCloseBtn">
-        <option value="always">Always</option>
-        <option value="onHoverAndActive">On hovered and active tabs</option>
-        <option value="onlyOnHover">Only on hovered tabs</option>
-        <option value="onlyOnActive">Only on active tab</option>
-        <option value="never">Never</option>
+        <option data-i18n="always" value="always">Always</option>
+        <option data-i18n="onHoverAndActiveTabs" value="onHoverAndActive">On hovered and active tabs</option>
+        <option data-i18n="onlyOnHovered" value="onlyOnHover">Only on hovered tabs</option>
+        <option data-i18n="onlyOnActive" value="onlyOnActive">Only on active tab</option>
+        <option data-i18n="never" value="never">Never</option>
       </select>
     </div>
 
     <div class="setting">
       <input type="checkbox" name="compactSoundToggle" id="compactSoundToggle">
-      <label for="compactSoundToggle">Use compact sound toggle</label>
+      <label data-i18n="useCompactSoundToggle" for="compactSoundToggle">Use compact sound toggle</label>
     </div>
 
     <div class="setting">
       <input type="checkbox" name="stickNewTabBtn" id="stickNewTabBtn">
-      <label for="stickNewTabBtn">Always stick New tab button to the bottom</label>
+      <label data-i18n="alwaysStickNewTabBtn" for="stickNewTabBtn">Always stick New tab button to the bottom</label>
     </div>
 
-    <h3>Tooltips</h3>
+    <h3 data-i18n="h_tooltips">Tooltips</h3>
 
     <div class="setting">
-      <span>Show tooltip when hovered on a tab:</span>
+      <span data-i18n="showTooltipWhenHovered">Show tooltip when hovered on a tab:</span>
       <select name="showTabTooltip" id="showTabTooltip">
-        <option value="always">Always</option>
-        <option value="overflow">Only on overflow (default)</option>
-        <option value="never">Never</option>
+        <option data-i18n="always" value="always">Always</option>
+        <option data-i18n="onlyOnOverflow" value="overflow">Only on overflow (default)</option>
+        <option data-i18n="never" value="never">Never</option>
       </select>
     </div>
 
     <div class="setting">
       <input type="checkbox" name="showCloseBtnTooltip" id="showCloseBtnTooltip">
-      <label for="showCloseBtnTooltip">Show tooltip when hovered on Close tab (⨉) button</label>
+      <label data-i18n="showCloseBtnTooltip" for="showCloseBtnTooltip">Show tooltip when hovered on Close tab (⨉)
+        button</label>
     </div>
 
-    <h3>Scrollbar</h3>
+    <h3 data-i18n="scrollbar">Scrollbar</h3>
 
     <div class="setting">
-      <span>Style of scrollbar:</span>
+      <span data-i18n="scrollbarStyle">Style of scrollbar:</span>
       <select name="scrollbar" id="scrollbar">
-        <option value="fullWidth">Full-width</option>
-        <option value="compact">Compact (6px, default)</option>
-        <option value="onePixel">One pixel wide</option>
-        <option value="none">None</option>
+        <option data-i18n="fullWidth" value="fullWidth">Full-width</option>
+        <option data-i18n="thin8px" value="thin">Thin (8px, default)</option>
+        <option data-i18n="onePixelWide" value="onePixel">One pixel wide</option>
+        <option data-i18n="scrollbarNone" value="none">None</option>
       </select>
     </div>
 
     <div class="setting">
       <input type="checkbox" name="hideScrollBar" id="hideScrollBar">
-      <label for="hideScrollBar">Hide scrollbar after <input type="text" id="scrollBarHideTimeout"> ms</label>
+      <label data-i18n="hideScrollbarAfter" for="hideScrollBar">Hide scrollbar after</label>
+      <input type="text" id="scrollBarHideTimeout">
+      <label data-i18n="ms" for="hideScrollBar">ms</label>
     </div>
 
-    <button id="switchToDefaults">Switch to default settings</button>
+    <button data-i18n="btn_switchToDefaults" id="switchToDefaults">Switch to default settings</button>
 
     <div id="overlay" class="flex">
       <div id="modal">
         <div id="modal__contents">
-          <h1 id="modal__title">Switch to default settings?</h1>
-          <p id="modal__message">Are you sure you want to switch to default settings? This will discard all changes and can't be undone.</p>
-          <button id="modal__ok">Switch</button>
-          <button id="modal__cancel">Cancel</button>
+          <h1 data-i18n="h1_switchToDefaults" id="modal__title">Switch to default settings?</h1>
+          <p data-i18n="switchToDefaultSettingsAreYouSure" id="modal__message">Are you sure you want to switch to
+            default settings? This will discard all changes and
+            cannot be undone.</p>
+          <button data-i18n="switch" id="modal__ok">Switch</button>
+          <button data-i18n="cancel" id="modal__cancel">Cancel</button>
         </div>
-      </div>      
-      <div id="modal__exit">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path
-            d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z" />
-        </svg>
+        <div id="modal__exit">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z" />
+          </svg>
+        </div>
+      </div>
     </div>
-  </div>
-  <script src="/js/options.js"></script>
+    <script src="/js/options/i18n.js"></script>
+    <script src="/js/browser_theme.js"></script>
+    <script src="/js/options/modal.js"></script>
 </body>
 
 </html>

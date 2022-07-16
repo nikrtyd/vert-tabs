@@ -1,0 +1,230 @@
+{
+  "extensionName": {
+    "message": "Verts: onglets verticaux",
+    "description": "Nom de l'extension."
+  },
+  "extensionShortName": {
+    "message": "Verts",
+    "description": "Nom abrégé de l'extension."
+  },
+  "extensionDescription": {
+    "message": "Rapide, simple et prêt à l'emploi. Ou vous pouvez le personnaliser comme vous le souhaitez ! Votre aide pour développer ceci est la bienvenue: https://github.com/nikrtyd/verts 😊",
+    "description": "Descriptif de l'extension."
+  },
+  "toggleSidebarVisibility": {
+    "message": "Afficher/masquer le panneau Verts dans une barre latérale",
+    "description": "Info-bulle pour l'icône d'extension dans la barre de navigation."
+  },
+  "always": {
+    "message": "",
+    "description": ""
+  },
+  "alwaysStickNewTabBtn": {
+    "message": "",
+    "description": ""
+  },
+  "autoTheme": {
+    "message": "",
+    "description": ""
+  },
+  "cancel": {
+    "message": "",
+    "description": ""
+  },
+  "compact6px": {
+    "message": "",
+    "description": ""
+  },
+  "customCSSloadError": {
+    "message": "",
+    "description": ""
+  },
+  "darkTheme": {
+    "message": "",
+    "description": ""
+  },
+  "forceColorMode": {
+    "message": "",
+    "description": ""
+  },
+  "fullWidth": {
+    "message": "",
+    "description": ""
+  },
+  "hideScrollbarAfter": {
+    "message": "",
+    "description": ""
+  },
+  "inlinePinnedTabs": {
+    "message": "",
+    "description": ""
+  },
+  "lightTheme": {
+    "message": "",
+    "description": ""
+  },
+  "ms": {
+    "message": "",
+    "description": ""
+  },
+  "never": {
+    "message": "",
+    "description": ""
+  },
+  "none": {
+    "message": "",
+    "description": ""
+  },
+  "onePixelWide": {
+    "message": "",
+    "description": ""
+  },
+  "onHoverAndActiveTabs": {
+    "message": "",
+    "description": ""
+  },
+  "onlyOnActive": {
+    "message": "",
+    "description": ""
+  },
+  "onlyOnHovered": {
+    "message": "",
+    "description": ""
+  },
+  "onlyOnOverflow": {
+    "message": "",
+    "description": ""
+  },
+  "options": {
+    "message": "",
+    "description": ""
+  },
+  "optionsPageTitle": {
+    "message": "",
+    "description": ""
+  },
+  "photon": {
+    "message": "",
+    "description": ""
+  },
+  "pinnedTabs": {
+    "message": "",
+    "description": ""
+  },
+  "proton": {
+    "message": "",
+    "description": ""
+  },
+  "scrollbar": {
+    "message": "",
+    "description": ""
+  },
+  "scrollbarStyle": {
+    "message": "",
+    "description": ""
+  },
+  "scrollTabTitleOnHover": {
+    "message": "",
+    "description": ""
+  },
+  "setTheme": {
+    "message": "",
+    "description": ""
+  },
+  "showCloseBtnTooltip": {
+    "message": "",
+    "description": ""
+  },
+  "showTabCloseBtn": {
+    "message": "",
+    "description": ""
+  },
+  "showTooltipWhenHovered": {
+    "message": "",
+    "description": ""
+  },
+  "smallPinnedTabs": {
+    "message": "",
+    "description": ""
+  },
+  "stickPinnedTabs": {
+    "message": "",
+    "description": ""
+  },
+  "switch": {
+    "message": "",
+    "description": ""
+  },
+  "switchTabsOnCtrlWheel": {
+    "message": "",
+    "description": ""
+  },
+  "switchToDefaults": {
+    "message": "",
+    "description": ""
+  },
+  "switchToDefaultSettings": {
+    "message": "",
+    "description": ""
+  },
+  "switchToDefaultSettingsAreYouSure": {
+    "message": "",
+    "description": ""
+  },
+  "tabButtonsActions": {
+    "message": "",
+    "description": ""
+  },
+  "tabHeight": {
+    "message": "",
+    "description": ""
+  },
+  "tabHeightCompact": {
+    "message": "",
+    "description": ""
+  },
+  "tabHeightDefault": {
+    "message": "",
+    "description": ""
+  },
+  "tabHeightTouch": {
+    "message": "",
+    "description": ""
+  },
+  "tabHeightUltraCompact": {
+    "message": "",
+    "description": ""
+  },
+  "tabStylingBehavior": {
+    "message": "",
+    "description": ""
+  },
+  "textOverflowClip": {
+    "message": "",
+    "description": ""
+  },
+  "textOverflowEllipsis": {
+    "message": "",
+    "description": ""
+  },
+  "textOverflowFade": {
+    "message": "",
+    "description": ""
+  },
+  "textOverflowMode": {
+    "message": "",
+    "description": ""
+  },
+  "themeSettings": {
+    "message": "",
+    "description": ""
+  },
+  "useCompactSoundToggle": {
+    "message": "",
+    "description": ""
+  },
+  "yourCustomCSS": {
+    "message": "",
+    "description": ""
+  }
+}

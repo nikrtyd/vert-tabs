@@ -1,0 +1,184 @@
+{
+  "extensionName": {
+    "message": "Verts: vertical tabs",
+    "description": "Extension name."
+  },
+  "extensionShortName": {
+    "message": "Verts",
+    "description": "Extension short name."
+  },
+  "extensionDescription": {
+    "message": "Fast, simple and ready to use. Or you can customize it just how you want! Your help in development is welcome: https://github.com/nikrtyd/verts 😊",
+    "description": "Description of the extension."
+  },
+  "toggleSidebarVisibility": {
+    "message": "Show/hide Verts panel in a sidebar",
+    "description": "Tooltip for extension icon in navigation bar."
+  },
+  "always": {
+    "message": "Always"
+  },
+  "alwaysStickNewTabBtn": {
+    "message": "Always stick New tab button to the bottom"
+  },
+  "autoTheme": {
+    "message": "Auto (default)"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "thin8px": {
+    "message": "Thin (8px, default)"
+  },
+  "customCSSloadError": {
+    "message": "Can't load custom CSS."
+  },
+  "darkMode": {
+    "message": "Dark"
+  },
+  "dismiss": {
+    "message": "Dismiss"
+  },
+  "forceColorMode": {
+    "message": "Force mode:"
+  },
+  "fullWidth": {
+    "message": "Full-width"
+  },
+  "hideScrollbarAfter": {
+    "message": "Hide scrollbar after"
+  },
+  "inlinePinnedTabs": {
+    "message": "Inline pinned tabs"
+  },
+  "lightMode": {
+    "message": "Light"
+  },
+  "ms": {
+    "message": "ms"
+  },
+  "never": {
+    "message": "Never"
+  },
+  "themeNone": {
+    "message": "None"
+  },
+  "scrollbarNone": {
+    "message": "None"
+  },
+  "onePixelWide": {
+    "message": "onePixelWide"
+  },
+  "onHoverAndActiveTabs": {
+    "message": "On hovered and active tabs"
+  },
+  "onlyOnActive": {
+    "message": "Only on active tab"
+  },
+  "onlyOnHovered": {
+    "message": "Only on hovered tabs"
+  },
+  "onlyOnOverflow": {
+    "message": "Only on overflow (default)"
+  },
+  "options": {
+    "message": "Options"
+  },
+  "optionsPageTitle": {
+    "message": "Verts: Options"
+  },
+  "photon": {
+    "message": "Photon"
+  },
+  "pinnedTabs": {
+    "message": "Pinned tabs"
+  },
+  "proton": {
+    "message": "Proton (default)"
+  },
+  "scrollbar": {
+    "message": "Scrollbar"
+  },
+  "scrollbarStyle": {
+    "message": "Style of scrollbar:"
+  },
+  "scrollTabTitleOnHover": {
+    "message": "Scroll tab title when hovered"
+  },
+  "setTheme": {
+    "message": "Set theme:"
+  },
+  "showCloseBtnTooltip": {
+    "message": "Show tooltip when hovered on Close tab (⨉) button"
+  },
+  "showTabCloseBtn": {
+    "message": "Show tab close button:"
+  },
+  "showTooltipWhenHovered": {
+    "message": "Show tooltip when hovered on a tab:"
+  },
+  "smallPinnedTabs": {
+    "message": "Small pinned tabs"
+  },
+  "stickPinnedTabs": {
+    "message": "Stick pinned tabs to the top"
+  },
+  "switch": {
+    "message": "Switch"
+  },
+  "switchTabsOnCtrlWheel": {
+    "message": "Switch tabs on Ctrl+&lt;mousewheel&gt;",
+    "description": "Use only &lt; and &gt; and not < and > to avoid string placement problems into HTML."
+  },
+  "btn_switchToDefaults": {
+    "message": "Switch to default settings"
+  },
+  "h1_switchToDefaults": {
+    "message": "Switch to default settings?"
+  },
+  "switchToDefaultSettingsAreYouSure": {
+    "message": "Are you sure you want to switch to default settings? This will discard all changes and cannot be undone."
+  },
+  "tabButtonsActions": {
+    "message": "Tab buttons/actions"
+  },
+  "tabHeight": {
+    "message": "Tab height:"
+  },
+  "tabHeightCompact": {
+    "message": "Compact (32px height)"
+  },
+  "tabHeightDefault": {
+    "message": "Default (36px height)"
+  },
+  "tabHeightTouch": {
+    "message": "Touch (todo: add height)"
+  },
+  "tabHeightUltraCompact": {
+    "message": "Ultra-compact (26px height)"
+  },
+  "tabStylingBehavior": {
+    "message": "Tab styling & behavior"
+  },
+  "textOverflowClip": {
+    "message": "Clip"
+  },
+  "textOverflowEllipsis": {
+    "message": "Ellipsis"
+  },
+  "textOverflowFade": {
+    "message": "Fade (default)"
+  },
+  "textOverflowMode": {
+    "message": "Text overflow mode:"
+  },
+  "themeSettings": {
+    "message": "Theme settings"
+  },
+  "useCompactSoundToggle": {
+    "message": "Use compact sound toggle"
+  },
+  "yourCustomCSS": {
+    "message": "Your custom CSS:"
+  }
+}
