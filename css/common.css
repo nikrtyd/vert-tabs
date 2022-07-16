@@ -37,3 +37,20 @@ body {
 #pinned-tabs {
   z-index: 1;
 }
+
+#background-image-container {
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  position: absolute;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#background-image {
+  filter: none;
+  width: 100vh;
+  height: 100vw;
+}

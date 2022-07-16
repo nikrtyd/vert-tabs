@@ -1,4 +1,4 @@
-# Verts: Edge-like vertical tabs (for Firefox)
+# Verts: vertical tabs (for Firefox)
 
 Fast, simple and ready to use. Or you can customize it just how you want!
 

@@ -4,6 +4,7 @@
   --frame: #eee;
   --hover-tint: #5552;
   --tab-selected: #fff;
+  --tab-line: #fff;
   --active-hover-tint: #bbb;
   --tab-text-annotation: #666;
 
@@ -22,6 +23,7 @@
     --frame: #111;
     --hover-tint: #5552;
     --tab-selected: #333;
+    --tab-line: #333;
     --active-hover-tint: #444;  
   }
 
@@ -59,10 +61,6 @@ body {
   border-radius: var(--tab-padding);
   align-items: center;
   min-height: 26px;
-}
-
-.discarded>.tab__title-container {
-  color: #aaa;
 }
 
 .tab__icon {
@@ -161,7 +159,7 @@ body {
 .audio__annotation {
   white-space: nowrap;
   color: var(--tab-text-annotation);
-  font-size: 10px;
+  font-size: .75em;
   font-weight: 600;
   margin-left: 5.5px;
   margin-right: 5.5px;
@@ -183,11 +181,12 @@ body {
 
 .active {
   background-color: var(--tab-selected);
+  border: 1px solid var(--tab-line);
   box-shadow: 0 2px 4px #0005;
 }
 
 .active:hover {
-  background-color: var(--active-hover-tint);
+  background-color: var(--tab-selected);
 }
 
 /* TODO: Make pinned tabs sticky */
@@ -216,16 +215,15 @@ body {
   max-height: calc(100vh - 34px - 34px);
 }
 
-#tabs::before {
+/* #tabs::before {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
   background: var(--additional-background-0) no-repeat center bottom;
-  /* transform: rotate(90deg); */
   top: 0;
   left: 0;
-}
+} */
 
 #tab-actions {
   z-index: 1;

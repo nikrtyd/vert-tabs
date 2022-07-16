@@ -9,7 +9,7 @@ const unpinnedEvent = new Event('unpinned');
 
 pinnedTabsElem.childNodes.forEach((childEl) => {
   childEl.addEventListener('unpinned', () => {
-    
+
   })
 })
 
@@ -30,7 +30,7 @@ let listAsync = new Promise((resolve) => {
     }
     pinnedTabsElem.appendChild(currentPinnedTabs);
     tabsElem.appendChild(currentTabs);
-    addOverflowFadeForEveryTab();
+    fadeForEachTab();
     resolve('Tabs are listed');
   });
 });
@@ -44,7 +44,7 @@ browser.windows.getCurrent().then((window) => this.currentWindowId = window.id);
  * @param {object} tab - tab to render
  * @returns undefined if tab is hidden, else HTMLAnchorElement
  */
-const render = (tab) => {
+const render = function getTabInfoAndMakeTabElFromIt(tab) {
   if (tab.hidden) return;
   let tabLink = document.createElement('a');
   let favIconUrl = tab.favIconUrl;
@@ -68,14 +68,16 @@ const render = (tab) => {
   let tabIcon, tabTitleContainer, tabTitle, discardIndic, audioIndic, audioAnnotation, cameraSharingIndic, microphoneSharingIndic, screenSharingIndic, readerModeIndic, closeBtn;
   tabIcon = tabTitleContainer = tabTitle = discardIndic = audioIndic = audioAnnotation = cameraSharingIndic = microphoneSharingIndic = screenSharingIndic = readerModeIndic = closeBtn = document.createElement('div');
 
-  // closeBtn = '<div class="tab__close" data-id="' + tab.id + '" aria-label="Close tab" role="button" title="Close 1 tab">⨉</div>';
-  closeBtn = document.createElement('div');
-  closeBtn.classList.add('tab__close');
-  closeBtn.setAttribute('data-id', tab.id);
-  closeBtn.setAttribute('aria-label', 'Close 1 tab');
-  closeBtn.setAttribute('role', 'button');
-  closeBtn.setAttribute('title', 'Close 1 tab');
-  closeBtn.textContent = '⨉';
+  if (Config.showCloseBtn) {
+    // closeBtn = '<div class="tab__close" data-id="' + tab.id + '" aria-label="Close tab" role="button" title="Close 1 tab">⨉</div>';
+    closeBtn = document.createElement('div');
+    closeBtn.classList.add('tab__close');
+    closeBtn.setAttribute('data-id', tab.id);
+    closeBtn.setAttribute('aria-label', 'Close 1 tab');
+    closeBtn.setAttribute('role', 'button');
+    closeBtn.setAttribute('title', 'Close 1 tab');
+    closeBtn.textContent = '⨉';
+  }
 
   // tabIcon = '<img class="tab__icon" src="' + favIconUrl + '">';
   tabIcon = document.createElement('img');
@@ -88,17 +90,18 @@ const render = (tab) => {
   tabTitle = document.createElement('div');
   tabTitle.className = 'tab__title';
   if (tab.attention) {
-    tabTitle.setAttribute('title', 'This tab requires your attention.');
+    tabTitle.setAttribute('title', `${browser.i18n.getMessage('tabRequiresAttention')}`);
     tabLink.classList.add('attention');
   }
   tabTitle.textContent = tab.title;
   tabTitleContainer.appendChild(tabTitle);
 
   if (tab.audible) {
-    // audioIndic = '<img class="audio__indicator" src="TODO" alt="🔊">';
+    // audioIndic = '<img class="audio__indicator" src="chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg" alt="🔊">';
     audioIndic = document.createElement('img');
     audioIndic.className = 'audio__indicator';
-    audioIndic.setAttribute('src', 'TODO');
+    audioIndic.setAttribute('src', 'chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg');
+    audioIndic.setAttribute('title', 'Mute 1 tab');
     audioIndic.setAttribute('alt', '🔊');
 
     // audioAnnotation = '<div class="audio__annotation">PLAYING AUDIO</div>';
@@ -349,17 +352,17 @@ const tabDrag = (e) => {
 
 // }
 
-// document.addEventListener('mouseover', (e) => {
-//   if (e.target.classList.contains('tab__title')) {
-//     let tabTitle = e.target;
-//     let tabTitleContainer = e.target.parentNode;
-//     if (tabTitle.getBoundingClientRect().width > tabTitleContainer.getBoundingClientRect().width)
-//       tabTitleContainer.classList.add('overflow');
-//     else tabTitleContainer.classList.remove('overflow');
-//   }
-// });
+document.addEventListener('mouseover', (e) => {
+  if (Config.scrollOnHover && e.target.classList.contains('tab__title')) {
+    let tabTitle = e.target;
+    let tabTitleContainer = e.target.parentNode;
+    if (tabTitle.getBoundingClientRect().width > tabTitleContainer.getBoundingClientRect().width)
+      tabTitleContainer.classList.add('overflow');
+    else tabTitleContainer.classList.remove('overflow');
+  }
+});
 
-const addOverflowFade = (tabLink) => {
+const addFade = function addOverflowFadeForTabEl(tabLink) {
   const tabTitleContainer = tabLink.children[1];
   const tabTitle = tabTitleContainer.firstChild;
   if (tabTitle.getBoundingClientRect().width > tabTitleContainer.getBoundingClientRect().width)
@@ -367,12 +370,12 @@ const addOverflowFade = (tabLink) => {
   else tabTitleContainer.classList.remove('overflow');
 };
 
-const addOverflowFadeForEveryTab = () => {
-  pinnedTabsElem.childNodes.forEach((tabLink) => addOverflowFade(tabLink));
-  tabsElem.childNodes.forEach((tabLink) => addOverflowFade(tabLink));
+const fadeForEachTab = function addOverflowFadeForEveryTabEl() {
+  pinnedTabsElem.childNodes.forEach((tabLink) => addFade(tabLink));
+  tabsElem.childNodes.forEach((tabLink) => addFade(tabLink));
 };
 
-document.addEventListener('resize', () => addOverflowFadeForEveryTab());
+document.addEventListener('resize', () => fadeForEachTab());
 
 // Prevent context menu showing
 document.addEventListener('contextmenu', e => { e.preventDefault() });
@@ -434,7 +437,7 @@ browser.tabs.onUpdated.addListener((tabId) => {
 
       }
       document.querySelector(`.tab__elem[data-id="${tabId}"]`).replaceWith(render(tab));
-      addOverflowFade(document.querySelector(`.tab__elem[data-id="${tabId}"]`));
+      addFade(document.querySelector(`.tab__elem[data-id="${tabId}"]`));
     });
   });
 });

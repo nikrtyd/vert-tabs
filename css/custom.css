@@ -3,6 +3,18 @@
   z-index: 1;
 }
 
+.discarded>.tab__title-container {
+  color: #aaa;
+}
+
+#background-image-container {
+  filter: brightness(.5);
+}
+
+#background-image {
+  filter: blur(10px);
+}
+
 #tabs::before {
   width: calc(100vw - 8px);
   height: calc(100vh - 34px);
