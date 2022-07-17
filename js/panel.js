@@ -66,10 +66,9 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
       break;
   }
   let tabIcon, tabTitleContainer, tabTitle, discardIndic, audioIndic, audioAnnotation, cameraSharingIndic, microphoneSharingIndic, screenSharingIndic, readerModeIndic, closeBtn;
-  tabIcon = tabTitleContainer = tabTitle = discardIndic = audioIndic = audioAnnotation = cameraSharingIndic = microphoneSharingIndic = screenSharingIndic = readerModeIndic = closeBtn = document.createElement('div');
+  tabIcon = tabTitleContainer = tabTitle = discardIndic = audioIndic = audioAnnotation = cameraSharingIndic = microphoneSharingIndic = screenSharingIndic = readerModeIndic = closeBtn = '';
 
   if (Config.showCloseBtn) {
-    // closeBtn = '<div class="tab__close" data-id="' + tab.id + '" aria-label="Close tab" role="button" title="Close 1 tab">⨉</div>';
     closeBtn = document.createElement('div');
     closeBtn.classList.add('tab__close');
     closeBtn.setAttribute('data-id', tab.id);
@@ -79,12 +78,10 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
     closeBtn.textContent = '⨉';
   }
 
-  // tabIcon = '<img class="tab__icon" src="' + favIconUrl + '">';
   tabIcon = document.createElement('img');
   tabIcon.className = 'tab__icon';
   tabIcon.setAttribute('src', favIconUrl);
 
-  // tabTitle = '<div class="tab__title-container"><div class="tab__title" ' + attentionTooltip + '>' + tab.title + '</div></div>';
   tabTitleContainer = document.createElement('div');
   tabTitleContainer.classList.add('tab__title-container');
   tabTitle = document.createElement('div');
@@ -97,14 +94,12 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
   tabTitleContainer.appendChild(tabTitle);
 
   if (tab.audible) {
-    // audioIndic = '<img class="audio__indicator" src="chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg" alt="🔊">';
-    audioIndic = document.createElement('img');
+    audioIndic = document.createElement('div');
     audioIndic.className = 'audio__indicator';
-    audioIndic.setAttribute('src', 'chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg');
+    // audioIndic.setAttribute('src', ''); // chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg
     audioIndic.setAttribute('title', 'Mute 1 tab');
-    audioIndic.setAttribute('alt', '🔊');
+    // audioIndic.setAttribute('alt', ''); // 🔊
 
-    // audioAnnotation = '<div class="audio__annotation">PLAYING AUDIO</div>';
     audioAnnotation = document.createElement('div');
     audioAnnotation.className = 'audio__annotation';
     audioAnnotation.innerText = 'PLAYING AUDIO';
@@ -112,13 +107,11 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
     tabLink.classList.add('audible');
   }
   if (tab.mutedInfo.muted) {
-    // audioIndic = '<img class="audio__indicator" src="TODO" alt="🔇">';
     audioIndic = document.createElement('img');
     audioIndic.className = 'audio__indicator';
     audioIndic.setAttribute('src', 'TODO');
     audioIndic.setAttribute('alt', '🔇');
 
-    // audioAnnotation = '<div class="audio__annotation">MUTED</div>';
     audioAnnotation = document.createElement('div');
     audioAnnotation.className = 'audio__annotation';
     audioAnnotation.innerText = 'MUTED';
@@ -126,7 +119,6 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
     tabLink.classList.add('muted');
   }
   if (tab.discarded) {
-    // discardIndic = '<img class="discard__indicator" src="TODO" alt="⏸️" title="This tab is currently discarded. Click to refresh.">';
     discardIndic = document.createElement('img');
     discardIndic.className = 'discard__indicator';
     discardIndic.setAttribute('src', 'TODO');
@@ -136,7 +128,6 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
     tabLink.classList.add('discarded');
   }
   if (tab.sharingState.camera) {
-    // cameraSharingIndic = '<img class="tab__camera-sharing" aria-label="Currently using camera" src="TODO" alt="📸" title="Currently using camera">';
     cameraSharingIndic = document.createElement('img');
     cameraSharingIndic.className = 'tab__camera-sharing';
     cameraSharingIndic.setAttribute('aria-label', 'Currently using camera');
@@ -147,7 +138,6 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
     tabLink.classList.add('sharing-camera');
   }
   if (tab.sharingState.microphone) {
-    // microphoneSharingIndic = '<img class="tab__microphone-sharing" aria-label="Currently using microphone" src="TODO" alt="🎤" title="Currently using microphone">';
     microphoneSharingIndic = document.createElement('img');
     microphoneSharingIndic.className = 'tab__microphone-sharing';
     microphoneSharingIndic.setAttribute('aria-label', 'Currently using microphone');
@@ -158,7 +148,6 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
     tabLink.classList.add('sharing-microphone');
   }
   if (tab.sharingState.screen) {
-    // screenSharingIndic = '<img class="tab__screen-sharing" aria-label="Currently sharing your screen" src="TODO" alt="🔴" title="Currently sharing your screen">';
     screenSharingIndic = document.createElement('img');
     screenSharingIndic.className = 'tab__screen-sharing';
     screenSharingIndic.setAttribute('aria-label', 'Currently sharing your screen');
@@ -169,7 +158,6 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
     tabLink.classList.add('sharing-screen');
   }
   if (tab.isInReaderMode) {
-    // readerModeIndic = '<img class="tab__reader-mode" aria-label="Opened in Reader mode" src="TODO" alt="📖" title="Opened in Reader mode">';    
     readerModeIndic = document.createElement('img');
     readerModeIndic.className = 'tab__reader-mode';
     readerModeIndic.setAttribute('aria-label', 'Opened in Reader mode');
@@ -183,8 +171,7 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
     tabLink.classList.add('active');
   }
 
-  // tabLink.innerHTML = tabIcon + tabTitleContainer + discardIndic + audioIndic + audioAnnotation + cameraSharingIndic + readerModeIndic + closeBtn;
-  tabLink.append(tabIcon, tabTitleContainer, discardIndic, audioIndic, audioAnnotation, cameraSharingIndic, readerModeIndic, closeBtn);
+  tabLink.append(tabIcon, discardIndic, audioIndic, tabTitleContainer, audioAnnotation, cameraSharingIndic, readerModeIndic, closeBtn);
 
   tabLink.setAttribute('data-id', tab.id);
   tabLink.setAttribute('data-index', tab.index);
@@ -453,7 +440,8 @@ browser.tabs.onMoved.addListener((tabId) => {
 const getNewTabIndexAndMove = (tabId) => {
   browser.tabs.get(tabId).then((tab) => {
     let tabEl = document.querySelector(`.tab__elem[data-id="${tab.id}"]`);
-    tabEl.remove();
+    if (tabEl)
+      tabEl.remove();
     const scope = (tab.pinned) ? pinnedTabsElem : tabsElem;
     tab.checkIfIsFirstUnpinnedTab();
     // let tabEl = render(tab);

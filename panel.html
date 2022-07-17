@@ -10,15 +10,23 @@
 </head>
 
 <body class="body">
-  <div id="pinned-tabs"></div>
-  <div id="tabs"></div>
-  <div id="tab-actions">
-    <div class="tab__action" id="tabs-create">
-      <img class="tab__icon" src="/icons/firefox/proton/plus.svg" alt="+">
-      <div class="tab__title-container">
-        <span data-i18n="newTab" class="tab__title">New tab</span>
+  <div id="pinned-tabs-container">
+    <div id="pinned-tabs">
+    </div>
+  </div>
+  <div id="tabs-container">
+    <div id="tabs">
+    </div>
+  </div>
+  <div id="tab-actions-container">
+    <div id="tab-actions">
+      <div class="tab__action" id="tabs-create">
+        <img class="tab__icon" src="/icons/firefox/proton/plus.svg" alt="+">
+        <div class="tab__title-container">
+          <span data-i18n="newTab" class="tab__title">New tab</span>
+        </div>
+        <div data-i18n="ctrlT" class="tab__annotation">Ctrl+T</div>
       </div>
-      <div data-i18n="ctrlT" class="tab__annotation">Ctrl+T</div>
     </div>
   </div>
   <div id="context-menu">

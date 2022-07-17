@@ -24,13 +24,15 @@
     --hover-tint: #5552;
     --tab-selected: #333;
     --tab-line: #333;
-    --active-hover-tint: #444;  
+    --active-hover-tint: #444;
   }
 
   img[src^='chrome://global/skin/'],
   img[src^='chrome://browser/skin/'],
   img[src^='moz-extension://'],
-  img[src^='/icons/firefox'] {
+  img[src^='/icons/firefox'],
+  .audio__indicator::before,
+  .discard__indicator::before {
     filter: invert(1);
   }
 
@@ -61,6 +63,7 @@ body {
   border-radius: var(--tab-padding);
   align-items: center;
   min-height: 26px;
+  border: 1px solid transparent;
 }
 
 .tab__icon {
@@ -111,32 +114,23 @@ body {
   }
 }
 
-/* @keyframes scrollEllipsis {
-  0% {
-    text-indent: 0%;
-  }
-
-  100% {
-    text-indent: 300%;
-  }
-} */
-
-.discard__indicator {
-  max-width: 8px;
-  max-height: 8px;
-  font-size: 8px;
-  margin-top: -14px;
-  margin-left: 10px;
-  position: absolute;
-}
-
+.discard__indicator,
 .audio__indicator {
   max-width: 8px;
   max-height: 8px;
   font-size: 8px;
-  margin-top: 8px;
-  margin-left: 10px;
-  position: absolute;
+  position: relative;
+  width: 0;
+}
+
+.discard__indicator {
+  left: -12px;
+  top: 3px;
+}
+
+.audio__indicator {
+  left: -12px;
+  top: -10px;
 }
 
 .tab__close {
@@ -189,47 +183,21 @@ body {
   background-color: var(--tab-selected);
 }
 
-/* TODO: Make pinned tabs sticky */
+/* test */
 
-#pinned-tabs {
-  position: sticky;
-  top: 0;
-  box-shadow: 0 2px 4px #0005;
-  background: var(--frame);
-}
-
-/*  */
-#pinned-tabs,
-#tabs,
-#tab-actions {
-  overflow-y: scroll;
-  scrollbar-width: thin;
-}
-
-#tabs {
-  position: fixed;
-  /* for 1 pinned tab on the top and 1 new tab button on the bottom */
-  margin-top: 34px;
-  margin-bottom: 34px;
-  max-width: 100%;
-  max-height: calc(100vh - 34px - 34px);
-}
-
-/* #tabs::before {
+.audio__indicator::before,
+.discard__indicator::before {
   content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: var(--additional-background-0) no-repeat center bottom;
-  top: 0;
-  left: 0;
-} */
+  display: block;
+  width: 12px;
+  height: 12px;
+  background-size: contain;
+}
 
-#tab-actions {
-  z-index: 1;
-  bottom: 0;
-  position: absolute;
-  background: var(--frame);
-  width: 100%;
-  box-shadow: 0 -2px 4px #0005;
+.audio__indicator::before {
+  background-image: url(chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg);
+}
+
+.discard__indicator::before {
+  background-image: url(chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg);
 }

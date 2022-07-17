@@ -2,8 +2,17 @@ html {
   scrollbar-width: thin;
 }
 
+html,
 body {
-  overflow-x: hidden;
+  overflow: hidden;
+}
+
+body {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
 }
 
 .tab__elem,
@@ -26,15 +35,23 @@ body {
   width: fit-content;
 }
 
+#pinned-tabs-container,
+#tabs-container,
+#tab-actions-container {
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
+
+#tabs-container {
+  flex: 1;
+}
+
 #tabs {
   width: 100%;
 }
 
-#tabs::before {
-  z-index: -1;
-}
-
-#pinned-tabs {
+#pinned-tabs,
+#tab-actions {
   z-index: 1;
 }
 

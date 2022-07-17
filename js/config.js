@@ -10,7 +10,7 @@ class Config {
   static tabHeightAmt = 26;
   static tabHeightUnit = 'px';
   static textOverflow = 'fade';
-  static scrollOnHover = false;
+  static scrollOnHover = true;
   static switchTabsOnCtrlWheel = false;
   static showCloseBtn = true;
   static compactSoundToggle = true;
