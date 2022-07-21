@@ -180,5 +180,23 @@
   },
   "yourCustomCSS": {
     "message": "Your custom CSS:"
+  },
+  "newTab": {
+    "message": "New tab"
+  },
+  "ctrlT": {
+    "message": "Ctrl+T"
+  },
+  "tabRequiresAttention": {
+    "message": "This tab requires your attention."
+  },
+  "playing": {
+    "message": "Playing"
+  },
+  "muted": {
+    "message": "Muted"
+  },
+  "muteTab": {
+    "message": "Mute tab"
   }
 }

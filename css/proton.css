@@ -152,11 +152,12 @@ body {
 
 .audio__annotation {
   white-space: nowrap;
-  color: var(--tab-text-annotation);
+  color: var(--tab-text);
   font-size: .75em;
   font-weight: 600;
   margin-left: 5.5px;
   margin-right: 5.5px;
+  text-transform: uppercase;
 }
 
 .tab__annotation {
@@ -194,8 +195,12 @@ body {
   background-size: contain;
 }
 
-.audio__indicator::before {
+.audible .audio__indicator::before {
   background-image: url(chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg);
+}
+
+.muted .audio__indicator::before {
+  background-image: url(chrome://browser/skin/tabbrowser/tab-audio-muted-small.svg);
 }
 
 .discard__indicator::before {

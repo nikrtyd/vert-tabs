@@ -70,4 +70,5 @@ body {
   filter: none;
   width: 100vh;
   height: 100vw;
+  transform: rotate(90deg);
 }

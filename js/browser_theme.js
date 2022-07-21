@@ -1,6 +1,17 @@
-const getThemeCSS = function getCurrentBrowserThemeAndApplyCSS() {
+/** Gets current browser theme and applies new CSS.
+ * 
+ */
+const getThemeCSS = function getCurrentBrowserThemeAndApplyNewCSS() {
   browser.theme.getCurrent().then(theme => {
-    let css = `:root {
+
+    // let currentThemeManifestUrl = theme.
+
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      
+    // }
+    // else {
+
+      let css = `:root {
     ${theme.colors.bookmark_text ? `--bookmark-text:${theme.colors.bookmark_text};` : ''}
     ${theme.colors.button_background_active ? `--button-background-active:${theme.colors.button_background_active};` : ''}
     ${theme.colors.button_background_hover ? `--button-background-hover:${theme.colors.button_background_hover};` : ''}
@@ -23,15 +34,32 @@ const getThemeCSS = function getCurrentBrowserThemeAndApplyCSS() {
     ${theme.images.additional_backgrounds[7] !== undefined ? `--additional-background-7:url(${theme.images.additional_backgrounds[7]});` : ''}
     ${theme.images.theme_frame ? `--theme-frame:${theme.images.theme_frame};` : ''}
   }`;
-    const existingStyleEl = document.querySelector('[data-style-id="browserStyle"]');
-    const styleEl = (existingStyleEl) ? existingStyleEl : document.createElement('style');
-    styleEl.textContent = css;
-    if (!existingStyleEl) {
-      styleEl.setAttribute('type', 'text/css');
-      styleEl.setAttribute('data-style-id', 'browserStyle');
-      document.head.appendChild(styleEl);
+      document.querySelector('#background-image').setAttribute('src', theme.images.additional_backgrounds[0]);
+      const existingStyleEl = document.querySelector('[data-style-id="browserStyle"]');
+      const styleEl = (existingStyleEl) ? existingStyleEl : document.createElement('style');
+      styleEl.textContent = css;
+      if (!existingStyleEl) {
+        styleEl.setAttribute('type', 'text/css');
+        styleEl.setAttribute('data-style-id', 'browserStyle');
+        document.head.appendChild(styleEl);
+      }
     }
   });
 }
+
+// Get theme on first sidebar activation
 getThemeCSS();
-browser.theme.onUpdated.addListener(getThemeCSS);
+
+// Watch for changes
+browser.theme.onUpdated.addListener(console.log);
+// browser.theme.onUpdated.addListener(getThemeCSS);
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+  const newColorScheme = e.matches ? "dark" : "light";
+});
+
+// const applyNewCSS = function () {
+// }
+
+  // http://localhost:8080
+  
+

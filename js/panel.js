@@ -37,10 +37,8 @@ let listAsync = new Promise((resolve) => {
 
 browser.windows.getCurrent().then((window) => this.currentWindowId = window.id);
 
-// document.addEventListener("DOMContentLoaded", listAsync);  
-
 /**
- * Renders a tab with its info into HTML tab element.
+ * Get tab info and make an HTMLAnchorElement from it.
  * @param {object} tab - tab to render
  * @returns undefined if tab is hidden, else HTMLAnchorElement
  */
@@ -102,7 +100,7 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
 
     audioAnnotation = document.createElement('div');
     audioAnnotation.className = 'audio__annotation';
-    audioAnnotation.innerText = 'PLAYING AUDIO';
+    audioAnnotation.innerText = browser.i18n.getMessage('playing');
 
     tabLink.classList.add('audible');
   }
@@ -114,7 +112,7 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
 
     audioAnnotation = document.createElement('div');
     audioAnnotation.className = 'audio__annotation';
-    audioAnnotation.innerText = 'MUTED';
+    audioAnnotation.innerText = browser.i18n.getMessage('muted');
 
     tabLink.classList.add('muted');
   }
@@ -411,12 +409,12 @@ browser.tabs.onRemoved.addListener((tabId) => {
   }
 });
 
-browser.tabs.onCreated.addListener((tab) => {
+const onResize = function (tab) {
   place(tab);
   resetIndexes();
-});
+}
 
-browser.tabs.onUpdated.addListener((tabId) => {
+const onUpdate = function (tabId) {
   browser.tabs.get(tabId).then((tab) => {
     console.log(tab);
     callIfTabIsOnCurrentWindow(tab, () => {
@@ -427,15 +425,42 @@ browser.tabs.onUpdated.addListener((tabId) => {
       addFade(document.querySelector(`.tab__elem[data-id="${tabId}"]`));
     });
   });
-});
+}
 
-browser.tabs.onMoved.addListener((tabId) => {
+const onHighlight = function (highlightInfo) {
+  document.querySelectorAll('.tab__elem').forEach((tabElem) => tabElem.classList.remove('highlighted'));
+  highlightInfo.tabIds.forEach((tabId) => {
+    document.querySelector(`.tab__elem[data-id="${tabId}"]`).classList.add('highlighted');
+  });
+}
+
+const onMove = function (tabId) {
   console.log('tab is moved:');
   console.log(tabId);
   // TODO: check if tab is pinned and act accordingly. Same goes for onUpdated.
   getNewTabIndexAndMove(tabId);
   resetIndexes();
-});
+}
+
+const onActivate = function (tab) {
+  let tabElem = document.querySelector(`.tab__elem[data-id="${tab.tabId}"]`);
+  let prevTabElem = document.querySelector(`.tab__elem[data-id="${tab.previousTabId}"]`);
+  if (tabElem)
+    tabElem.classList.add('active');
+  if (prevTabElem)
+    prevTabElem.classList.remove('active');
+
+}
+
+browser.tabs.onCreated.addListener(onResize);
+
+browser.tabs.onUpdated.addListener(onUpdate);
+
+browser.tabs.onMoved.addListener(onMove);
+
+browser.tabs.onActivated.addListener(onActivate);
+
+browser.tabs.onHighlighted.addListener(onHighlight);
 
 const getNewTabIndexAndMove = (tabId) => {
   browser.tabs.get(tabId).then((tab) => {
@@ -460,33 +485,16 @@ const getNewTabIndexAndMove = (tabId) => {
   });
 };
 
-
 HTMLElement.prototype.move = function removeThisElementAndPlaceItInANewSpot(newIndexInParent) {
   this.remove();
   this.parentElement.children[newIndexInParent - 1].after();
 };
 
-browser.tabs.onActivated.addListener((tab) => {
-  let tabElem = document.querySelector(`.tab__elem[data-id="${tab.tabId}"]`);
-  let prevTabElem = document.querySelector(`.tab__elem[data-id="${tab.previousTabId}"]`);
-  if (tabElem)
-    tabElem.classList.add('active');
-  if (prevTabElem)
-    prevTabElem.classList.remove('active');
-});
-
-browser.tabs.onHighlighted.addListener((highlightInfo) => {
-  document.querySelectorAll('.tab__elem').forEach((tabElem) => tabElem.classList.remove('highlighted'));
-  highlightInfo.tabIds.forEach((tabId) => {
-    document.querySelector(`.tab__elem[data-id="${tabId}"]`).classList.add('highlighted');
-  });
-});
-
 /**
- * Places a tab in a tab list.
+ * Get scope to place tab in and determine whether the tab is first or not.
  * @param {object} tab - tab to render & place in tab list
  */
-const place = function getScopeToPlaceTabToAndDetermineWhetherTabIsFirstOrNot(tab) {
+const place = function getScopeToPlaceTabInAndDetermineWhetherTabIsFirstOrNot(tab) {
   callIfTabIsOnCurrentWindow(tab, () => {
     const scope = (tab.pinned) ? pinnedTabsElem : tabsElem;
     if (tab.index === 0 || tab.index === pinnedTabsElem.childElementCount)
