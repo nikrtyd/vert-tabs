@@ -121,7 +121,7 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
     discardIndic.className = 'discard__indicator';
     discardIndic.setAttribute('src', 'TODO');
     discardIndic.setAttribute('alt', '⏸️');
-    discardIndic.setAttribute('title', 'This tab is currently discarded. Click to refresh.');
+    discardIndic.setAttribute('title', 'Refresh discarded tab');
 
     tabLink.classList.add('discarded');
   }

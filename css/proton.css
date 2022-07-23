@@ -67,7 +67,7 @@ body {
 }
 
 .tab__icon {
-  margin-right: 5.5px;
+  margin-right: 6px;
 }
 
 .overflow {
@@ -155,8 +155,8 @@ body {
   color: var(--tab-text);
   font-size: .75em;
   font-weight: 600;
-  margin-left: 5.5px;
-  margin-right: 5.5px;
+  margin-left: 6px;
+  margin-right: 6px;
   text-transform: uppercase;
 }
 
