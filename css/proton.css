@@ -184,6 +184,14 @@ body {
   background-color: var(--tab-selected);
 }
 
+#drag-ghost 
+{
+  padding: 4px 0;
+  background-color: var(--frame);
+  border: 1px solid #222;
+  border-radius: 5px;
+}
+
 /* test */
 
 .audio__indicator::before,

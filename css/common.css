@@ -72,3 +72,15 @@ body {
   height: 100vw;
   transform: rotate(90deg);
 }
+
+#drag-ghost {
+  position: absolute;
+  top:-1000px;
+}
+
+#drag-ghost img {
+  width: 160px;
+  max-height: 90px;
+  object-fit: cover;
+  object-position: top left;
+}

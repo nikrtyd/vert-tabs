@@ -2,5 +2,6 @@
   "inlinePinnedTabs": true,
   "stickyPinnedTabs": true,
   "forceDarkMode": true,
-  "compactMode": true
+  "compactMode": true,
+  "allowTabDrag": true
 }

@@ -20,4 +20,5 @@ class Config {
   static scrollBar = 'compact';
   static hideScrollBar = true;
   static scrollBarHideTimeout = 300;
+  static allowTabDrag = true;
 }
