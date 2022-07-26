@@ -196,13 +196,14 @@ document.body.appendChild(dragGhost);
 function tabLinkMouseDown(e) {
   let target = makeParentTheTarget(e.target);
   browser.tabs.get(+target.getAttribute('data-id')).then(tab => {
-    browser.tabs.captureVisibleTab({ format: 'png', rect: { x: 0, y: 0, width: tab.width, height: tab.height } }).then(image => dragGhostImg.src = image);
+    browser.tabs.captureVisibleTab({rect: { x: 0, y: 0, width: tab.width, height: tab.height } }).then(image => dragGhostImg.src = image);
   });
 }
 
 function tabLinkDragStart(e) {
   console.log('dragStart');
-  e.dataTransfer.setData('text/plain', 'TEST');
+  // let currentlyDraggedTabs = 
+  e.dataTransfer.setData('text/javascript', 'TEST');
   e.dataTransfer.setDragImage(dragGhost, 0, 0);
 }
 
