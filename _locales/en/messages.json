@@ -198,5 +198,20 @@
   },
   "muteTab": {
     "message": "Mute tab"
+  },
+  "refreshDiscardedTab": {
+    "message": "Refresh discarded tab"
+  },
+  "currentlyUsingMicrophone": {
+    "message": "Currently using microphone"
+  },
+  "currentlyUsingCamera": {
+    "message": "Currently using camera"
+  },
+  "currentlySharingScreen": {
+    "message": "Currently sharing your screen"
+  },
+  "inReaderMode": {
+    "message": "Opened in Reader mode"
   }
 }

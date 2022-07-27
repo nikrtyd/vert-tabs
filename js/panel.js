@@ -121,47 +121,47 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
     discardIndic.className = 'discard__indicator';
     discardIndic.setAttribute('src', 'TODO');
     discardIndic.setAttribute('alt', '⏸️');
-    discardIndic.setAttribute('title', 'Refresh discarded tab');
+    discardIndic.setAttribute('title', browser.i18n.getMessage('refreshDiscardedTab'));
 
     tabLink.classList.add('discarded');
   }
   if (tab.sharingState.camera) {
     cameraSharingIndic = document.createElement('img');
     cameraSharingIndic.className = 'tab__camera-sharing';
-    cameraSharingIndic.setAttribute('aria-label', 'Currently using camera');
+    cameraSharingIndic.setAttribute('aria-label', browser.i18n.getMessage('currentlyUsingCamera'));
     cameraSharingIndic.setAttribute('src', 'TODO');
     cameraSharingIndic.setAttribute('alt', '📸');
-    cameraSharingIndic.setAttribute('title', 'Currently using camera');
+    cameraSharingIndic.setAttribute('title', browser.i18n.getMessage('currentlyUsingCamera'));
 
     tabLink.classList.add('sharing-camera');
   }
   if (tab.sharingState.microphone) {
     microphoneSharingIndic = document.createElement('img');
     microphoneSharingIndic.className = 'tab__microphone-sharing';
-    microphoneSharingIndic.setAttribute('aria-label', 'Currently using microphone');
+    microphoneSharingIndic.setAttribute('aria-label', browser.i18n.getMessage('currentlyUsingMicrophone'));
     microphoneSharingIndic.setAttribute('src', 'TODO');
     microphoneSharingIndic.setAttribute('alt', '🎤');
-    microphoneSharingIndic.setAttribute('title', 'Currently using microphone');
+    microphoneSharingIndic.setAttribute('title', browser.i18n.getMessage('currentlyUsingMicrophone'));
 
     tabLink.classList.add('sharing-microphone');
   }
   if (tab.sharingState.screen) {
     screenSharingIndic = document.createElement('img');
     screenSharingIndic.className = 'tab__screen-sharing';
-    screenSharingIndic.setAttribute('aria-label', 'Currently sharing your screen');
+    screenSharingIndic.setAttribute('aria-label', browser.i18n.getMessage('currentlySharingScreen'));
     screenSharingIndic.setAttribute('src', 'TODO');
     screenSharingIndic.setAttribute('alt', '🔴');
-    screenSharingIndic.setAttribute('title', 'Currently sharing your screen');
+    screenSharingIndic.setAttribute('title', browser.i18n.getMessage('currentlySharingScreen'));
 
     tabLink.classList.add('sharing-screen');
   }
   if (tab.isInReaderMode) {
     readerModeIndic = document.createElement('img');
     readerModeIndic.className = 'tab__reader-mode';
-    readerModeIndic.setAttribute('aria-label', 'Opened in Reader mode');
+    readerModeIndic.setAttribute('aria-label', browser.i18n.getMessage('inReaderMode'));
     readerModeIndic.setAttribute('src', 'TODO');
     readerModeIndic.setAttribute('alt', '📖');
-    readerModeIndic.setAttribute('title', 'Opened in Reader mode');
+    readerModeIndic.setAttribute('title', browser.i18n.getMessage('inReaderMode'));
 
     tabLink.classList.add('reader-mode');
   }
