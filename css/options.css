@@ -89,6 +89,10 @@ select:active {
   background-color: var(--button-background-active);
 }
 
+input[type='range'] {
+  height: 0;
+}
+
 input[type='text'] {
   background: #111;
   border: none;

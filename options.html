@@ -145,6 +145,30 @@
       <label data-i18n="ms" for="hideScrollBar">ms</label>
     </div>
 
+    <h3 data-i18n="tabDragging">Tab dragging</h3>
+
+    <div class="setting">
+      <input type="checkbox" name="tabDragging" id="tabDragging">
+      <label data-i18n="enableTabDragging" for="tabDragging">Enable tab dragging</label>
+    </div>
+
+    <div class="setting">
+      <input type="checkbox" name="tabDragGhost" id="tabDragGhost">
+      <label data-i18n="enableTabDragGhost" for="tabDragGhost">Enable tab drag ghost</label>
+    </div>
+    
+    <div class="setting">
+      <input type="checkbox" name="legacyDragGhost" id="legacyDragGhost">
+      <label data-i18n="switchToLegacyDragGhost" for="legacyDragGhost">Switch to legacy drag ghost</label>
+      <label data-i18n="mightNotWorkAsExpected" for="legacyDragGhost">(might not work as expected)</label>
+    </div>
+
+    <div class="setting">
+      <span data-i18n="dragGhostOpacity">Drag ghost opacity:</span>
+      <input type="range" name="dragGhostOpacity">
+      <span id="dragGhostOpacityRangeOutput"></span><span data-i18n="percentSign">%</span>
+    </div>
+
     <button data-i18n="btn_switchToDefaults" id="switchToDefaults">Switch to default settings</button>
 
     <div id="overlay" class="flex">

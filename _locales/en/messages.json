@@ -213,5 +213,26 @@
   },
   "inReaderMode": {
     "message": "Opened in Reader mode"
+  },
+  "tabDragging": {
+    "message": "Tab dragging"
+  },
+  "enableTabDragging": {
+    "message": "Enable tab dragging"
+  },
+  "enableTabDragGhost": {
+    "message": "Enable tab drag ghost"
+  },
+  "dragGhostOpacity": {
+    "message": "Drag ghost opacity:"
+  },
+  "percentSign": {
+    "message": "%"
+  },
+  "switchToLegacyDragGhost": {
+    "message": "Switch to legacy drag ghost"
+  },
+  "mightNotWorkAsExpected": {
+    "message": "(might not work as expected)"
   }
 }
