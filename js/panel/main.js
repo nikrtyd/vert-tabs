@@ -170,10 +170,14 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
   }
 
   if (Config.allowTabDrag) {
-    tabLink.setAttribute('draggable', 'true');
-    tabLink.onmousedown = tabLinkMouseDown;
-    tabLink.ondragstart = tabLinkDragStart;
-    // tabLink.ondragover = dragoverHandler;
+    // tabLink.setAttribute('draggable', 'true');
+    // tabLink.onmousedown = tabLinkMouseDown;
+    // tabLink.ondragstart = tabLinkDragStart;
+    // tabLink.ondrop = tabLinkDrop;
+    // tabLink.onclick = tabLinkClick;
+    // tabLink.ondragover = tabLinkDragOver;
+    // tabLink.ondragend = tabLinkDragEnd;
+    // tabLink.ondragleave = tabLinkDragLeave;
   }
 
   tabLink.append(tabIcon, discardIndic, audioIndic, tabTitleContainer, audioAnnotation, cameraSharingIndic, readerModeIndic, closeBtn);
@@ -187,38 +191,77 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
   return tabLink;
 };
 
-const dragGhost = document.createElement('div');
-dragGhost.appendChild(document.createElement('img'));
-const dragGhostImg = dragGhost.children[0];
-dragGhost.id = 'drag-ghost';
-document.body.appendChild(dragGhost);
+// const dndGhost = document.createElement('div');
+// dndGhost.appendChild(document.createElement('img'));
+// const dndGhostImg = dndGhost.children[0];
+// dndGhost.id = 'drag-ghost';
+// document.body.appendChild(dndGhost);
 
-function tabLinkMouseDown(e) {
-  let target = makeParentTheTarget(e.target);
-  browser.tabs.get(+target.getAttribute('data-id')).then(tab => {
-    browser.tabs.captureVisibleTab({rect: { x: 0, y: 0, width: tab.width, height: tab.height } }).then(image => dragGhostImg.src = image);
-  });
-}
+// const dndCanvas = document.createElement('canvas');
+// const dndCanvasCtx = dndCanvas.getContext('2d');
+// const windowScale = window.devicePixelRatio;
+// dndCanvasCtx.
 
-function tabLinkDragStart(e) {
-  console.log('dragStart');
-  // let currentlyDraggedTabs = 
-  e.dataTransfer.setData('text/javascript', 'TEST');
-  e.dataTransfer.setDragImage(dragGhost, 0, 0);
-}
+//   dndCanvas.style.width = '100%';
+// dndCanvas.style.height = '100%';
+// dndCanvas.mozOpaque = true;
 
-function tabLinkDragOver(e) {
-  console.log('dragOver');
-  e.preventDefault();
-}
+// document.documentElement.appendChild(dndCanvas);
 
-function tabLinkDrop(e) {
-  console.log('drop');
-  e.preventDefault();
-  // Get the data, which is the id of the drop target
-  const data = e.dataTransfer.getData('text');
-  e.target.appendChild(document.getElementById(data));
-}
+// function tabLinkClick(e) {
+//   console.log(e);
+//   console.log('tabLink click');
+//   browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } }).then(newSrc => {
+//     dndGhostImg.src = newSrc;
+//   });
+// }
+
+// async function tabLinkMouseDown(e) {
+//   dndGhostImg.src = await browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } });
+
+
+//   // TODO: Update DnD image if platform is Windows or macOS & figure out what to do on Linux.
+//   console.log('tabLink mouseDown');
+// }
+
+// async function tabLinkDragStart(e) {
+//   // console.log('tabLink dragStart');
+//   // e.dataTransfer.setDragImage(dndGhost, 0, 0);
+//   // dndGhostImg.src = await browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } });
+
+//   browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } }).then(val => { let x = new Image(); x.src = val; e.dataTransfer.setDragImage(x) });
+
+//   // e.dataTransfer.setDragImage(dndGhost, 0, 0);
+//   // for (let i = 0; i < 5; i++) {
+//   //   e.dataTransfer.setDragImage(dndGhost, 0, 0);
+//   // }
+// }
+
+// async function tabLinkDragEnd(e) {
+//   console.log('tabLink dragEnd');
+// }
+
+// function tabLinkDragOver(e) {
+//   console.log('tabLink dragOver');
+//   e.preventDefault();
+//   // e.stopPropagation();
+// }
+
+// function tabLinkDragLeave(e) {
+//   // TODO: Create a window on dragleave (?) with all tabs stored in event data. 
+//   console.log('tabLink dragLeave');
+// }
+
+// function tabLinkDrop(e) {
+//   console.log('tabLink drop');
+//   e.preventDefault();
+// Get the data, which is the id of the drop target
+// const data = e.dataTransfer.getData('text');
+// e.target.appendChild(document.getElementById(data));
+// browser.windows.create({ tabId })
+// }
+
+
 
 
 /**
@@ -478,7 +521,7 @@ HTMLElement.prototype.move = function removeThisElementAndPlaceItInANewSpot(newI
 
 /**
  * Get scope to place tab in and determine whether the tab is first or not.
- * @param {object} tab - tab to render & place in tab list
+ * @param {object} tab - Tab to render & place in tab list
  */
 const place = function getScopeToPlaceTabInAndDetermineWhetherTabIsFirstOrNot(tab) {
   callIfTabIsOnCurrentWindow(tab, () => {
@@ -490,15 +533,20 @@ const place = function getScopeToPlaceTabInAndDetermineWhetherTabIsFirstOrNot(ta
   });
 };
 
-Object.prototype.isItFirstUnpinned = function checkIfThisIsFirstUnpinnedTab() {
-  browser.tabs.query({ pinned: false })
-    .then((tabs) => { this.isFirstUnpinnedTab = (tabs[0].id === this.id) ? true : false; });
+/**
+ * If tabToCheck's ID equals first unpinned tab's ID then return true, else return false.
+ * @param {object} tabToCheck - Tab object from browser.tabs.query | browser.tabs.get
+ * @returns Promise of boolean type
+ */
+const firstUnpinnedCheck = async function checkIfThisIsFirstUnpinnedTab(tabToCheck) {
+  let tabs = await browser.tabs.query({ pinned: false });
+  return (tabs[0].id === tabToCheck.id) ? true : false;
 };
 
 /**
  * Call a function only if tab belongs to current window.
- * @param {object} tab - tab to check
- * @param {Function} callback - function to call
+ * @param {object} tab - Tab to check
+ * @param {Function} callback - Function to call
  */
 const callIfTabIsOnCurrentWindow = (tab, callback) => {
   if (tab.windowId === this.currentWindowId)
