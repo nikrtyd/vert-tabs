@@ -15,24 +15,29 @@ body {
   height: 100vh;
 }
 
-.tab__elem,
-.tab__action {
+.tab-elem,
+.tab-action {
   display: flex;
 }
 
-.tab__icon {
+.tab-icon {
   width: 16px;
   height: 16px;
 }
 
-.tab__title-container {
+.tab-title-container {
   flex-grow: 1;
   overflow: hidden;
 }
 
-.tab__title {
+.tab-title {
   white-space: nowrap;
   width: fit-content;
+}
+
+.audio-annotation:empty {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 #pinned-tabs-container,
@@ -75,7 +80,7 @@ body {
 
 #drag-ghost {
   position: absolute;
-  top:-1000px;
+  top: -1000px;
 }
 
 #drag-ghost img {

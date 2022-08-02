@@ -31,8 +31,8 @@
   img[src^='chrome://browser/skin/'],
   img[src^='moz-extension://'],
   img[src^='/icons/firefox'],
-  .audio__indicator::before,
-  .discard__indicator::before {
+  .audio-indicator::before,
+  .discard-indicator::before {
     filter: invert(1);
   }
 
@@ -57,8 +57,8 @@ body {
   padding: 0;
 }
 
-.tab__elem,
-.tab__action {
+.tab-elem,
+.tab-action {
   padding: 0 0 0 5px;
   border-radius: var(--tab-padding);
   align-items: center;
@@ -66,7 +66,7 @@ body {
   border: 1px solid transparent;
 }
 
-.tab__icon {
+.tab-icon {
   margin-right: 6px;
 }
 
@@ -78,11 +78,11 @@ body {
   animation: fade-left 10s linear .5s;
 }
 
-.overflow .tab__title:hover {
+.overflow .tab-title:hover {
   animation: scroll 10s linear .5s;
 }
 
-/* .tab__title.ellipsis:hover {
+/* .tab-title.ellipsis:hover {
   animation: scrollEllipsis 10s linear .5s;
 } */
 
@@ -114,8 +114,8 @@ body {
   }
 }
 
-.discard__indicator,
-.audio__indicator {
+.discard-indicator,
+.audio-indicator {
   max-width: 8px;
   max-height: 8px;
   font-size: 8px;
@@ -123,34 +123,34 @@ body {
   width: 0;
 }
 
-.discard__indicator {
+.discard-indicator {
   left: -12px;
   top: 3px;
 }
 
-.audio__indicator {
+.audio-indicator {
   left: -12px;
   top: -10px;
 }
 
-.tab__close {
+.tab-close {
   padding: 5px;
   border-radius: 4px;
 }
 
-.tab__elem:hover,
-.tab__close:hover,
-.tab__action:hover {
+.tab-elem:hover,
+.tab-close:hover,
+.tab-action:hover {
   background-color: var(--hover-tint);
 }
 
-.tab__audio {
+.tab-audio {
   font-size: 10px;
   font-weight: 600;
   color: #aaa;
 }
 
-.audio__annotation {
+.audio-annotation {
   white-space: nowrap;
   color: var(--tab-text);
   font-size: .75em;
@@ -160,7 +160,7 @@ body {
   text-transform: uppercase;
 }
 
-.tab__annotation {
+.tab-annotation {
   color: var(--tab-text-annotation);
   padding-right: 5px;
 }
@@ -194,8 +194,8 @@ body {
 
 /* test */
 
-.audio__indicator::before,
-.discard__indicator::before {
+.audio-indicator::before,
+.discard-indicator::before {
   content: '';
   display: block;
   width: 12px;
@@ -203,14 +203,14 @@ body {
   background-size: contain;
 }
 
-.audible .audio__indicator::before {
+.audible .audio-indicator::before {
   background-image: url(chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg);
 }
 
-.muted .audio__indicator::before {
+.muted .audio-indicator::before {
   background-image: url(chrome://browser/skin/tabbrowser/tab-audio-muted-small.svg);
 }
 
-.discard__indicator::before {
+.discard-indicator::before {
   background-image: url(chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg);
 }

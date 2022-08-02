@@ -24,9 +24,9 @@ let listAsync = new Promise((resolve) => {
     pinnedTabsElem.innerText = '';
 
     for (let tab of tabs) {
-      let tabLink = render(tab);
-      if (tab.pinned) { currentPinnedTabs.appendChild(tabLink); }
-      else { currentTabs.appendChild(tabLink); }
+      let tabElem = render(tab);
+      if (tab.pinned) { currentPinnedTabs.appendChild(tabElem); }
+      else { currentTabs.appendChild(tabElem); }
     }
     pinnedTabsElem.appendChild(currentPinnedTabs);
     tabsElem.appendChild(currentTabs);
@@ -44,7 +44,7 @@ browser.windows.getCurrent().then((window) => this.currentWindowId = window.id);
  */
 const render = function getTabInfoAndMakeTabElFromIt(tab) {
   if (tab.hidden) return;
-  let tabLink = document.createElement('a');
+  let tabElem = document.createElement('a');
   let favIconUrl = tab.favIconUrl;
   switch (favIconUrl) {
     case '':
@@ -68,7 +68,7 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
 
   if (Config.showCloseBtn) {
     closeBtn = document.createElement('div');
-    closeBtn.classList.add('tab__close');
+    closeBtn.classList.add('tab-close');
     closeBtn.setAttribute('data-id', tab.id);
     closeBtn.setAttribute('aria-label', 'Close 1 tab');
     closeBtn.setAttribute('role', 'button');
@@ -77,205 +77,176 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
   }
 
   tabIcon = document.createElement('img');
-  tabIcon.className = 'tab__icon';
+  tabIcon.className = 'tab-icon';
   tabIcon.setAttribute('src', favIconUrl);
 
   tabTitleContainer = document.createElement('div');
-  tabTitleContainer.classList.add('tab__title-container');
+  tabTitleContainer.classList.add('tab-title-container');
   tabTitle = document.createElement('div');
-  tabTitle.className = 'tab__title';
+  tabTitle.className = 'tab-title';
   if (tab.attention) {
     tabTitle.setAttribute('title', `${browser.i18n.getMessage('tabRequiresAttention')}`);
-    tabLink.classList.add('attention');
+    tabElem.classList.add('attention');
   }
   tabTitle.textContent = tab.title;
   tabTitleContainer.appendChild(tabTitle);
 
+  audioIndic = document.createElement('div');
+  audioIndic.className = 'audio-indicator';
+  // audioIndic.setAttribute('src', ''); // chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg
+  audioIndic.setAttribute('title', 'Mute 1 tab');
+  // audioIndic.setAttribute('alt', ''); // 🔊
+
+  audioAnnotation = document.createElement('div');
+  audioAnnotation.className = 'audio-annotation';
+
+
+  discardIndic = document.createElement('img');
+  discardIndic.className = 'discard-indicator';
+  discardIndic.setAttribute('src', 'TODO');
+  discardIndic.setAttribute('alt', '⏸️');
+  discardIndic.setAttribute('title', browser.i18n.getMessage('refreshDiscardedTab'));
+
   if (tab.audible) {
-    audioIndic = document.createElement('div');
-    audioIndic.className = 'audio__indicator';
-    // audioIndic.setAttribute('src', ''); // chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg
-    audioIndic.setAttribute('title', 'Mute 1 tab');
-    // audioIndic.setAttribute('alt', ''); // 🔊
-
-    audioAnnotation = document.createElement('div');
-    audioAnnotation.className = 'audio__annotation';
     audioAnnotation.innerText = browser.i18n.getMessage('playing');
-
-    tabLink.classList.add('audible');
+    tabElem.classList.add('audible');
   }
   if (tab.mutedInfo.muted) {
-    audioIndic = document.createElement('img');
-    audioIndic.className = 'audio__indicator';
-    audioIndic.setAttribute('src', 'TODO');
-    audioIndic.setAttribute('alt', '🔇');
-
-    audioAnnotation = document.createElement('div');
-    audioAnnotation.className = 'audio__annotation';
     audioAnnotation.innerText = browser.i18n.getMessage('muted');
-
-    tabLink.classList.add('muted');
+    tabElem.classList.add('muted');
   }
   if (tab.discarded) {
-    discardIndic = document.createElement('img');
-    discardIndic.className = 'discard__indicator';
-    discardIndic.setAttribute('src', 'TODO');
-    discardIndic.setAttribute('alt', '⏸️');
-    discardIndic.setAttribute('title', browser.i18n.getMessage('refreshDiscardedTab'));
-
-    tabLink.classList.add('discarded');
+    tabElem.classList.add('discarded');
   }
   if (tab.sharingState.camera) {
     cameraSharingIndic = document.createElement('img');
-    cameraSharingIndic.className = 'tab__camera-sharing';
+    cameraSharingIndic.className = 'tab-camera-sharing';
     cameraSharingIndic.setAttribute('aria-label', browser.i18n.getMessage('currentlyUsingCamera'));
     cameraSharingIndic.setAttribute('src', 'TODO');
     cameraSharingIndic.setAttribute('alt', '📸');
     cameraSharingIndic.setAttribute('title', browser.i18n.getMessage('currentlyUsingCamera'));
 
-    tabLink.classList.add('sharing-camera');
+    tabElem.classList.add('sharing-camera');
   }
   if (tab.sharingState.microphone) {
     microphoneSharingIndic = document.createElement('img');
-    microphoneSharingIndic.className = 'tab__microphone-sharing';
+    microphoneSharingIndic.className = 'tab-microphone-sharing';
     microphoneSharingIndic.setAttribute('aria-label', browser.i18n.getMessage('currentlyUsingMicrophone'));
     microphoneSharingIndic.setAttribute('src', 'TODO');
     microphoneSharingIndic.setAttribute('alt', '🎤');
     microphoneSharingIndic.setAttribute('title', browser.i18n.getMessage('currentlyUsingMicrophone'));
 
-    tabLink.classList.add('sharing-microphone');
+    tabElem.classList.add('sharing-microphone');
   }
   if (tab.sharingState.screen) {
     screenSharingIndic = document.createElement('img');
-    screenSharingIndic.className = 'tab__screen-sharing';
+    screenSharingIndic.className = 'tab-screen-sharing';
     screenSharingIndic.setAttribute('aria-label', browser.i18n.getMessage('currentlySharingScreen'));
     screenSharingIndic.setAttribute('src', 'TODO');
     screenSharingIndic.setAttribute('alt', '🔴');
     screenSharingIndic.setAttribute('title', browser.i18n.getMessage('currentlySharingScreen'));
 
-    tabLink.classList.add('sharing-screen');
+    tabElem.classList.add('sharing-screen');
   }
   if (tab.isInReaderMode) {
     readerModeIndic = document.createElement('img');
-    readerModeIndic.className = 'tab__reader-mode';
+    readerModeIndic.className = 'tab-reader-mode';
     readerModeIndic.setAttribute('aria-label', browser.i18n.getMessage('inReaderMode'));
     readerModeIndic.setAttribute('src', 'TODO');
     readerModeIndic.setAttribute('alt', '📖');
     readerModeIndic.setAttribute('title', browser.i18n.getMessage('inReaderMode'));
 
-    tabLink.classList.add('reader-mode');
+    tabElem.classList.add('reader-mode');
   }
   if (tab.active) {
-    tabLink.classList.add('active');
+    tabElem.classList.add('active');
   }
 
   if (Config.allowTabDrag) {
-    // tabLink.setAttribute('draggable', 'true');
-    // tabLink.onmousedown = tabLinkMouseDown;
-    // tabLink.ondragstart = tabLinkDragStart;
-    // tabLink.ondrop = tabLinkDrop;
-    // tabLink.onclick = tabLinkClick;
-    // tabLink.ondragover = tabLinkDragOver;
-    // tabLink.ondragend = tabLinkDragEnd;
-    // tabLink.ondragleave = tabLinkDragLeave;
+    tabElem.setAttribute('draggable', 'true');
   }
 
-  tabLink.append(tabIcon, discardIndic, audioIndic, tabTitleContainer, audioAnnotation, cameraSharingIndic, readerModeIndic, closeBtn);
+  tabElem.append(tabIcon, discardIndic, audioIndic, tabTitleContainer, audioAnnotation, cameraSharingIndic, readerModeIndic, closeBtn);
 
-  tabLink.setAttribute('data-id', tab.id);
-  tabLink.setAttribute('data-index', tab.index);
-  tabLink.setAttribute('data-window-id', tab.windowId);
-  tabLink.setAttribute('aria-label', `Tab ${tab.index}${(tab.pinned) ? ', pinned' : ''}:`);
-  tabLink.classList.add('tab__elem');
+  tabElem.setAttribute('data-id', tab.id);
+  tabElem.setAttribute('data-index', tab.index);
+  tabElem.setAttribute('data-window-id', tab.windowId);
+  tabElem.setAttribute('aria-label', `Tab ${tab.index}${(tab.pinned) ? ', pinned' : ''}:`);
+  tabElem.classList.add('tab-elem');
 
-  return tabLink;
+  return tabElem;
 };
 
-// const dndGhost = document.createElement('div');
-// dndGhost.appendChild(document.createElement('img'));
-// const dndGhostImg = dndGhost.children[0];
-// dndGhost.id = 'drag-ghost';
-// document.body.appendChild(dndGhost);
+const dndGhost = document.createElement('div');
+dndGhost.appendChild(document.createElement('img'));
+const dndGhostImg = dndGhost.children[0];
+dndGhost.id = 'drag-ghost';
 
-// const dndCanvas = document.createElement('canvas');
-// const dndCanvasCtx = dndCanvas.getContext('2d');
-// const windowScale = window.devicePixelRatio;
-// dndCanvasCtx.
+if (Config.allowTabDrag) {
+  document.addEventListener('ondragstart', ontabElemDragStart);
+  document.addEventListener('ondragover', ontabElemDragOver);
+  document.addEventListener('ondragleave', ontabElemDragLeave);
+  document.addEventListener('ondragend', ontabElemDragEnd);
+  document.body.appendChild(dndGhost);
+}
 
-//   dndCanvas.style.width = '100%';
-// dndCanvas.style.height = '100%';
-// dndCanvas.mozOpaque = true;
+function ontabElemHover(e) {
+  console.log('tabElem hover');
+  browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } }).then(newSrc => dndGhostImg.src = newsrc);
+}
 
-// document.documentElement.appendChild(dndCanvas);
-
-// function tabLinkClick(e) {
-//   console.log(e);
-//   console.log('tabLink click');
-//   browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } }).then(newSrc => {
-//     dndGhostImg.src = newSrc;
-//   });
-// }
-
-// async function tabLinkMouseDown(e) {
-//   dndGhostImg.src = await browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } });
+async function ontabElemMouseDown(e) {
+  // dndGhostImg.src = await browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } });
 
 
-//   // TODO: Update DnD image if platform is Windows or macOS & figure out what to do on Linux.
-//   console.log('tabLink mouseDown');
-// }
+  // TODO: Update DnD image if platform is Windows or macOS & figure out what to do on Linux.
+  console.log('tabElem mouseDown');
+}
 
-// async function tabLinkDragStart(e) {
-//   // console.log('tabLink dragStart');
-//   // e.dataTransfer.setDragImage(dndGhost, 0, 0);
-//   // dndGhostImg.src = await browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } });
+async function ontabElemDragStart(e) {
+  console.log('tabElem dragStart');
+  e.dataTransfer.setDragImage(dndGhostImg, 0, 0);
+  // dndGhostImg.src = await browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } });
+  // e.dataTransfer.updateDragImage(dndGhostImg, 0, 0);
+}
 
-//   browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } }).then(val => { let x = new Image(); x.src = val; e.dataTransfer.setDragImage(x) });
+async function ontabElemDragEnd(e) {
+  console.log('tabElem dragEnd');
+}
 
-//   // e.dataTransfer.setDragImage(dndGhost, 0, 0);
-//   // for (let i = 0; i < 5; i++) {
-//   //   e.dataTransfer.setDragImage(dndGhost, 0, 0);
-//   // }
-// }
+function ontabElemDragOver(e) {
+  console.log('tabElem dragOver');
+}
 
-// async function tabLinkDragEnd(e) {
-//   console.log('tabLink dragEnd');
-// }
+function ontabElemDragLeave(e) {
+  console.log('tabElem dragLeave');
+  // TODO: Create a window on dragleave (?) with all tabs stored in event data. 
+}
 
-// function tabLinkDragOver(e) {
-//   console.log('tabLink dragOver');
-//   e.preventDefault();
-//   // e.stopPropagation();
-// }
-
-// function tabLinkDragLeave(e) {
-//   // TODO: Create a window on dragleave (?) with all tabs stored in event data. 
-//   console.log('tabLink dragLeave');
-// }
-
-// function tabLinkDrop(e) {
-//   console.log('tabLink drop');
-//   e.preventDefault();
-// Get the data, which is the id of the drop target
-// const data = e.dataTransfer.getData('text');
-// e.target.appendChild(document.getElementById(data));
-// browser.windows.create({ tabId })
-// }
+function ontabElemDrop(e) {
+  console.log('tabElem drop');
+  e.preventDefault();
+  // Get the data, which is the id of the drop target
+  const data = e.dataTransfer.getData('text');
+  e.target.appendChild(document.getElementById(data));
+  browser.windows.create({ tabId });
+}
 
 
 
 
 /**
- * Finds relative .tab__elem parent container if target is .tab__icon / .tab__title-container / .tab__title or returns oldTarget if it isn't.
+ * Finds relative .tab-elem parent container if target is .tab-icon / .tab-title-container / .tab-title or returns oldTarget if it isn't.
  * @param {HTMLElement} oldTarget - Original clicked target
  * @returns parent / oldTarget
  */
 const makeParentTheTarget = function getRelativeParentContainersOfSelectedTarget(oldTarget) {
   let newTarget = oldTarget;
-  // If we click on .tab__icon or .tab__title, then make .tab__elem parent the target. Otherwise, you can't switch to another tab. 
-  if (newTarget.classList.contains('tab__icon') || newTarget.classList.contains('tab__title-container'))
-    newTarget = newTarget.parentNode; // should be .tab__elem
+  // If we click on .tab-icon or .tab-title, then make .tab-elem parent the target. Otherwise, you can't switch to another tab. 
+  if (newTarget.classList.contains('tab-icon') || newTarget.classList.contains('tab-title-container'))
+    newTarget = newTarget.parentNode; // should be .tab-elem
 
-  if (newTarget.classList.contains('tab__title'))
+  if (newTarget.classList.contains('tab-title'))
     newTarget = newTarget.parentNode.parentNode;
   return newTarget;
 }
@@ -286,7 +257,7 @@ document.addEventListener('click', (e) => {
 
   e.preventDefault();
 
-  if (target.classList.contains('tab__close'))
+  if (target.classList.contains('tab-close'))
     browser.tabs.remove(+target.getAttribute('data-id'));
 
   if (target.id === 'tabs-create')
@@ -297,13 +268,13 @@ document.addEventListener('click', (e) => {
 document.addEventListener('mousedown', (e) => {
   let target = makeParentTheTarget(e.target);
 
-  if (target.classList.contains('discard__indicator')) {
+  if (target.classList.contains('discard-indicator')) {
     let tabId = +target.parentNode.getAttribute('data-id');
     // Unfortunately, we cannot directly update 'discarded' property at the moment. So to undiscard the tab, we're setting URL anew.
     browser.tabs.get(tabId).then((tab) => browser.tabs.update(tabId, { url: tab.url }));
   }
 
-  if (target.classList.contains('audio__indicator')) {
+  if (target.classList.contains('audio-indicator')) {
     let tabId = +target.parentNode.getAttribute('data-id');
     browser.tabs.get(tabId).then((tab) => {
       browser.tabs.update(tabId, { muted: (tab.mutedInfo.muted) ? false : true });
@@ -319,7 +290,7 @@ document.addEventListener('mousedown', (e) => {
     return false;
   }
 
-  if (target.classList.contains('tab__elem')) {
+  if (target.classList.contains('tab-elem')) {
     let tabId = +target.getAttribute('data-id');
 
     if (e.shiftKey) {
@@ -352,7 +323,7 @@ document.addEventListener('mousedown', (e) => {
         .then(() => browser.tabs.highlight({ tabs: currentlyHighlightedTabIndexes }));
     }
     else {
-      document.querySelector(`.tab__elem[data-id="${tabId}"]`).classList.add('active');
+      document.querySelector(`.tab-elem[data-id="${tabId}"]`).classList.add('active');
       browser.tabs.query({ currentWindow: true, highlighted: true, active: false })
         .then((tabs) => tabs.forEach((tab) => browser.tabs.update(tab.id, { highlighted: false })));
       browser.tabs.update(tabId, { active: true });
@@ -367,7 +338,7 @@ Array.prototype.delete = (object) => {
 };
 
 document.addEventListener('mouseover', (e) => {
-  if (Config.scrollOnHover && e.target.classList.contains('tab__title')) {
+  if (Config.scrollOnHover && e.target.classList.contains('tab-title')) {
     let tabTitle = e.target;
     let tabTitleContainer = e.target.parentNode;
     if (tabTitle.getBoundingClientRect().width > tabTitleContainer.getBoundingClientRect().width)
@@ -376,8 +347,9 @@ document.addEventListener('mouseover', (e) => {
   }
 });
 
-const addFade = function addOverflowFadeForTabEl(tabLink) {
-  const tabTitleContainer = tabLink.children[1];
+const addFade = function addOverflowFadeForTabEl(tabElem) {
+  // .tab-title-container is usually placed at index 3 of parent tab-link
+  const tabTitleContainer = tabElem.children[3];
   const tabTitle = tabTitleContainer.firstChild;
   if (tabTitle.getBoundingClientRect().width > tabTitleContainer.getBoundingClientRect().width)
     tabTitleContainer.classList.add('overflow');
@@ -431,7 +403,7 @@ const isElementInViewport = (el) => {
 };
 
 browser.tabs.onRemoved.addListener((tabId) => {
-  let tabElem = document.querySelector(`.tab__elem[data-id="${tabId}"]`);
+  let tabElem = document.querySelector(`.tab-elem[data-id="${tabId}"]`);
   if (tabElem) {
     tabElem.remove();
     resetIndexes();
@@ -450,16 +422,16 @@ const onUpdate = function rerenderTabAndAddFadeToIt(tabId) {
       if (tab.pinned) {
 
       }
-      document.querySelector(`.tab__elem[data-id="${tabId}"]`).replaceWith(render(tab));
-      addFade(document.querySelector(`.tab__elem[data-id="${tabId}"]`));
+      document.querySelector(`.tab-elem[data-id="${tabId}"]`).replaceWith(render(tab));
+      addFade(document.querySelector(`.tab-elem[data-id="${tabId}"]`));
     });
   });
 }
 
 const onHighlight = function addHighlightedHtmlClassForEachHighlightedTab(highlightInfo) {
-  document.querySelectorAll('.tab__elem').forEach((tabElem) => tabElem.classList.remove('highlighted'));
+  document.querySelectorAll('.tab-elem').forEach((tabElem) => tabElem.classList.remove('highlighted'));
   highlightInfo.tabIds.forEach((tabId) => {
-    document.querySelector(`.tab__elem[data-id="${tabId}"]`).classList.add('highlighted');
+    document.querySelector(`.tab-elem[data-id="${tabId}"]`).classList.add('highlighted');
   });
 }
 
@@ -472,8 +444,8 @@ const onMove = function getNewTabIndexAndMoveTabThenResetIndexes(tabId) {
 }
 
 const onActivate = function (tab) {
-  let tabElem = document.querySelector(`.tab__elem[data-id="${tab.tabId}"]`);
-  let prevTabElem = document.querySelector(`.tab__elem[data-id="${tab.previousTabId}"]`);
+  let tabElem = document.querySelector(`.tab-elem[data-id="${tab.tabId}"]`);
+  let prevTabElem = document.querySelector(`.tab-elem[data-id="${tab.previousTabId}"]`);
   if (tabElem)
     tabElem.classList.add('active');
   if (prevTabElem)
@@ -493,7 +465,7 @@ browser.tabs.onHighlighted.addListener(onHighlight);
 
 const moveTabById = function getNewTabIndexFromIdAndMoveAccordingly(tabId) {
   browser.tabs.get(tabId).then((tab) => {
-    let tabEl = document.querySelector(`.tab__elem[data-id="${tab.id}"]`);
+    let tabEl = document.querySelector(`.tab-elem[data-id="${tab.id}"]`);
     if (tabEl)
       tabEl.remove();
     const scope = (tab.pinned) ? pinnedTabsElem : tabsElem;
@@ -529,7 +501,7 @@ const place = function getScopeToPlaceTabInAndDetermineWhetherTabIsFirstOrNot(ta
     if (tab.index === 0 || tab.index === pinnedTabsElem.childElementCount)
       scope.prepend(render(tab));
     else
-      scope.querySelector(`.tab__elem[data-index="${tab.index - 1}"]`).after(render(tab));
+      scope.querySelector(`.tab-elem[data-index="${tab.index - 1}"]`).after(render(tab));
   });
 };
 

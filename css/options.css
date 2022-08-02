@@ -145,29 +145,29 @@ path {
   transition: fill .2s ease;
 }
 
-#modal__title {
+#modal-title {
   max-width: 32rem;
   color: var(--tab-selected);
 }
 
-#modal__exit:hover path {
+#modal-exit:hover path {
   fill: var(--tab-text);
 }
 
-#modal__message {
+#modal-message {
   margin-bottom: 3rem;
   max-width: 32rem;
 }
 
-#modal__contents {
+#modal-contents {
   padding: 2rem 0 2rem 2rem;
 }
 
-#modal__exit {
+#modal-exit {
   padding: 2rem 2rem 2rem 0;
 }
 
-#modal__exit svg {
+#modal-exit svg {
   max-width: 1.5rem;
   max-height: 1.5rem;
 }

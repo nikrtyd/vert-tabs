@@ -6,11 +6,11 @@
   "homepage_url": "https://github.com/nikrtyd/verts",
   "default_locale": "en",
   "icons": {
-    "16": "icons/gray16.png",
-    "32": "icons/gray32.png",
-    "48": "icons/gray48.png",
-    "96": "icons/gray96.png",
-    "128": "icons/gray128.png"
+    "16": "icons/verts/gray16.png",
+    "32": "icons/verts/gray32.png",
+    "48": "icons/verts/gray48.png",
+    "96": "icons/verts/gray96.png",
+    "128": "icons/verts/gray128.png"
   },
   "browser_specific_settings": {
     "gecko": {
@@ -18,7 +18,7 @@
     }
   },
   "sidebar_action": {
-    "default_icon": "icons/icon.svg",
+    "default_icon": "icons/verts/icon.svg",
     "default_title": "__MSG_extensionShortName__",
     "default_panel": "panel.html"
   },
@@ -30,7 +30,7 @@
   "browser_action": {
     "browser_style": true,
     "default_title": "__MSG_toggleSidebarVisibility__",
-    "default_icon": "icons/icon.svg"
+    "default_icon": "icons/verts/icon.svg"
   },
   "options_ui": {
     "browser_style": true,
