@@ -85,7 +85,7 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
   tabTitle = document.createElement('div');
   tabTitle.className = 'tab-title';
   if (tab.attention) {
-    tabTitle.setAttribute('title', `${browser.i18n.getMessage('tabRequiresAttention')}`);
+    tabTitle.setAttribute('title', browser.i18n.getMessage('tabRequiresAttention'));
     tabElem.classList.add('attention');
   }
   tabTitle.textContent = tab.title;
@@ -181,18 +181,18 @@ const dndGhost = document.createElement('div');
 dndGhost.appendChild(document.createElement('img'));
 const dndGhostImg = dndGhost.children[0];
 dndGhost.id = 'drag-ghost';
+document.body.appendChild(dndGhost);
 
 if (Config.allowTabDrag) {
   document.addEventListener('ondragstart', ontabElemDragStart);
   document.addEventListener('ondragover', ontabElemDragOver);
   document.addEventListener('ondragleave', ontabElemDragLeave);
   document.addEventListener('ondragend', ontabElemDragEnd);
-  document.body.appendChild(dndGhost);
 }
 
 function ontabElemHover(e) {
   console.log('tabElem hover');
-  browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } }).then(newSrc => dndGhostImg.src = newsrc);
+  browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } }).then(newSrc => dndGhostImg.src = newSrc);
 }
 
 async function ontabElemMouseDown(e) {
