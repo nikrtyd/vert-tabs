@@ -89,3 +89,15 @@ body {
   object-fit: cover;
   object-position: top left;
 }
+
+.discard-indicator {
+  display: none;
+}
+
+.discarded>.discard-indicator {
+  display: block;
+}
+
+#background-image[src=''] {
+  display: none;
+}

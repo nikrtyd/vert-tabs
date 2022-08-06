@@ -204,6 +204,10 @@ async function ontabElemMouseDown(e) {
 }
 
 async function ontabElemDragStart(e) {
+  let target = makeParentTheTarget(e.target);
+  if (target.classList.contains('tab-elem')) {
+
+  }
   console.log('tabElem dragStart');
   e.dataTransfer.setDragImage(dndGhostImg, 0, 0);
   // dndGhostImg.src = await browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } });
