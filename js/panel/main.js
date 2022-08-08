@@ -406,7 +406,7 @@ const isElementInViewport = (el) => {
   );
 };
 
-browser.tabs.onRemoved.addListener((tabId) => {
+browser.tabs.onRemoved.addListener(tabId => {
   let tabElem = document.querySelector(`.tab-elem[data-id="${tabId}"]`);
   if (tabElem) {
     tabElem.remove();
@@ -414,12 +414,12 @@ browser.tabs.onRemoved.addListener((tabId) => {
   }
 });
 
-const onResize = function placeTabAndResetIndexes(tab) {
+const onCreated = function placeTabAndResetIndexes(tab) {
   place(tab);
   resetIndexes();
 }
 
-const onUpdate = function rerenderTabAndAddFadeToIt(tabId) {
+const onUpdated = function rerenderTabAndAddFadeToIt(tabId) {
   browser.tabs.get(tabId).then((tab) => {
     console.log(tab);
     callIfTabIsOnCurrentWindow(tab, () => {
@@ -432,14 +432,14 @@ const onUpdate = function rerenderTabAndAddFadeToIt(tabId) {
   });
 }
 
-const onHighlight = function addHighlightedHtmlClassForEachHighlightedTab(highlightInfo) {
+const onHighlighted = function addHighlightedHtmlClassForEachHighlightedTab(highlightInfo) {
   document.querySelectorAll('.tab-elem').forEach((tabElem) => tabElem.classList.remove('highlighted'));
   highlightInfo.tabIds.forEach((tabId) => {
     document.querySelector(`.tab-elem[data-id="${tabId}"]`).classList.add('highlighted');
   });
 }
 
-const onMove = function getNewTabIndexAndMoveTabThenResetIndexes(tabId) {
+const onMoved = function getNewTabIndexAndMoveTabThenResetIndexes(tabId) {
   console.log('tab is moved:');
   console.log(tabId);
   // TODO: check if tab is pinned and act accordingly. Same goes for onUpdated.
@@ -447,7 +447,7 @@ const onMove = function getNewTabIndexAndMoveTabThenResetIndexes(tabId) {
   resetIndexes();
 }
 
-const onActivate = function (tab) {
+const onActivated = function (tab) {
   let tabElem = document.querySelector(`.tab-elem[data-id="${tab.tabId}"]`);
   let prevTabElem = document.querySelector(`.tab-elem[data-id="${tab.previousTabId}"]`);
   if (tabElem)
@@ -457,27 +457,35 @@ const onActivate = function (tab) {
 
 }
 
-browser.tabs.onCreated.addListener(onResize);
+browser.tabs.onCreated.addListener(onCreated);
 
-browser.tabs.onUpdated.addListener(onUpdate);
+browser.tabs.onUpdated.addListener(onUpdated);
 
-browser.tabs.onMoved.addListener(onMove);
+browser.tabs.onMoved.addListener(onMoved);
 
-browser.tabs.onActivated.addListener(onActivate);
+browser.tabs.onActivated.addListener(onActivated);
 
-browser.tabs.onHighlighted.addListener(onHighlight);
+browser.tabs.onHighlighted.addListener(onHighlighted);
 
-const moveTabById = function getNewTabIndexFromIdAndMoveAccordingly(tabId) {
-  browser.tabs.get(tabId).then((tab) => {
+/**
+ * If tabToCheck's ID equals first unpinned tab's ID then return true, else return false.
+ * @param {object} tabToCheck - Tab object from browser.tabs.query | browser.tabs.get
+ * @returns Promise of boolean type
+ */
+const firstUnpinnedCheck = async function checkIfThisIsFirstUnpinnedTab(tabToCheck) {
+  let tabs = await browser.tabs.query({ pinned: false });
+  return (tabs[0].id === tabToCheck.id) ? true : false;
+};
+
+const moveTabById = async function getNewTabIndexFromIdAndMoveAccordingly(tabId) {
+  browser.tabs.get(tabId).then(tab => {
     let tabEl = document.querySelector(`.tab-elem[data-id="${tab.id}"]`);
-    if (tabEl)
-      tabEl.remove();
+    if (tabEl) { tabEl.remove(); }
     const scope = (tab.pinned) ? pinnedTabsElem : tabsElem;
-    tab.isItFirstUnpinned();
-    // let tabEl = render(tab);
-
+    let tabIsFirstUnpinned;
+    firstUnpinnedCheck(tab).then(val => tabIsFirstUnpinned = val);
     switch (true) {
-      case tab.index === 0 || tab.isFirstUnpinnedTab:
+      case tab.index === 0 || tabIsFirstUnpinned:
         scope.prepend(tabEl);
         break;
       case (tab.index === pinnedTabsElem.childElementCount + tabsElem.childElementCount):
@@ -507,16 +515,6 @@ const place = function getScopeToPlaceTabInAndDetermineWhetherTabIsFirstOrNot(ta
     else
       scope.querySelector(`.tab-elem[data-index="${tab.index - 1}"]`).after(render(tab));
   });
-};
-
-/**
- * If tabToCheck's ID equals first unpinned tab's ID then return true, else return false.
- * @param {object} tabToCheck - Tab object from browser.tabs.query | browser.tabs.get
- * @returns Promise of boolean type
- */
-const firstUnpinnedCheck = async function checkIfThisIsFirstUnpinnedTab(tabToCheck) {
-  let tabs = await browser.tabs.query({ pinned: false });
-  return (tabs[0].id === tabToCheck.id) ? true : false;
 };
 
 /**

@@ -29,8 +29,9 @@
 
   img[src^='chrome://global/skin/'],
   img[src^='chrome://browser/skin/'],
-  img[src^='moz-extension://'],
-  img[src^='/icons/firefox'],
+  img[src$='icons/firefox/proton/profiler-stopwatch.svg'],
+  img[src$='icons/firefox/proton/extension.svg'],
+  img[src$='icons/firefox/proton/plus.svg'],
   .audio-indicator::before,
   .discard-indicator::before {
     filter: invert(1);
