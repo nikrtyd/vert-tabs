@@ -11,10 +11,10 @@
   --container-padding: 4px;
   --tab-padding: 5px;
 
-  --additional-background-0: #000;
-  --additional-background-1: #000;
-  --additional-background-2: #000;
-  --additional-background-3: #000;
+  --additional-background-0: #fff;
+  --additional-background-1: #fff;
+  --additional-background-2: #fff;
+  --additional-background-3: #fff;
 }
 
 @media (prefers-color-scheme: dark) {

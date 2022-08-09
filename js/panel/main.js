@@ -101,10 +101,8 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
   audioAnnotation.className = 'audio-annotation';
 
 
-  discardIndic = document.createElement('img');
+  discardIndic = document.createElement('div');
   discardIndic.className = 'discard-indicator';
-  discardIndic.setAttribute('src', 'TODO');
-  discardIndic.setAttribute('alt', '⏸️');
   discardIndic.setAttribute('title', browser.i18n.getMessage('refreshDiscardedTab'));
 
   if (tab.audible) {
@@ -164,6 +162,7 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
 
   if (Config.allowTabDrag) {
     tabElem.setAttribute('draggable', 'true');
+    tabElem.addEventListener('mouseenter', onTabElemMouseEnter);
   }
 
   tabElem.append(tabIcon, discardIndic, audioIndic, tabTitleContainer, audioAnnotation, cameraSharingIndic, readerModeIndic, closeBtn);
@@ -190,9 +189,11 @@ if (Config.allowTabDrag) {
   document.addEventListener('dragend', ontabElemDragEnd);
 }
 
-function ontabElemHover(e) {
-  console.log('tabElem hover');
-  browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } }).then(newSrc => dndGhostImg.src = newSrc);
+async function onTabElemMouseEnter(e) {
+  console.log('tabElem mouse enter');
+  const tabId = +e.target.getAttribute('data-id');
+  const tab = await browser.tabs.get(tabId);
+  dndGhostImg.src = await browser.tabs.captureTab(tabId, { rect: { x: 0, y: 0, width: tab.width, height: tab.height } });
 }
 
 async function ontabElemMouseDown(e) {
@@ -203,7 +204,7 @@ async function ontabElemMouseDown(e) {
   console.log('tabElem mouseDown');
 }
 
-function ontabElemDragStart(e) {
+async function ontabElemDragStart(e) {
   e.dataTransfer.setDragImage(dndGhost, 0, 0);
   let target = makeParentTheTarget(e.target);
   if (target.classList.contains('tab-elem')) {
@@ -235,9 +236,6 @@ function ontabElemDrop(e) {
   e.target.appendChild(document.getElementById(data));
   browser.windows.create({ tabId });
 }
-
-
-
 
 /**
  * Finds relative .tab-elem parent container if target is .tab-icon / .tab-title-container / .tab-title or returns oldTarget if it isn't.
