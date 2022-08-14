@@ -163,6 +163,7 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
   if (Config.allowTabDrag) {
     tabElem.setAttribute('draggable', 'true');
     tabElem.addEventListener('mouseenter', onTabElemMouseEnter);
+    tabElem.addEventListener('mousedown', ontabElemMouseDown);
   }
 
   tabElem.append(tabIcon, discardIndic, audioIndic, tabTitleContainer, audioAnnotation, cameraSharingIndic, readerModeIndic, closeBtn);
@@ -191,16 +192,19 @@ if (Config.allowTabDrag) {
 
 async function onTabElemMouseEnter(e) {
   console.log('tabElem mouse enter');
-  const tabId = +e.target.getAttribute('data-id');
-  const tab = await browser.tabs.get(tabId);
-  dndGhostImg.src = await browser.tabs.captureTab(tabId, { rect: { x: 0, y: 0, width: tab.width, height: tab.height } });
 }
 
 async function ontabElemMouseDown(e) {
-  // dndGhostImg.src = await browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } });
+  e.dataTransfer.setDragImage(dndGhost, 0, 0);
+  let target = makeParentTheTarget(e.target);
+  const tabId = +target.getAttribute('data-id');
+  const tab = await browser.tabs.get(tabId);
 
+  dndGhostImg.src = await browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: tab.width, height: tab.height } });
 
   // TODO: Update DnD image if platform is Windows or macOS & figure out what to do on Linux.
+  e.dataTransfer.updateDragImage(dndGhost, 0, 0);
+
   console.log('tabElem mouseDown');
 }
 
