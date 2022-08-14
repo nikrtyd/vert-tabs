@@ -22,4 +22,5 @@ class Config {
   static scrollBarHideTimeout = 300;
   static allowTabDrag = true;
   static dragGhostOpacity = 0.5;
+  static showDragThumbs = true;
 }

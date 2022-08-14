@@ -94,7 +94,7 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
   audioIndic = document.createElement('div');
   audioIndic.className = 'audio-indicator';
   // audioIndic.setAttribute('src', ''); // chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg
-  audioIndic.setAttribute('title', 'Mute 1 tab');
+  audioIndic.setAttribute('title', browser.i18n.getMessage('muteTab'));
   // audioIndic.setAttribute('alt', ''); // 🔊
 
   audioAnnotation = document.createElement('div');
@@ -190,33 +190,50 @@ if (Config.allowTabDrag) {
   document.addEventListener('dragend', ontabElemDragEnd);
 }
 
+if (Config.showDragThumbs) {
+  const tempCanvas = document.createElement('canvas');
+  const tempCanvasCtx = tempCanvas.getContext('2d');
+  document.body.appendChild(tempCanvas);
+
+  pinnedTabsElem.childNodes.forEach(tabElem => {
+    getThumbnail(tabElem).then(resizedImage => tabElem.setAttribute('data-thumbnail', resizedImage));
+  });
+  tabsElem.childNodes.forEach(tabElem => {
+    getThumbnail(tabElem).then(resizedImage => tabElem.setAttribute('data-thumbnail', resizedImage));
+  });
+}
+
+async function getThumbnail(tabElem) {
+  const tabId = +tabElem.getAttribute('data-id');
+  const tab = await browser.tabs.get(tabId);
+  const src = await browser.tabs.captureTab(tabId, { rect: { x: 0, y: 0, width: tab.width, height: tab.height } });
+  tempCanvasCtx.drawImage(src, 0, 0, 160, 90);
+  return tempCanvas.toDataURL();
+}
+
+
 async function onTabElemMouseEnter(e) {
   console.log('tabElem mouse enter');
 }
 
 async function ontabElemMouseDown(e) {
-  e.dataTransfer.setDragImage(dndGhost, 0, 0);
-  let target = makeParentTheTarget(e.target);
-  const tabId = +target.getAttribute('data-id');
-  const tab = await browser.tabs.get(tabId);
+  console.log('tabElem mouseDown');
 
-  dndGhostImg.src = await browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: tab.width, height: tab.height } });
+  let target = makeParentTheTarget(e.target);
+  dndGhostImg.src = target.dataset.thumbnail;
+
+  // let target = makeParentTheTarget(e.target);
+  // const tabId = +target.getAttribute('data-id');
+  // const tab = await browser.tabs.get(tabId);
+  // dndGhostImg.src = await browser.tabs.captureTab(tabId, { rect: { x: 0, y: 0, width: tab.width, height: tab.height } });
 
   // TODO: Update DnD image if platform is Windows or macOS & figure out what to do on Linux.
-  e.dataTransfer.updateDragImage(dndGhost, 0, 0);
+  // e.dataTransfer.updateDragImage(dndGhost, 0, 0);
 
-  console.log('tabElem mouseDown');
 }
 
-async function ontabElemDragStart(e) {
+function ontabElemDragStart(e) {
   e.dataTransfer.setDragImage(dndGhost, 0, 0);
-  let target = makeParentTheTarget(e.target);
-  if (target.classList.contains('tab-elem')) {
-
-  }
-  console.log('tabElem dragStart');
-  // dndGhostImg.src = await browser.tabs.captureVisibleTab({ rect: { x: 0, y: 0, width: 200, height: 100 } });
-  // e.dataTransfer.updateDragImage(dndGhostImg, 0, 0);
 }
 
 async function ontabElemDragEnd(e) {
