@@ -171,7 +171,7 @@ const render = function getTabInfoAndMakeTabElFromIt(tab) {
   tabElem.setAttribute('data-id', tab.id);
   tabElem.setAttribute('data-index', tab.index);
   tabElem.setAttribute('data-window-id', tab.windowId);
-  tabElem.setAttribute('aria-label', `Tab ${tab.index}${(tab.pinned) ? ', pinned' : ''}:`);
+  tabElem.setAttribute('aria-label', `Tab ${tab.index}${tab.pinned ? ', pinned' : ''}:`);
   tabElem.classList.add('tab-elem');
 
   return tabElem;
@@ -184,39 +184,48 @@ dndGhost.id = 'drag-ghost';
 document.body.appendChild(dndGhost);
 
 if (Config.allowTabDrag) {
-  document.addEventListener('dragstart', ontabElemDragStart);
-  document.addEventListener('dragover', ontabElemDragOver);
-  document.addEventListener('dragleave', ontabElemDragLeave);
-  document.addEventListener('dragend', ontabElemDragEnd);
+  document.addEventListener('dragstart', onDocumentDragStart);
+  document.addEventListener('dragover', onDocumentDragOver);
+  document.addEventListener('dragleave', onDocumentDragLeave);
+  document.addEventListener('dragend', onDocumentDragEnd);
 }
 
-if (Config.showDragThumbs) {
-  const tempCanvas = document.createElement('canvas');
-  const tempCanvasCtx = tempCanvas.getContext('2d');
-  document.body.appendChild(tempCanvas);
-
-  pinnedTabsElem.childNodes.forEach(tabElem => {
-    getThumbnail(tabElem).then(resizedImage => tabElem.setAttribute('data-thumbnail', resizedImage));
-  });
-  tabsElem.childNodes.forEach(tabElem => {
-    getThumbnail(tabElem).then(resizedImage => tabElem.setAttribute('data-thumbnail', resizedImage));
-  });
-}
+const imgResizingHelper = document.createElement('canvas');
+imgResizingHelper.id = 'image-resizing-helper';
+imgResizingHelper.width = 160;
+imgResizingHelper.height = 90;
+const imgRhCtx = imgResizingHelper.getContext('2d');
 
 async function getThumbnail(tabElem) {
   const tabId = +tabElem.getAttribute('data-id');
   const tab = await browser.tabs.get(tabId);
-  const src = await browser.tabs.captureTab(tabId, { rect: { x: 0, y: 0, width: tab.width, height: tab.height } });
-  tempCanvasCtx.drawImage(src, 0, 0, 160, 90);
-  return tempCanvas.toDataURL();
+  // Capture tab and get the data:image string.
+  const newSrc = await browser.tabs.captureTab(tabId, { rect: { x: 0, y: 0, width: tab.width, height: tab.height } });
+  const img = new Image;
+  img.onload = () => {
+    imgRhCtx.drawImage(img, 0, 0, 160, 90);
+  }
+  img.src = newSrc;
+  return imgResizingHelper.toDataURL();
 }
 
 
-async function onTabElemMouseEnter(e) {
+function onDocumentMouseMove(e) {
+  if (!e.button) {
+    document.removeEventListener('mousemove', onDocumentMouseMove);
+    return;
+  }
+  console.log('document mousemove');
+}
+
+function onTabElemMouseEnter(e) {
   console.log('tabElem mouse enter');
 }
 
 async function ontabElemMouseDown(e) {
+
+  document.addEventListener('mousemove', onDocumentMouseMove);
+
   console.log('tabElem mouseDown');
 
   let target = makeParentTheTarget(e.target);
@@ -232,19 +241,19 @@ async function ontabElemMouseDown(e) {
 
 }
 
-function ontabElemDragStart(e) {
+function onDocumentDragStart(e) {
   e.dataTransfer.setDragImage(dndGhost, 0, 0);
 }
 
-async function ontabElemDragEnd(e) {
-  console.log('tabElem dragEnd');
+function onDocumentDragEnd(e) {
+  console.log('document dragEnd');
 }
 
-function ontabElemDragOver(e) {
-  console.log('tabElem dragOver');
+function onDocumentDragOver(e) {
+  console.log('document dragOver');
 }
 
-function ontabElemDragLeave(e) {
+function onDocumentDragLeave(e) {
   console.log('tabElem dragLeave');
   // TODO: Create a window on dragleave (?) with all tabs stored in event data. 
 }
@@ -560,3 +569,22 @@ const resetIndexes = () => {
     tabsElem.childNodes[j].setAttribute('aria-label', `Tab ${i}:`);
   }
 };
+
+// Unfortunately, this function cannot be instantly called, so timeout is required. It's 1000 ms by default.
+// TODO: Consider moving this code to the tab rendering routine.
+function getAllThumbnails(timeoutMs) {
+  setTimeout(() => {
+    if (Config.showDragThumbs) {
+      document.body.appendChild(imgResizingHelper);
+
+      pinnedTabsElem.childNodes.forEach(tabElem => {
+        getThumbnail(tabElem).then(resizedImage => tabElem.setAttribute('data-thumbnail', resizedImage));
+      });
+      tabsElem.childNodes.forEach(tabElem => {
+        getThumbnail(tabElem).then(resizedImage => tabElem.setAttribute('data-thumbnail', resizedImage));
+      });
+    }
+  }, timeoutMs);
+}
+
+getAllThumbnails(1000);
