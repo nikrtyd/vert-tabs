@@ -6,11 +6,11 @@
   "homepage_url": "https://github.com/nikrtyd/verts",
   "default_locale": "en",
   "icons": {
-    "16": "icons/verts/gray16.png",
-    "32": "icons/verts/gray32.png",
-    "48": "icons/verts/gray48.png",
-    "96": "icons/verts/gray96.png",
-    "128": "icons/verts/gray128.png"
+    "16": "resources/icons/verts/gray16.png",
+    "32": "resources/icons/verts/gray32.png",
+    "48": "resources/icons/verts/gray48.png",
+    "96": "resources/icons/verts/gray96.png",
+    "128": "resources/icons/verts/gray128.png"
   },
   "browser_specific_settings": {
     "gecko": {
@@ -18,24 +18,24 @@
     }
   },
   "sidebar_action": {
-    "default_icon": "icons/verts/icon.svg",
+    "default_icon": "resources/icons/verts/icon.svg",
     "default_title": "__MSG_extensionShortName__",
-    "default_panel": "panel.html"
+    "default_panel": "src/html/sidebar.html"
   },
   "background": {
     "scripts": [
-      "js/background.js"
+      "src/js/background.js"
     ]
   },
   "browser_action": {
     "browser_style": true,
     "default_title": "__MSG_toggleSidebarVisibility__",
-    "default_icon": "icons/verts/icon.svg"
+    "default_icon": "resources/icons/verts/icon.svg"
   },
   "options_ui": {
     "browser_style": true,
     "open_in_tab": true,
-    "page": "options.html"
+    "page": "src/html/options.html"
   },
   "permissions": [
     "tabs",

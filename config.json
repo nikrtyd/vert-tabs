@@ -1,7 +1,15 @@
 {
-  "inlinePinnedTabs": true,
-  "stickyPinnedTabs": true,
-  "forceDarkMode": true,
-  "compactMode": true,
-  "allowTabDrag": true
+  "appearance": {
+    "theme": "Proton",
+    "scheme": "dark",
+    "scrollbarWidth": "compact"
+  },
+  "tabs": {
+    "contents": {
+      "showCloseBtn": true
+    }
+  },
+  "behavior": {
+    "allowTabDrag": true
+  }
 }
