@@ -1,0 +1,16 @@
+.dragged {
+  position: relative;
+  z-index: 1;
+}
+
+.discarded>.tab-title-container {
+  color: #aaa;
+}
+
+#background-image-container {
+  filter: brightness(.5);
+}
+
+#background-image {
+  filter: blur(10px);
+}

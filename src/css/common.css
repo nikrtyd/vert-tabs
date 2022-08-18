@@ -1,0 +1,103 @@
+html {
+  scrollbar-width: thin;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+
+.tab-elem,
+.tab-action {
+  display: flex;
+}
+
+.tab-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.tab-title-container {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.tab-title {
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.audio-annotation:empty {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#pinned-tabs-container,
+#tabs-container,
+#tab-actions-container {
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
+
+#tabs-container {
+  flex: 1;
+}
+
+#tabs {
+  width: 100%;
+}
+
+#pinned-tabs,
+#tab-actions {
+  z-index: 1;
+}
+
+#background-image-container {
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  position: absolute;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#background-image {
+  filter: none;
+  width: 100vh;
+  height: 100vw;
+  transform: rotate(90deg);
+}
+
+#drag-ghost {
+  position: absolute;
+  top: -1000px;
+}
+
+#drag-ghost img {
+  width: 160px;
+  max-height: 90px;
+  object-fit: cover;
+  object-position: top left;
+}
+
+.discard-indicator {
+  display: none;
+}
+
+.discarded>.discard-indicator {
+  display: block;
+}
+
+#background-image[src=''] {
+  display: none;
+}

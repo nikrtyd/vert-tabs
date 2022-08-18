@@ -1,0 +1,217 @@
+:root {
+  --tab-foreground-text: #0f0f0f;
+  --tab-text: #111;
+  --frame: #eee;
+  --hover-tint: #5552;
+  --tab-selected: #fff;
+  --tab-line: #fff;
+  --active-hover-tint: #bbb;
+  --tab-text-annotation: #666;
+
+  --container-padding: 4px;
+  --tab-padding: 5px;
+
+  --additional-background-0: #fff;
+  --additional-background-1: #fff;
+  --additional-background-2: #fff;
+  --additional-background-3: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tab-text: #ddd;
+    --frame: #111;
+    --hover-tint: #5552;
+    --tab-selected: #333;
+    --tab-line: #333;
+    --active-hover-tint: #444;
+  }
+
+  img[src^='chrome://global/skin/'],
+  img[src^='chrome://browser/skin/'],
+  img[src$='icons/firefox/proton/profiler-stopwatch.svg'],
+  img[src$='icons/firefox/proton/extension.svg'],
+  img[src$='icons/firefox/proton/plus.svg'],
+  .audio-indicator::before,
+  .discard-indicator::before {
+    filter: invert(1);
+  }
+
+  img[src='chrome://browser/skin/privatebrowsing/favicon.svg'] {
+    filter: none;
+  }
+}
+
+body {
+  background-color: var(--frame);
+  color: var(--tab-text);
+}
+
+#tabs,
+#pinned-tabs,
+#tab-actions {
+  padding: var(--container-padding);
+}
+
+#pinned-tabs:empty {
+  box-shadow: none;
+  padding: 0;
+}
+
+.tab-elem,
+.tab-action {
+  padding: 0 0 0 5px;
+  border-radius: var(--tab-padding);
+  align-items: center;
+  min-height: 26px;
+  border: 1px solid transparent;
+}
+
+.tab-icon {
+  margin-right: 6px;
+}
+
+.overflow {
+  mask-image: linear-gradient(to right, #000 calc(100% - 2em), transparent);
+}
+
+.overflow:hover {
+  animation: fade-left 10s linear .5s;
+}
+
+.overflow .tab-title:hover {
+  animation: scroll 10s linear .5s;
+}
+
+/* .tab-title.ellipsis:hover {
+  animation: scrollEllipsis 10s linear .5s;
+} */
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0%);
+  }
+
+  99% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes fade-left {
+  0% {
+    mask-image: linear-gradient(to right, transparent, #000 2em calc(100% - 2em), transparent);
+  }
+
+  99% {
+    mask-image: linear-gradient(to right, transparent, #000 2em calc(100% - 2em), transparent);
+  }
+
+  100% {
+    mask-image: linear-gradient(to right, #000 calc(100% - 2em), transparent);
+  }
+}
+
+.discard-indicator,
+.audio-indicator {
+  max-width: 8px;
+  max-height: 8px;
+  font-size: 8px;
+  position: relative;
+  width: 0;
+}
+
+.discard-indicator {
+  left: -12px;
+  top: 3px;
+}
+
+.audio-indicator {
+  left: -12px;
+  top: -10px;
+}
+
+.tab-close {
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.tab-elem:hover,
+.tab-close:hover,
+.tab-action:hover {
+  background-color: var(--hover-tint);
+}
+
+.tab-audio {
+  font-size: 10px;
+  font-weight: 600;
+  color: #aaa;
+}
+
+.audio-annotation {
+  white-space: nowrap;
+  color: var(--tab-text);
+  font-size: .75em;
+  font-weight: 600;
+  margin-left: 6px;
+  margin-right: 6px;
+  text-transform: uppercase;
+}
+
+.tab-annotation {
+  color: var(--tab-text-annotation);
+  padding-right: 5px;
+}
+
+.highlighted {
+  background-color: var(--tab-selected);
+  box-shadow: inset 0 0 8px #000a;
+}
+
+.attention {
+  font-weight: 700;
+}
+
+.active {
+  background-color: var(--tab-selected);
+  border: 1px solid var(--tab-line);
+  box-shadow: 0 2px 4px #0005;
+}
+
+.active:hover {
+  background-color: var(--tab-selected);
+}
+
+#drag-ghost {
+  opacity: .6;
+  padding: 4px 0;
+  background-color: var(--frame);
+  border: 1px solid #222;
+  border-radius: 5px;
+}
+
+/* test */
+
+.audio-indicator::before,
+.discard-indicator::before {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  background-size: contain;
+}
+
+.audible .audio-indicator::before {
+  background-image: url(chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg);
+}
+
+.muted .audio-indicator::before {
+  background-image: url(chrome://browser/skin/tabbrowser/tab-audio-muted-small.svg);
+}
+
+.discard-indicator::before {
+  background-image: url(chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg);
+}
