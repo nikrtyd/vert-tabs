@@ -1,4 +1,4 @@
-// If clicked on 'Show Vert Tabs panel on a sidebar', show it
+// Toggle visibility on `Show/hide Verts panel on a sidebar` click.
 browser.browserAction.onClicked.addListener(() => {
   browser.sidebarAction.toggle();
 });

@@ -15,12 +15,12 @@ body {
   height: 100vh;
 }
 
-.tab-elem,
+.tab,
 .tab-action {
   display: flex;
 }
 
-.tab-icon {
+.tab-favicon {
   width: 16px;
   height: 16px;
 }
@@ -78,6 +78,10 @@ body {
   transform: rotate(90deg);
 }
 
+#background-image[src=''] {
+  display: none;
+}
+
 #drag-ghost {
   position: absolute;
   top: -1000px;
@@ -98,6 +102,22 @@ body {
   display: block;
 }
 
-#background-image[src=''] {
+.audio-indicator,
+.audio-annotation,
+.discard-indicator,
+.reader-mode-indicator,
+.screen-sharing-indicator,
+.microphone-sharing-indicator,
+.camera-sharing-indicator {
   display: none;
+}
+
+.audible .audio-indicator,
+.audible .audio-annotation,
+.discarded .discard-indicator,
+.readermode .reader-mode-indicator,
+.screensharing .screen-sharing-indicator,
+.microphonesharing .microphone-sharing-indicator,
+.camerasharing .camera-sharing-indicator {
+  display: block;
 }

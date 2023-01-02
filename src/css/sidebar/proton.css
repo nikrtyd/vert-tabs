@@ -67,7 +67,7 @@ body {
   border: 1px solid transparent;
 }
 
-.tab-icon {
+.tab-favicon {
   margin-right: 6px;
 }
 
@@ -214,4 +214,14 @@ body {
 
 .discard-indicator::before {
   background-image: url(chrome://browser/skin/tabbrowser/tab-audio-playing-small.svg);
+}
+
+.tab-title-container::before {
+  content: '';
+  width: 100vh;
+  height: 100%;
+  position: relative;
+  left: 0;
+  top: 0;
+  background: linear-gradient(transparent 150px, white);
 }

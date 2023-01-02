@@ -1,0 +1,54 @@
+{
+  "appearance": {
+    "theme": "Proton",
+    "scheme": "system",
+    "scrollbarWidth": "compact",
+    "tabDragGhost": "none"
+  },
+  "pinnedTabs": {
+    "contents": {
+      "showFavIcon": true,
+      "showTitle": true,
+      "showCloseBtn": true,
+      "indicators": {
+        "showAudioIndicator": true,
+        "showAttentionIndicator": false,
+        "showDiscardIndicator": true,
+        "showReaderIndicator": true,
+        "sharing": {
+          "showMicrophoneSharingIndicator": true,
+          "showCameraSharingIndicator": true,
+          "showScreenSharingIndicator": true
+        }
+      }
+    },
+    "behavior": {
+      "showTooltipOnTitleHover": true,
+      "scrollTitleOnHover": false,
+      "allowTabDrag": true
+    }
+  },
+  "tabs": {
+    "contents": {
+      "showFavIcon": true,
+      "showTitle": true,
+      "showCloseBtn": true,
+      "indicators": {
+        "showAudioIndicator": true,
+        "showAttentionIndicator": false,
+        "showDiscardIndicator": true,
+        "showReaderIndicator": true,
+        "sharing": {
+          "showMicrophoneSharingIndicator": true,
+          "showCameraSharingIndicator": true,
+          "showScreenSharingIndicator": true
+        }
+      }
+    },
+    "behavior": {
+      "showTooltipOnTitleHover": true,
+      "scrollTitleOnHover": false,
+      "allowTabDrag": true
+    }
+  }
+}

@@ -108,6 +108,21 @@
   "setTheme": {
     "message": "Set theme:"
   },
+  "close": {
+    "message": "Close"
+  },
+  "pin": {
+    "message": "Pin"
+  },
+  "reload": {
+    "message": "Reload"
+  },
+  "goBackOnePage": {
+    "message": "Go back one page"
+  },
+  "goForwardOnePage": {
+    "message": "Go forward one page"
+  },
   "showCloseBtnTooltip": {
     "message": "Show tooltip when hovered on Close tab (⨉) button"
   },
@@ -128,7 +143,7 @@
   },
   "switchTabsOnCtrlWheel": {
     "message": "Switch tabs on Ctrl+&lt;mousewheel&gt;",
-    "description": "Use only &lt; and &gt; and not < and > to avoid string placement problems into HTML."
+    "description": "Use only &lt; and &gt; and not < and > to avoid problems with string placement into HTML."
   },
   "btn_switchToDefaults": {
     "message": "Switch to default settings"
@@ -234,5 +249,37 @@
   },
   "mightNotWorkAsExpected": {
     "message": "(might not work as expected)"
+  },
+  "langSpecificSingularTab": {
+    "message": "tab",
+    "description": "`Tab` word in singular form."
+  },
+  "langSpecificDualTab": {
+    "message": "tabs",
+    "description": "`Tab` word in dual form. Used in Slovene, Arabic, etc. Overridden by adding a paucal form and setting its numbers."
+  },
+  "langSpecificTrialTab": {
+    "message": "tabs",
+    "description": "`Tab` word in trial form. Used in Wakasihu, etc. Overridden by adding a paucal form and setting its numbers."
+  },
+  "langSpecificPaucalTab": {
+    "message": "tabs",
+    "description": "`Tab` word in paucal form."
+  },
+  "langSpecificPluralTab": {
+    "message": "tabs",
+    "description": "`Tab` word in plural form."
+  },
+  "langSpecificSuperpluralTab": {
+    "message": "tabs",
+    "description": "`Tab` word in superplural form. Used in Fula, etc."
+  },
+  "langSpecificPaucalNumbers": {
+    "message": "",
+    "description": "For example, you can set `2,3,4` as paucal numbers."
+  },
+  "langSpecificSuperpluralNumbers": {
+    "message": "",
+    "description": "For example, you can set `1000,2000,3000` or `2000+` as superplural numbers."
   }
 }
